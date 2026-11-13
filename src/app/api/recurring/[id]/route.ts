@@ -44,12 +44,18 @@ export async function DELETE(
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     await connectToDatabase();
-    const result = await RecurringTransaction.deleteOne({ _id: params.id, userId: session.userId });
-    if (result.deletedCount === 0) {
+    const recurring = await RecurringTransaction.findOne({ _id: params.id, userId: session.userId, isDeleted: { $ne: true } });
+    if (!recurring) {
       return NextResponse.json({ error: 'Recurring schedule not found' }, { status: 404 });
     }
 
-    return NextResponse.json({ message: 'Recurring schedule removed successfully' });
+    recurring.isDeleted = true;
+    recurring.deletedAt = new Date();
+    recurring.deletedBy = session.userId as any;
+    recurring.originalModule = 'recurring';
+    await recurring.save();
+
+    return NextResponse.json({ message: 'Recurring schedule moved to Trash successfully' });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

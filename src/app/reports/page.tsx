@@ -208,11 +208,10 @@ export default function ReportsPage() {
               <button
                 key={p.id}
                 onClick={() => setFilterRange(p.id)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition ${
-                  filterRange === p.id
-                    ? 'bg-emerald-600 text-white shadow-sm'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                }`}
+                className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition ${filterRange === p.id
+                  ? 'bg-emerald-600 text-white shadow-sm'
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  }`}
               >
                 {p.label}
               </button>
@@ -264,9 +263,8 @@ export default function ReportsPage() {
             <div className="p-5 rounded-3xl bg-white border border-slate-200/80 shadow-subtle">
               <span className="text-xs font-medium text-slate-400">Net Surplus / Savings</span>
               <div
-                className={`text-xl sm:text-2xl font-extrabold mt-1 ${
-                  reportData.summary.netSavings >= 0 ? 'text-slate-900' : 'text-rose-600'
-                }`}
+                className={`text-xl sm:text-2xl font-extrabold mt-1 ${reportData.summary.netSavings >= 0 ? 'text-slate-900' : 'text-rose-600'
+                  }`}
               >
                 {formatCurrency(reportData.summary.netSavings, cur, sym)}
               </div>

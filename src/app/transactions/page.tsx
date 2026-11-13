@@ -29,6 +29,8 @@ import { ITransaction, IAccount, ICategory } from '@/types';
 import { formatCurrency } from '@/lib/currency';
 import { formatDate, toInputDateFormat } from '@/lib/utils';
 import QuickAddModal from '@/components/common/QuickAddModal';
+import Pagination from '@/components/common/Pagination';
+import BulkActionBar from '@/components/common/BulkActionBar';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
@@ -54,8 +56,10 @@ function TransactionsContent() {
 
   // Pagination
   const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(25);
   const [totalPages, setTotalPages] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   // Summary
   const [summary, setSummary] = useState({ totalIncome: 0, totalExpenses: 0, net: 0 });
@@ -104,7 +108,7 @@ function TransactionsContent() {
       params.append('sortBy', sortBy);
       params.append('sortOrder', sortOrder);
       params.append('page', String(page));
-      params.append('limit', '20');
+      params.append('limit', String(limit));
 
       const res = await fetch(`/api/transactions?${params.toString()}`);
       if (res.ok) {
@@ -128,7 +132,50 @@ function TransactionsContent() {
 
   useEffect(() => {
     fetchTransactions();
-  }, [page, typeFilter, accountFilter, categoryFilter, startDate, endDate, sortBy, sortOrder]);
+  }, [page, limit, typeFilter, accountFilter, categoryFilter, startDate, endDate, sortBy, sortOrder]);
+
+  // Bulk actions
+  const handleToggleSelect = (id: string) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+    );
+  };
+
+  const handleSelectAllPage = () => {
+    const pageIds = transactions.map((t) => t._id);
+    const allSelected = pageIds.length > 0 && pageIds.every((id) => selectedIds.includes(id));
+    if (allSelected) {
+      setSelectedIds((prev) => prev.filter((id) => !pageIds.includes(id)));
+    } else {
+      setSelectedIds((prev) => Array.from(new Set([...prev, ...pageIds])));
+    }
+  };
+
+  const handleBulkMoveToTrash = async () => {
+    if (selectedIds.length === 0) return;
+    try {
+      const res = await fetch('/api/bulk/trash', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ module: 'transactions', ids: selectedIds }),
+      });
+      if (res.ok) {
+        setSelectedIds([]);
+        fetchTransactions();
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new CustomEvent('finance_updated'));
+        }
+      }
+    } catch (err) {
+      console.error('Bulk trash error:', err);
+    }
+  };
+
+  const handleExportSelectedCsv = () => {
+    if (selectedIds.length > 0) {
+      window.location.href = `/api/transactions/export?ids=${selectedIds.join(',')}`;
+    }
+  };
 
   // Debounced search
   useEffect(() => {
@@ -285,9 +332,8 @@ function TransactionsContent() {
           <div className="p-3 sm:p-4 rounded-2xl bg-white border border-slate-200/80 shadow-subtle">
             <span className="text-[11px] font-medium text-slate-400">Net Flow</span>
             <div
-              className={`text-base sm:text-xl font-bold mt-0.5 ${
-                summary.net >= 0 ? 'text-slate-900' : 'text-rose-600'
-              }`}
+              className={`text-base sm:text-xl font-bold mt-0.5 ${summary.net >= 0 ? 'text-slate-900' : 'text-rose-600'
+                }`}
             >
               {formatCurrency(summary.net, cur, sym)}
             </div>
@@ -437,16 +483,23 @@ function TransactionsContent() {
               {transactions.map((tx) => (
                 <div
                   key={tx._id}
-                  className="p-4 sm:px-6 hover:bg-slate-50/80 transition flex items-center justify-between gap-4"
+                  className={`p-4 sm:px-6 hover:bg-slate-50/80 transition flex items-center justify-between gap-4 ${
+                    selectedIds.includes(tx._id) ? 'bg-emerald-50/30' : ''
+                  }`}
                 >
+                  <input
+                    type="checkbox"
+                    checked={selectedIds.includes(tx._id)}
+                    onChange={() => handleToggleSelect(tx._id)}
+                    className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer shrink-0"
+                  />
                   <div
                     onClick={() => setDetailModalTx(tx)}
                     className="flex items-center gap-3.5 cursor-pointer flex-1 min-w-0"
                   >
                     <div
-                      className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
-                        tx.type === 'income' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'
-                      }`}
+                      className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${tx.type === 'income' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'
+                        }`}
                     >
                       {tx.type === 'income' ? <ArrowDownLeft className="w-5 h-5" /> : <ArrowUpRight className="w-5 h-5" />}
                     </div>
@@ -475,9 +528,8 @@ function TransactionsContent() {
                   <div className="flex items-center gap-4 shrink-0">
                     <div className="text-right">
                       <div
-                        className={`text-sm sm:text-base font-extrabold ${
-                          tx.type === 'income' ? 'text-emerald-600' : 'text-slate-900'
-                        }`}
+                        className={`text-sm sm:text-base font-extrabold ${tx.type === 'income' ? 'text-emerald-600' : 'text-slate-900'
+                          }`}
                       >
                         {tx.type === 'income' ? '+' : '-'}
                         {formatCurrency(tx.amount, cur, sym)}
@@ -507,31 +559,30 @@ function TransactionsContent() {
             </div>
           )}
 
-          {/* Pagination bar */}
-          {totalPages > 1 && (
-            <div className="p-4 bg-slate-50/70 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600">
-              <span>
-                Showing page {page} of {totalPages} ({totalCount} total)
-              </span>
-              <div className="flex items-center gap-2">
-                <button
-                  disabled={page <= 1}
-                  onClick={() => setPage(page - 1)}
-                  className="px-3 py-1.5 rounded-lg bg-white border border-slate-200 disabled:opacity-40 font-semibold"
-                >
-                  Previous
-                </button>
-                <button
-                  disabled={page >= totalPages}
-                  onClick={() => setPage(page + 1)}
-                  className="px-3 py-1.5 rounded-lg bg-white border border-slate-200 disabled:opacity-40 font-semibold"
-                >
-                  Next
-                </button>
-              </div>
-            </div>
-          )}
+          {/* Reusable Pagination */}
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            totalCount={totalCount}
+            limit={limit}
+            onPageChange={(p) => setPage(p)}
+            onLimitChange={(l) => {
+              setLimit(l);
+              setPage(1);
+            }}
+          />
         </div>
+
+        {/* Global Bulk Action Bar for Transactions */}
+        <BulkActionBar
+          selectedCount={selectedIds.length}
+          totalPageCount={transactions.length}
+          allSelectedOnPage={transactions.length > 0 && transactions.every((t) => selectedIds.includes(t._id))}
+          onSelectAllPage={handleSelectAllPage}
+          onClearSelection={() => setSelectedIds([])}
+          onMoveToTrash={handleBulkMoveToTrash}
+          onExportCsv={handleExportSelectedCsv}
+        />
       </div>
 
       {/* DETAIL MODAL */}
@@ -552,9 +603,8 @@ function TransactionsContent() {
 
             <div className="text-center py-2">
               <div
-                className={`text-2xl font-extrabold ${
-                  detailModalTx.type === 'income' ? 'text-emerald-600' : 'text-slate-900'
-                }`}
+                className={`text-2xl font-extrabold ${detailModalTx.type === 'income' ? 'text-emerald-600' : 'text-slate-900'
+                  }`}
               >
                 {detailModalTx.type === 'income' ? '+' : '-'}
                 {formatCurrency(detailModalTx.amount, cur, sym)}

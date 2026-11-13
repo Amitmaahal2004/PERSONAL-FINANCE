@@ -17,6 +17,10 @@ export interface ISavingsGoalDocument extends Document {
     notes?: string;
     accountId?: mongoose.Types.ObjectId;
   }[];
+  isDeleted: boolean;
+  deletedAt?: Date;
+  deletedBy?: mongoose.Types.ObjectId;
+  originalModule: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -43,6 +47,10 @@ const SavingsGoalSchema = new Schema<ISavingsGoalDocument>(
     status: { type: String, enum: ['active', 'completed', 'paused'], default: 'active' },
     accountId: { type: Schema.Types.ObjectId, ref: 'Account' },
     contributions: [SavingsContributionSchema],
+    isDeleted: { type: Boolean, default: false, index: true },
+    deletedAt: { type: Date },
+    deletedBy: { type: Schema.Types.ObjectId, ref: 'User' },
+    originalModule: { type: String, default: 'savings' },
   },
   {
     timestamps: true,
@@ -50,6 +58,7 @@ const SavingsGoalSchema = new Schema<ISavingsGoalDocument>(
 );
 
 SavingsGoalSchema.index({ userId: 1, status: 1 });
+SavingsGoalSchema.index({ userId: 1, isDeleted: 1 });
 
 export const SavingsGoal: Model<ISavingsGoalDocument> =
   mongoose.models.SavingsGoal || mongoose.model<ISavingsGoalDocument>('SavingsGoal', SavingsGoalSchema);

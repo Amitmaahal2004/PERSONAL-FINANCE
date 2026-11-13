@@ -357,6 +357,245 @@ async function runTests() {
     assert(csvContent.includes('Date,Title,Type,Amount'), 'CSV contains proper headers');
     assert(csvContent.includes('Monthly Tech Salary'), 'CSV contains user transactions');
 
+    // 14. DEDICATED UDHAAR MANAGEMENT TESTS
+    console.log('\n--- TEST 14: Dedicated Udhaar Management Module ---');
+
+    // Get current bank account balance before Udhaar
+    const preUdhaarAccs = await (await fetch(`${BASE_URL}/api/accounts`, { headers: { Cookie: cookieA } })).json();
+    const preBankBalance = preUdhaarAccs.accounts.find(a => a.accountName === 'Main Bank Account').currentBalance;
+
+    // Create Udhaar Lent: ₹10,000 to Rahul Sharma from Main Bank Account
+    const udhaarLentRes = await fetch(`${BASE_URL}/api/udhaar`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Cookie: cookieA },
+      body: JSON.stringify({
+        type: 'lent',
+        personName: 'Rahul Sharma',
+        phoneNumber: '9876543210',
+        originalAmount: 10000,
+        udhaarDate: '2026-11-01',
+        expectedRepaymentDate: '2026-11-20',
+        paymentMethod: 'UPI',
+        accountId: bankAcc._id,
+        description: 'Urgent medical assistance',
+      }),
+    });
+    assert(udhaarLentRes.status === 200, 'Udhaar Lent created successfully');
+    const udhaarLentData = await udhaarLentRes.json();
+    const lentRecordId = udhaarLentData.data._id;
+    assert(udhaarLentData.data.recordId.startsWith('UDH-'), 'Auto-generated Record ID starts with UDH-');
+    assert(udhaarLentData.data.remainingAmount === 10000, 'Initial remaining amount equals original amount (₹10,000)');
+
+    // Verify bank account was deducted by ₹10,000
+    const postLentAccs = await (await fetch(`${BASE_URL}/api/accounts`, { headers: { Cookie: cookieA } })).json();
+    const postLentBalance = postLentAccs.accounts.find(a => a.accountName === 'Main Bank Account').currentBalance;
+    assert(postLentBalance === preBankBalance - 10000, `Bank balance deducted by ₹10,000 on Lent creation (${preBankBalance} -> ${postLentBalance})`);
+
+    // Create Udhaar Borrowed: ₹6,000 from Vikram Singh into Main Bank Account
+    const udhaarBorrowedRes = await fetch(`${BASE_URL}/api/udhaar`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Cookie: cookieA },
+      body: JSON.stringify({
+        type: 'borrowed',
+        personName: 'Vikram Singh',
+        phoneNumber: '9123456780',
+        originalAmount: 6000,
+        udhaarDate: '2026-11-05',
+        expectedRepaymentDate: '2026-11-30',
+        paymentMethod: 'Bank Transfer',
+        accountId: bankAcc._id,
+        description: 'Temporary bridge loan',
+      }),
+    });
+    assert(udhaarBorrowedRes.status === 200, 'Udhaar Borrowed created successfully');
+    const udhaarBorrowedData = await udhaarBorrowedRes.json();
+    const borrowedRecordId = udhaarBorrowedData.data._id;
+
+    // Verify bank account was credited by ₹6,000
+    const postBorrowedAccs = await (await fetch(`${BASE_URL}/api/accounts`, { headers: { Cookie: cookieA } })).json();
+    const postBorrowedBalance = postBorrowedAccs.accounts.find(a => a.accountName === 'Main Bank Account').currentBalance;
+    assert(postBorrowedBalance === postLentBalance + 6000, `Bank balance credited by ₹6,000 on Borrowed creation (${postLentBalance} -> ${postBorrowedBalance})`);
+
+    // Check Udhaar summary stats
+    const udhaarListRes = await fetch(`${BASE_URL}/api/udhaar?tab=all`, { headers: { Cookie: cookieA } });
+    const udhaarList = await udhaarListRes.json();
+    assert(udhaarList.summary.totalMoneyLent === 10000, `Summary Total Lent is ₹10,000 (got ${udhaarList.summary.totalMoneyLent})`);
+    assert(udhaarList.summary.totalMoneyBorrowed === 6000, `Summary Total Borrowed is ₹6,000 (got ${udhaarList.summary.totalMoneyBorrowed})`);
+    assert(udhaarList.summary.pendingReceivables === 10000, `Summary Pending Receivables is ₹10,000`);
+    assert(udhaarList.summary.pendingPayables === 6000, `Summary Pending Payables is ₹6,000`);
+
+    // Partial Repayment: Rahul Sharma repays ₹3,000 on 12 Nov
+    const partialRepayRes = await fetch(`${BASE_URL}/api/udhaar/${lentRecordId}/repay`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Cookie: cookieA },
+      body: JSON.stringify({
+        amount: 3000,
+        date: '2026-11-12',
+        paymentMethod: 'UPI',
+        accountId: bankAcc._id,
+        notes: 'Installment 1',
+      }),
+    });
+    assert(partialRepayRes.status === 200, 'Partial repayment of ₹3,000 recorded');
+    const partialData = await partialRepayRes.json();
+    assert(partialData.data.remainingAmount === 7000, 'Remaining balance updated to ₹7,000');
+    assert(partialData.data.status === 'partially_paid', 'Status transitioned to partially_paid');
+    assert(partialData.data.repayments.length === 1, 'Repayment ledger holds 1 entry');
+
+    // Verify bank account was credited by ₹3,000
+    const postRepay1Accs = await (await fetch(`${BASE_URL}/api/accounts`, { headers: { Cookie: cookieA } })).json();
+    const postRepay1Balance = postRepay1Accs.accounts.find(a => a.accountName === 'Main Bank Account').currentBalance;
+    assert(postRepay1Balance === postBorrowedBalance + 3000, `Bank balance credited by ₹3,000 on repayment receipt`);
+
+    // Final Repayment: Rahul Sharma repays remaining ₹7,000 on 15 Nov -> Fully Cleared!
+    const finalRepayRes = await fetch(`${BASE_URL}/api/udhaar/${lentRecordId}/repay`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Cookie: cookieA },
+      body: JSON.stringify({
+        amount: 7000,
+        date: '2026-11-15',
+        paymentMethod: 'UPI',
+        accountId: bankAcc._id,
+        notes: 'Final settlement',
+      }),
+    });
+    assert(finalRepayRes.status === 200, 'Final repayment of ₹7,000 recorded');
+    const finalData = await finalRepayRes.json();
+    assert(finalData.data.remainingAmount === 0, 'Remaining balance reached ₹0');
+    assert(finalData.data.status === 'cleared', 'Status automatically transitioned to CLEARED');
+    assert(finalData.data.settlementDate, 'Settlement date successfully recorded');
+    assert(finalData.data.settlementDurationDays === 14, `Settlement duration correctly calculated as 14 days (got ${finalData.data.settlementDurationDays})`);
+
+    // Verify Tab Filtering:
+    // Cleared record MUST NOT appear in Active Udhaar tab
+    const activeUdhaarRes = await fetch(`${BASE_URL}/api/udhaar?tab=active`, { headers: { Cookie: cookieA } });
+    const activeUdhaar = await activeUdhaarRes.json();
+    assert(!activeUdhaar.data.some(r => r._id === lentRecordId), 'Cleared record automatically excluded from Active Udhaar tab');
+
+    // Cleared record MUST appear in Cleared History tab
+    const clearedUdhaarRes = await fetch(`${BASE_URL}/api/udhaar?tab=cleared`, { headers: { Cookie: cookieA } });
+    const clearedUdhaar = await clearedUdhaarRes.json();
+    const clearedDoc = clearedUdhaar.data.find(r => r._id === lentRecordId);
+    assert(clearedDoc, 'Cleared record present in Cleared History tab');
+    assert(clearedDoc && clearedDoc.repayments.length === 2, 'Preserved all partial repayment entries');
+    assert(clearedDoc && clearedDoc.settlementDurationDays === 14, 'Preserved settlement duration days in cleared history');
+
+    // 15. GLOBAL TRASH & RECYCLE BIN SYSTEM
+    console.log('\n--- TEST 15: Global Trash / Soft-Delete System ---');
+
+    // Create a temporary transaction to delete and restore
+    const tempTxRes = await fetch(`${BASE_URL}/api/transactions`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Cookie: cookieA },
+      body: JSON.stringify({
+        title: 'Refundable Coffee Machine',
+        amount: 3500,
+        type: 'expense',
+        category: 'Shopping',
+        accountId: bankAcc._id,
+        paymentMethod: 'UPI',
+        date: new Date().toISOString(),
+      }),
+    });
+    const tempTx = (await tempTxRes.json()).transaction;
+
+    // Normal DELETE moves to Trash (soft delete)
+    const softDelRes = await fetch(`${BASE_URL}/api/transactions/${tempTx._id}`, {
+      method: 'DELETE',
+      headers: { Cookie: cookieA },
+    });
+    assert(softDelRes.status === 200, 'Transaction DELETE endpoint soft-deletes and responds HTTP 200');
+
+    // Verify it disappeared from active transactions
+    const checkActiveTxs = await (await fetch(`${BASE_URL}/api/transactions`, { headers: { Cookie: cookieA } })).json();
+    assert(!checkActiveTxs.transactions.some(t => t._id === tempTx._id), 'Soft-deleted transaction absent from active transactions list');
+
+    // Verify it appears in Trash
+    const trashRes = await fetch(`${BASE_URL}/api/trash?module=transactions`, { headers: { Cookie: cookieA } });
+    const trashData = await trashRes.json();
+    const foundInTrash = trashData.data.find(t => t._id === tempTx._id);
+    assert(foundInTrash, 'Soft-deleted transaction found in Recycle Bin');
+    assert(foundInTrash.originalModule === 'transactions', 'Trash item preserves original module metadata');
+
+    // Restore from Trash
+    const restoreRes = await fetch(`${BASE_URL}/api/trash/restore`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Cookie: cookieA },
+      body: JSON.stringify({ module: 'transactions', id: tempTx._id }),
+    });
+    assert(restoreRes.status === 200, 'Transaction restored from Recycle Bin');
+
+    // Verify it is active again
+    const postRestoreTxs = await (await fetch(`${BASE_URL}/api/transactions`, { headers: { Cookie: cookieA } })).json();
+    assert(postRestoreTxs.transactions.some(t => t._id === tempTx._id), 'Restored transaction returned to active ledger');
+
+    // Soft delete Udhaar Borrowed record
+    const delUdhaarRes = await fetch(`${BASE_URL}/api/udhaar/${borrowedRecordId}`, {
+      method: 'DELETE',
+      headers: { Cookie: cookieA },
+    });
+    assert(delUdhaarRes.status === 200, 'Udhaar record soft-deleted to Trash');
+
+    const udhaarTrashCheck = await (await fetch(`${BASE_URL}/api/trash?module=udhaar`, { headers: { Cookie: cookieA } })).json();
+    assert(udhaarTrashCheck.data.some(u => u._id === borrowedRecordId), 'Soft-deleted Udhaar found in Recycle Bin under udhaar module');
+
+    // 16. GLOBAL BULK ACTIONS TESTS
+    console.log('\n--- TEST 16: Global Bulk Actions ---');
+    // Bulk Move to Trash: move tempTx
+    const bulkTrashRes = await fetch(`${BASE_URL}/api/bulk/trash`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Cookie: cookieA },
+      body: JSON.stringify({ module: 'transactions', ids: [tempTx._id] }),
+    });
+    assert(bulkTrashRes.status === 200, 'Bulk Move to Trash succeeded');
+
+    // Bulk Restore
+    const bulkRestoreRes = await fetch(`${BASE_URL}/api/bulk/restore`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Cookie: cookieA },
+      body: JSON.stringify({ module: 'transactions', ids: [tempTx._id] }),
+    });
+    assert(bulkRestoreRes.status === 200, 'Bulk Restore succeeded');
+
+    // Move to Trash again and test Permanent Deletion
+    await fetch(`${BASE_URL}/api/bulk/trash`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Cookie: cookieA },
+      body: JSON.stringify({ module: 'transactions', ids: [tempTx._id] }),
+    });
+
+    const permanentDelRes = await fetch(`${BASE_URL}/api/trash/permanent`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Cookie: cookieA },
+      body: JSON.stringify({ module: 'transactions', ids: [tempTx._id] }),
+    });
+    assert(permanentDelRes.status === 200, 'Permanent delete succeeded');
+
+    // Verify completely gone from trash
+    const postPermTrash = await (await fetch(`${BASE_URL}/api/trash`, { headers: { Cookie: cookieA } })).json();
+    assert(!postPermTrash.data.some(t => t._id === tempTx._id), 'Permanently deleted record completely purged from database');
+
+    // 17. SERVER-SIDE PAGINATION
+    console.log('\n--- TEST 17: Global Server-Side Pagination ---');
+    const pagedTxsRes = await fetch(`${BASE_URL}/api/transactions?page=1&limit=10`, { headers: { Cookie: cookieA } });
+    const pagedTxs = await pagedTxsRes.json();
+    assert(pagedTxs.pagination && pagedTxs.pagination.limit === 10, 'Transaction API respects limit=10');
+    assert(pagedTxs.pagination.page === 1, 'Transaction API returns page=1');
+
+    const pagedUdhaarRes = await fetch(`${BASE_URL}/api/udhaar?page=1&limit=25`, { headers: { Cookie: cookieA } });
+    const pagedUdhaar = await pagedUdhaarRes.json();
+    assert(pagedUdhaar.pagination && pagedUdhaar.pagination.limit === 25, 'Udhaar API respects limit=25');
+
+    // 18. MULTI-USER ISOLATION ON UDHAAR & TRASH
+    console.log('\n--- TEST 18: Multi-User Isolation on Udhaar & Trash ---');
+    const userBUdhaarRes = await fetch(`${BASE_URL}/api/udhaar?tab=all`, { headers: { Cookie: cookieB } });
+    const userBUdhaar = await userBUdhaarRes.json();
+    assert(userBUdhaar.data.length === 0, `User B sees 0 Udhaar records (isolated from User A, got ${userBUdhaar.data.length})`);
+
+    const userBTrashRes = await fetch(`${BASE_URL}/api/trash`, { headers: { Cookie: cookieB } });
+    const userBTrash = await userBTrashRes.json();
+    assert(userBTrash.data.length === 0, `User B sees 0 Trash items (isolated from User A, got ${userBTrash.data.length})`);
+
     console.log('\n=========================================');
     console.log(`TEST RESULTS: ${passed} PASSED, ${failed} FAILED`);
     console.log('=========================================\n');

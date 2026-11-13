@@ -13,7 +13,10 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const type = searchParams.get('type'); // 'lent' or 'borrowed'
 
-    const filter: Record<string, any> = { userId: session.userId };
+    const filter: Record<string, any> = {
+      userId: session.userId,
+      isDeleted: { $ne: true },
+    };
     if (type && (type === 'lent' || type === 'borrowed')) {
       filter.type = type;
     }

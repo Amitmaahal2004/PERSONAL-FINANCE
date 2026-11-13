@@ -9,6 +9,10 @@ export interface ITransferDocument extends Document {
   amount: number;
   date: Date;
   notes?: string;
+  isDeleted: boolean;
+  deletedAt?: Date;
+  deletedBy?: mongoose.Types.ObjectId;
+  originalModule: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -23,6 +27,10 @@ const TransferSchema = new Schema<ITransferDocument>(
     amount: { type: Number, required: true, min: 0.01 },
     date: { type: Date, required: true, default: Date.now },
     notes: { type: String, trim: true },
+    isDeleted: { type: Boolean, default: false, index: true },
+    deletedAt: { type: Date },
+    deletedBy: { type: Schema.Types.ObjectId, ref: 'User' },
+    originalModule: { type: String, default: 'transfers' },
   },
   {
     timestamps: true,
@@ -30,6 +38,7 @@ const TransferSchema = new Schema<ITransferDocument>(
 );
 
 TransferSchema.index({ userId: 1, date: -1 });
+TransferSchema.index({ userId: 1, isDeleted: 1 });
 
 export const Transfer: Model<ITransferDocument> =
   mongoose.models.Transfer || mongoose.model<ITransferDocument>('Transfer', TransferSchema);

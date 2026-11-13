@@ -18,6 +18,10 @@ export interface ILoanDocument extends Document {
     notes?: string;
     accountId?: mongoose.Types.ObjectId;
   }[];
+  isDeleted: boolean;
+  deletedAt?: Date;
+  deletedBy?: mongoose.Types.ObjectId;
+  originalModule: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -49,6 +53,10 @@ const LoanSchema = new Schema<ILoanDocument>(
     },
     notes: { type: String, trim: true },
     repayments: [LoanRepaymentSchema],
+    isDeleted: { type: Boolean, default: false, index: true },
+    deletedAt: { type: Date },
+    deletedBy: { type: Schema.Types.ObjectId, ref: 'User' },
+    originalModule: { type: String, default: 'loans' },
   },
   {
     timestamps: true,
@@ -56,6 +64,7 @@ const LoanSchema = new Schema<ILoanDocument>(
 );
 
 LoanSchema.index({ userId: 1, type: 1, status: 1 });
+LoanSchema.index({ userId: 1, isDeleted: 1 });
 
 export const Loan: Model<ILoanDocument> =
   mongoose.models.Loan || mongoose.model<ILoanDocument>('Loan', LoanSchema);

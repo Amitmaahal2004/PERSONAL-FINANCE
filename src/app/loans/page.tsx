@@ -235,25 +235,22 @@ export default function LoansPage() {
         <div className="flex bg-slate-100 p-1.5 rounded-2xl w-full sm:w-80">
           <button
             onClick={() => setActiveTab('all')}
-            className={`flex-1 py-1.5 text-xs font-bold rounded-xl transition ${
-              activeTab === 'all' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'
-            }`}
+            className={`flex-1 py-1.5 text-xs font-bold rounded-xl transition ${activeTab === 'all' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'
+              }`}
           >
             All ({loans.length})
           </button>
           <button
             onClick={() => setActiveTab('lent')}
-            className={`flex-1 py-1.5 text-xs font-bold rounded-xl transition ${
-              activeTab === 'lent' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'
-            }`}
+            className={`flex-1 py-1.5 text-xs font-bold rounded-xl transition ${activeTab === 'lent' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'
+              }`}
           >
             Money I Lent
           </button>
           <button
             onClick={() => setActiveTab('borrowed')}
-            className={`flex-1 py-1.5 text-xs font-bold rounded-xl transition ${
-              activeTab === 'borrowed' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'
-            }`}
+            className={`flex-1 py-1.5 text-xs font-bold rounded-xl transition ${activeTab === 'borrowed' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'
+              }`}
           >
             Money I Borrowed
           </button>
@@ -285,18 +282,16 @@ export default function LoansPage() {
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-2.5">
                         <div
-                          className={`w-10 h-10 rounded-2xl flex items-center justify-center font-bold ${
-                            l.type === 'lent' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'
-                          }`}
+                          className={`w-10 h-10 rounded-2xl flex items-center justify-center font-bold ${l.type === 'lent' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'
+                            }`}
                         >
                           {l.type === 'lent' ? <ArrowUpRight className="w-5 h-5" /> : <ArrowDownLeft className="w-5 h-5" />}
                         </div>
                         <div>
                           <h3 className="font-bold text-slate-900 text-sm">{l.personName}</h3>
                           <span
-                            className={`text-[10px] font-bold uppercase tracking-wider ${
-                              l.type === 'lent' ? 'text-emerald-700' : 'text-rose-700'
-                            }`}
+                            className={`text-[10px] font-bold uppercase tracking-wider ${l.type === 'lent' ? 'text-emerald-700' : 'text-rose-700'
+                              }`}
                           >
                             {l.type === 'lent' ? 'Money I Lent' : 'Money I Borrowed'}
                           </span>
@@ -336,13 +331,12 @@ export default function LoansPage() {
 
                   <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
                     <span
-                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                        l.status === 'settled'
-                          ? 'bg-emerald-100 text-emerald-800'
-                          : l.status === 'partially_paid'
+                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${l.status === 'settled'
+                        ? 'bg-emerald-100 text-emerald-800'
+                        : l.status === 'partially_paid'
                           ? 'bg-blue-50 text-blue-700'
                           : 'bg-amber-50 text-amber-800'
-                      }`}
+                        }`}
                     >
                       {l.status.replace('_', ' ').toUpperCase()}
                     </span>
@@ -400,22 +394,20 @@ export default function LoansPage() {
                   <button
                     type="button"
                     onClick={() => setType('lent')}
-                    className={`py-2 text-xs font-semibold rounded-xl border transition ${
-                      type === 'lent'
-                        ? 'bg-emerald-50 text-emerald-700 border-emerald-500 shadow-sm'
-                        : 'bg-white text-slate-600 border-slate-200'
-                    }`}
+                    className={`py-2 text-xs font-semibold rounded-xl border transition ${type === 'lent'
+                      ? 'bg-emerald-50 text-emerald-700 border-emerald-500 shadow-sm'
+                      : 'bg-white text-slate-600 border-slate-200'
+                      }`}
                   >
                     Money I Lent (Asset)
                   </button>
                   <button
                     type="button"
                     onClick={() => setType('borrowed')}
-                    className={`py-2 text-xs font-semibold rounded-xl border transition ${
-                      type === 'borrowed'
-                        ? 'bg-rose-50 text-rose-700 border-rose-500 shadow-sm'
-                        : 'bg-white text-slate-600 border-slate-200'
-                    }`}
+                    className={`py-2 text-xs font-semibold rounded-xl border transition ${type === 'borrowed'
+                      ? 'bg-rose-50 text-rose-700 border-rose-500 shadow-sm'
+                      : 'bg-white text-slate-600 border-slate-200'
+                      }`}
                   >
                     Money I Borrowed (Debt)
                   </button>

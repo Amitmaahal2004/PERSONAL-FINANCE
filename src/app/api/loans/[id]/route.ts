@@ -42,12 +42,18 @@ export async function DELETE(
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     await connectToDatabase();
-    const result = await Loan.deleteOne({ _id: params.id, userId: session.userId });
-    if (result.deletedCount === 0) {
+    const loan = await Loan.findOne({ _id: params.id, userId: session.userId, isDeleted: { $ne: true } });
+    if (!loan) {
       return NextResponse.json({ error: 'Loan record not found' }, { status: 404 });
     }
 
-    return NextResponse.json({ message: 'Loan record deleted successfully' });
+    loan.isDeleted = true;
+    loan.deletedAt = new Date();
+    loan.deletedBy = session.userId as any;
+    loan.originalModule = 'loans';
+    await loan.save();
+
+    return NextResponse.json({ message: 'Loan record moved to Trash successfully' });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

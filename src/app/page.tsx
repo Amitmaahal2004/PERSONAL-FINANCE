@@ -442,9 +442,8 @@ export default function LandingPage() {
                 >
                   <span>{faq.q}</span>
                   <ChevronDown
-                    className={`w-4 h-4 text-slate-400 transition-transform ${
-                      openFaq === idx ? 'rotate-180 text-emerald-600' : ''
-                    }`}
+                    className={`w-4 h-4 text-slate-400 transition-transform ${openFaq === idx ? 'rotate-180 text-emerald-600' : ''
+                      }`}
                   />
                 </button>
                 {openFaq === idx && (

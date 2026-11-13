@@ -13,7 +13,10 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const type = searchParams.get('type'); // 'income' or 'expense'
 
-    const filter: Record<string, any> = { userId: session.userId };
+    const filter: Record<string, any> = {
+      userId: session.userId,
+      isDeleted: { $ne: true },
+    };
     if (type) filter.type = type;
 
     let categories = await Category.find(filter).sort({ name: 1 });

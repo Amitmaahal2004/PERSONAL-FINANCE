@@ -9,7 +9,7 @@ export async function GET(req: Request) {
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     await connectToDatabase();
-    const goals = await SavingsGoal.find({ userId: session.userId }).sort({ createdAt: -1 });
+    const goals = await SavingsGoal.find({ userId: session.userId, isDeleted: { $ne: true } }).sort({ createdAt: -1 });
 
     const formattedGoals = goals.map((g) => {
       const progressPercentage =

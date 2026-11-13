@@ -17,6 +17,10 @@ export interface IRecurringTransactionDocument extends Document {
   lastProcessedDate?: Date;
   status: 'active' | 'paused' | 'cancelled';
   notes?: string;
+  isDeleted: boolean;
+  deletedAt?: Date;
+  deletedBy?: mongoose.Types.ObjectId;
+  originalModule: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -43,6 +47,10 @@ const RecurringTransactionSchema = new Schema<IRecurringTransactionDocument>(
     lastProcessedDate: { type: Date },
     status: { type: String, enum: ['active', 'paused', 'cancelled'], default: 'active' },
     notes: { type: String, trim: true },
+    isDeleted: { type: Boolean, default: false, index: true },
+    deletedAt: { type: Date },
+    deletedBy: { type: Schema.Types.ObjectId, ref: 'User' },
+    originalModule: { type: String, default: 'recurring' },
   },
   {
     timestamps: true,
@@ -50,6 +58,7 @@ const RecurringTransactionSchema = new Schema<IRecurringTransactionDocument>(
 );
 
 RecurringTransactionSchema.index({ userId: 1, status: 1, nextDueDate: 1 });
+RecurringTransactionSchema.index({ userId: 1, isDeleted: 1 });
 
 export const RecurringTransaction: Model<IRecurringTransactionDocument> =
   mongoose.models.RecurringTransaction ||

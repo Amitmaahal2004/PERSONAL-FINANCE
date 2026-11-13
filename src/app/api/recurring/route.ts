@@ -10,7 +10,7 @@ export async function GET(req: Request) {
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     await connectToDatabase();
-    const recurring = await RecurringTransaction.find({ userId: session.userId }).sort({ nextDueDate: 1 });
+    const recurring = await RecurringTransaction.find({ userId: session.userId, isDeleted: { $ne: true } }).sort({ nextDueDate: 1 });
     return NextResponse.json({ recurring });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });

@@ -183,23 +183,21 @@ export default function CalendarPage() {
                   <button
                     key={`day-${day}`}
                     onClick={() => setSelectedDay(day)}
-                    className={`h-16 sm:h-20 p-1.5 sm:p-2 rounded-2xl flex flex-col justify-between transition border text-left ${
-                      isSelected
-                        ? 'border-emerald-600 bg-emerald-50/50 shadow-sm'
-                        : isToday
+                    className={`h-16 sm:h-20 p-1.5 sm:p-2 rounded-2xl flex flex-col justify-between transition border text-left ${isSelected
+                      ? 'border-emerald-600 bg-emerald-50/50 shadow-sm'
+                      : isToday
                         ? 'border-slate-300 bg-slate-50'
                         : 'border-slate-100 hover:border-slate-200 hover:bg-slate-50'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center justify-between w-full">
                       <span
-                        className={`text-xs font-bold ${
-                          isSelected
-                            ? 'text-emerald-700'
-                            : isToday
+                        className={`text-xs font-bold ${isSelected
+                          ? 'text-emerald-700'
+                          : isToday
                             ? 'w-5 h-5 rounded-full bg-slate-900 text-white flex items-center justify-center text-[10px]'
                             : 'text-slate-800'
-                        }`}
+                          }`}
                       >
                         {day}
                       </span>
@@ -275,9 +273,8 @@ export default function CalendarPage() {
                         >
                           <div className="flex items-center gap-2">
                             <div
-                              className={`w-6 h-6 rounded-md flex items-center justify-center ${
-                                tx.type === 'income' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'
-                              }`}
+                              className={`w-6 h-6 rounded-md flex items-center justify-center ${tx.type === 'income' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'
+                                }`}
                             >
                               {tx.type === 'income' ? (
                                 <ArrowDownLeft className="w-3.5 h-3.5" />
@@ -293,9 +290,8 @@ export default function CalendarPage() {
                             </div>
                           </div>
                           <span
-                            className={`font-bold ${
-                              tx.type === 'income' ? 'text-emerald-600' : 'text-slate-900'
-                            }`}
+                            className={`font-bold ${tx.type === 'income' ? 'text-emerald-600' : 'text-slate-900'
+                              }`}
                           >
                             {tx.type === 'income' ? '+' : '-'}
                             {formatCurrency(tx.amount, cur, sym)}

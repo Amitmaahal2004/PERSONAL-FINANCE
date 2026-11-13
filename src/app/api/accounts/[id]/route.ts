@@ -13,7 +13,7 @@ export async function GET(
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     await connectToDatabase();
-    const account = await Account.findOne({ _id: params.id, userId: session.userId });
+    const account = await Account.findOne({ _id: params.id, userId: session.userId, isDeleted: { $ne: true } });
     if (!account) {
       return NextResponse.json({ error: 'Account not found' }, { status: 404 });
     }
@@ -84,7 +84,7 @@ export async function DELETE(
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     await connectToDatabase();
-    const account = await Account.findOne({ _id: params.id, userId: session.userId });
+    const account = await Account.findOne({ _id: params.id, userId: session.userId, isDeleted: { $ne: true } });
     if (!account) {
       return NextResponse.json({ error: 'Account not found' }, { status: 404 });
     }
@@ -95,18 +95,13 @@ export async function DELETE(
       accountId: account._id,
     });
 
-    if (txCount > 0) {
-      // Archive instead of hard delete to preserve transaction ledger
-      account.isArchived = true;
-      await account.save();
-      return NextResponse.json({
-        message: 'Account has existing transactions, so it has been archived to preserve your financial history.',
-        archived: true,
-      });
-    }
+    account.isDeleted = true;
+    account.deletedAt = new Date();
+    account.deletedBy = session.userId as any;
+    account.originalModule = 'accounts';
+    await account.save();
 
-    await Account.deleteOne({ _id: account._id });
-    return NextResponse.json({ message: 'Account deleted successfully', archived: false });
+    return NextResponse.json({ message: 'Account moved to Trash successfully' });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

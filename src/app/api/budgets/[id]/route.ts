@@ -51,12 +51,18 @@ export async function DELETE(
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     await connectToDatabase();
-    const result = await Budget.deleteOne({ _id: params.id, userId: session.userId });
-    if (result.deletedCount === 0) {
+    const budget = await Budget.findOne({ _id: params.id, userId: session.userId, isDeleted: { $ne: true } });
+    if (!budget) {
       return NextResponse.json({ error: 'Budget not found' }, { status: 404 });
     }
 
-    return NextResponse.json({ message: 'Budget deleted successfully' });
+    budget.isDeleted = true;
+    budget.deletedAt = new Date();
+    budget.deletedBy = session.userId as any;
+    budget.originalModule = 'budgets';
+    await budget.save();
+
+    return NextResponse.json({ message: 'Budget moved to Trash successfully' });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

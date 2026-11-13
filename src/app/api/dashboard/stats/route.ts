@@ -7,6 +7,7 @@ import { Budget } from '@/models/Budget';
 import { SavingsGoal } from '@/models/SavingsGoal';
 import { Loan } from '@/models/Loan';
 import { RecurringTransaction } from '@/models/RecurringTransaction';
+import { Udhaar } from '@/models/Udhaar';
 import { Category } from '@/models/Category';
 import { User } from '@/models/User';
 import { getAuthSession } from '@/lib/auth';
@@ -29,12 +30,12 @@ export async function GET(req: Request) {
     const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
 
     // 1. All accounts -> Available Balance
-    const accounts = await Account.find({ userId, isArchived: { $ne: true } });
+    const accounts = await Account.find({ userId, isArchived: { $ne: true }, isDeleted: { $ne: true } });
     const availableBalance = accounts.reduce((acc, curr) => safeAdd(acc, curr.currentBalance), 0);
 
     // 2. All-time Income & Expenses
     const allTimeStats = await Transaction.aggregate([
-      { $match: { userId: userObjectId } },
+      { $match: { userId: userObjectId, isDeleted: { $ne: true } } },
       {
         $group: {
           _id: '$type',
@@ -55,6 +56,7 @@ export async function GET(req: Request) {
       {
         $match: {
           userId: userObjectId,
+          isDeleted: { $ne: true },
           date: { $gte: startOfMonth, $lte: endOfMonth },
         },
       },
@@ -74,20 +76,25 @@ export async function GET(req: Request) {
     }
 
     // 4. Savings Goals
-    const savingsGoals = await SavingsGoal.find({ userId }).sort({ createdAt: -1 });
+    const savingsGoals = await SavingsGoal.find({ userId, isDeleted: { $ne: true } }).sort({ createdAt: -1 });
     const totalSavings = savingsGoals.reduce((acc, curr) => safeAdd(acc, curr.currentSavedAmount), 0);
 
-    // 5. Outstanding Money (Loans)
-    const loans = await Loan.find({ userId, status: { $ne: 'settled' } });
+    // 5. Outstanding Money (Loans & Udhaar)
+    const loans = await Loan.find({ userId, status: { $ne: 'settled' }, isDeleted: { $ne: true } });
+    const udhaars = await Udhaar.find({ userId, status: { $ne: 'cleared' }, isDeleted: { $ne: true } });
     let lentPending = 0;
     let borrowedPending = 0;
     for (const l of loans) {
       if (l.type === 'lent') lentPending = safeAdd(lentPending, l.remainingAmount);
       if (l.type === 'borrowed') borrowedPending = safeAdd(borrowedPending, l.remainingAmount);
     }
+    for (const u of udhaars) {
+      if (u.type === 'lent') lentPending = safeAdd(lentPending, u.remainingAmount);
+      if (u.type === 'borrowed') borrowedPending = safeAdd(borrowedPending, u.remainingAmount);
+    }
 
     // 6. Budgets
-    const budgets = await Budget.find({ userId });
+    const budgets = await Budget.find({ userId, isDeleted: { $ne: true } });
     let totalMonthlyBudget = 0;
     const overallBudgetDoc = budgets.find((b) => b.categoryName.toLowerCase() === 'overall');
     if (overallBudgetDoc) {
@@ -103,6 +110,7 @@ export async function GET(req: Request) {
       {
         $match: {
           userId: userObjectId,
+          isDeleted: { $ne: true },
           date: { $gte: sixMonthsAgo },
         },
       },
@@ -143,6 +151,7 @@ export async function GET(req: Request) {
         $match: {
           userId: userObjectId,
           type: 'expense',
+          isDeleted: { $ne: true },
           date: { $gte: startOfMonth, $lte: endOfMonth },
         },
       },
@@ -161,7 +170,7 @@ export async function GET(req: Request) {
     }));
 
     // 9. Category-wise Expense Breakdown (Current Month)
-    const categoriesList = await Category.find({ userId, type: 'expense' });
+    const categoriesList = await Category.find({ userId, type: 'expense', isDeleted: { $ne: true } });
     const categoryColors = new Map<string, string>();
     categoriesList.forEach((c) => categoryColors.set(c.name, c.color));
 
@@ -170,6 +179,7 @@ export async function GET(req: Request) {
         $match: {
           userId: userObjectId,
           type: 'expense',
+          isDeleted: { $ne: true },
           date: { $gte: startOfMonth, $lte: endOfMonth },
         },
       },
@@ -195,7 +205,7 @@ export async function GET(req: Request) {
     });
 
     // 10. Recent Transactions
-    const recentTransactions = await Transaction.find({ userId })
+    const recentTransactions = await Transaction.find({ userId, isDeleted: { $ne: true } })
       .sort({ date: -1 })
       .limit(6);
 
@@ -203,6 +213,7 @@ export async function GET(req: Request) {
     const upcomingRecurring = await RecurringTransaction.find({
       userId,
       status: 'active',
+      isDeleted: { $ne: true },
     })
       .sort({ nextDueDate: 1 })
       .limit(4);

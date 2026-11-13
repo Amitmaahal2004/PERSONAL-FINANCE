@@ -12,6 +12,10 @@ export interface IAccountDocument extends Document {
   accountColor: string;
   accountIcon: string;
   isArchived: boolean;
+  isDeleted: boolean;
+  deletedAt?: Date;
+  deletedBy?: mongoose.Types.ObjectId;
+  originalModule: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -42,6 +46,10 @@ const AccountSchema = new Schema<IAccountDocument>(
     accountColor: { type: String, default: '#10b981' },
     accountIcon: { type: String, default: 'Wallet' },
     isArchived: { type: Boolean, default: false, index: true },
+    isDeleted: { type: Boolean, default: false, index: true },
+    deletedAt: { type: Date },
+    deletedBy: { type: Schema.Types.ObjectId, ref: 'User' },
+    originalModule: { type: String, default: 'accounts' },
   },
   {
     timestamps: true,
@@ -49,6 +57,7 @@ const AccountSchema = new Schema<IAccountDocument>(
 );
 
 AccountSchema.index({ userId: 1, accountName: 1 });
+AccountSchema.index({ userId: 1, isDeleted: 1 });
 
 export const Account: Model<IAccountDocument> =
   mongoose.models.Account || mongoose.model<IAccountDocument>('Account', AccountSchema);

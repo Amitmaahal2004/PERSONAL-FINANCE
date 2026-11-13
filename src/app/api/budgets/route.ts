@@ -18,7 +18,7 @@ export async function GET(req: Request) {
     const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
 
     const userObjectId = new mongoose.Types.ObjectId(session.userId);
-    const budgets = await Budget.find({ userId: session.userId }).sort({ createdAt: 1 });
+    const budgets = await Budget.find({ userId: session.userId, isDeleted: { $ne: true } }).sort({ createdAt: 1 });
 
     // Aggregate monthly expenses for current month
     const expensesAgg = await Transaction.aggregate([
@@ -26,6 +26,7 @@ export async function GET(req: Request) {
         $match: {
           userId: userObjectId,
           type: 'expense',
+          isDeleted: { $ne: true },
           date: { $gte: startOfMonth, $lte: endOfMonth },
         },
       },

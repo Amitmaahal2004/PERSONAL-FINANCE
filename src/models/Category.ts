@@ -8,6 +8,10 @@ export interface ICategoryDocument extends Document {
   icon: string;
   color: string;
   isDefault: boolean;
+  isDeleted: boolean;
+  deletedAt?: Date;
+  deletedBy?: mongoose.Types.ObjectId;
+  originalModule: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -20,6 +24,10 @@ const CategorySchema = new Schema<ICategoryDocument>(
     icon: { type: String, default: 'Tag' },
     color: { type: String, default: '#10b981' },
     isDefault: { type: Boolean, default: false },
+    isDeleted: { type: Boolean, default: false, index: true },
+    deletedAt: { type: Date },
+    deletedBy: { type: Schema.Types.ObjectId, ref: 'User' },
+    originalModule: { type: String, default: 'categories' },
   },
   {
     timestamps: true,
@@ -27,6 +35,7 @@ const CategorySchema = new Schema<ICategoryDocument>(
 );
 
 CategorySchema.index({ userId: 1, type: 1, name: 1 });
+CategorySchema.index({ userId: 1, isDeleted: 1 });
 
 export const Category: Model<ICategoryDocument> =
   mongoose.models.Category || mongoose.model<ICategoryDocument>('Category', CategorySchema);

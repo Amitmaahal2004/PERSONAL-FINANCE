@@ -18,6 +18,10 @@ export interface ITransactionDocument extends Document {
   receiptName?: string;
   isRecurring?: boolean;
   recurringId?: mongoose.Types.ObjectId;
+  isDeleted: boolean;
+  deletedAt?: Date;
+  deletedBy?: mongoose.Types.ObjectId;
+  originalModule: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -40,6 +44,10 @@ const TransactionSchema = new Schema<ITransactionDocument>(
     receiptName: { type: String },
     isRecurring: { type: Boolean, default: false },
     recurringId: { type: Schema.Types.ObjectId, ref: 'RecurringTransaction' },
+    isDeleted: { type: Boolean, default: false, index: true },
+    deletedAt: { type: Date },
+    deletedBy: { type: Schema.Types.ObjectId, ref: 'User' },
+    originalModule: { type: String, default: 'transactions' },
   },
   {
     timestamps: true,
@@ -47,6 +55,7 @@ const TransactionSchema = new Schema<ITransactionDocument>(
 );
 
 TransactionSchema.index({ userId: 1, date: -1 });
+TransactionSchema.index({ userId: 1, isDeleted: 1 });
 TransactionSchema.index({ userId: 1, type: 1, date: -1 });
 TransactionSchema.index({ userId: 1, accountId: 1 });
 TransactionSchema.index({ userId: 1, category: 1 });

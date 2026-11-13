@@ -188,24 +188,22 @@ export default function BudgetsPage() {
                       <div className="flex justify-between text-xs">
                         <span className="text-slate-500 font-medium">Spent: {formatCurrency(b.spent, cur, sym)}</span>
                         <span
-                          className={`font-bold ${
-                            isOver ? 'text-rose-600' : isWarning ? 'text-amber-600' : 'text-slate-700'
-                          }`}
+                          className={`font-bold ${isOver ? 'text-rose-600' : isWarning ? 'text-amber-600' : 'text-slate-700'
+                            }`}
                         >
                           {pct}% used
                         </span>
                       </div>
                       <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
                         <div
-                          className={`h-full rounded-full transition-all ${
-                            isOver
-                              ? 'bg-rose-500'
-                              : isWarning
+                          className={`h-full rounded-full transition-all ${isOver
+                            ? 'bg-rose-500'
+                            : isWarning
                               ? 'bg-amber-500'
                               : isNotice
-                              ? 'bg-yellow-400'
-                              : 'bg-emerald-500'
-                          }`}
+                                ? 'bg-yellow-400'
+                                : 'bg-emerald-500'
+                            }`}
                           style={{ width: `${Math.min(pct, 100)}%` }}
                         />
                       </div>
@@ -222,9 +220,8 @@ export default function BudgetsPage() {
                       <div className="text-right">
                         <span className="text-slate-400 text-[11px]">Remaining</span>
                         <div
-                          className={`font-bold mt-0.5 ${
-                            b.remaining < 0 ? 'text-rose-600' : 'text-emerald-700'
-                          }`}
+                          className={`font-bold mt-0.5 ${b.remaining < 0 ? 'text-rose-600' : 'text-emerald-700'
+                            }`}
                         >
                           {formatCurrency(b.remaining, cur, sym)}
                         </div>
@@ -235,21 +232,20 @@ export default function BudgetsPage() {
                   {/* Alert Badges */}
                   {(isOver || isWarning || isNotice) && (
                     <div
-                      className={`mt-4 p-2.5 rounded-xl text-xs flex items-center gap-2 ${
-                        isOver
-                          ? 'bg-rose-50 text-rose-700 border border-rose-200'
-                          : isWarning
+                      className={`mt-4 p-2.5 rounded-xl text-xs flex items-center gap-2 ${isOver
+                        ? 'bg-rose-50 text-rose-700 border border-rose-200'
+                        : isWarning
                           ? 'bg-amber-50 text-amber-800 border border-amber-200'
                           : 'bg-yellow-50 text-yellow-800 border border-yellow-200'
-                      }`}
+                        }`}
                     >
                       <AlertTriangle className="w-4 h-4 shrink-0" />
                       <span>
                         {isOver
                           ? 'Budget exceeded! You have spent more than allocated.'
                           : isWarning
-                          ? 'Warning: 90% threshold reached. Limit further spending.'
-                          : 'Notice: 70% threshold reached.'}
+                            ? 'Warning: 90% threshold reached. Limit further spending.'
+                            : 'Notice: 70% threshold reached.'}
                       </span>
                     </div>
                   )}

@@ -15,7 +15,10 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const includeArchived = searchParams.get('includeArchived') === 'true';
 
-    const filter: Record<string, any> = { userId: session.userId };
+    const filter: Record<string, any> = {
+      userId: session.userId,
+      isDeleted: { $ne: true },
+    };
     if (!includeArchived) {
       filter.isArchived = { $ne: true };
     }

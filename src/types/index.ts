@@ -49,6 +49,10 @@ export interface IAccount {
   accountColor: string;
   accountIcon: string;
   isArchived: boolean;
+  isDeleted?: boolean;
+  deletedAt?: string;
+  deletedBy?: string;
+  originalModule?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -61,6 +65,10 @@ export interface ICategory {
   icon: string;
   color: string;
   isDefault: boolean;
+  isDeleted?: boolean;
+  deletedAt?: string;
+  deletedBy?: string;
+  originalModule?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -83,6 +91,10 @@ export interface ITransaction {
   receiptName?: string;
   isRecurring?: boolean;
   recurringId?: string;
+  isDeleted?: boolean;
+  deletedAt?: string;
+  deletedBy?: string;
+  originalModule?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -97,6 +109,10 @@ export interface ITransfer {
   amount: number;
   date: string;
   notes?: string;
+  isDeleted?: boolean;
+  deletedAt?: string;
+  deletedBy?: string;
+  originalModule?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -116,6 +132,10 @@ export interface IBudget {
   spent?: number;
   remaining?: number;
   percentageUsed?: number;
+  isDeleted?: boolean;
+  deletedAt?: string;
+  deletedBy?: string;
+  originalModule?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -141,6 +161,10 @@ export interface ISavingsGoal {
   accountId?: string;
   contributions: ISavingsContribution[];
   progressPercentage?: number;
+  isDeleted?: boolean;
+  deletedAt?: string;
+  deletedBy?: string;
+  originalModule?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -166,6 +190,10 @@ export interface ILoan {
   status: 'pending' | 'partially_paid' | 'settled' | 'overdue';
   notes?: string;
   repayments: ILoanRepayment[];
+  isDeleted?: boolean;
+  deletedAt?: string;
+  deletedBy?: string;
+  originalModule?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -187,6 +215,10 @@ export interface IRecurringTransaction {
   lastProcessedDate?: string;
   status: 'active' | 'paused' | 'cancelled';
   notes?: string;
+  isDeleted?: boolean;
+  deletedAt?: string;
+  deletedBy?: string;
+  originalModule?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -227,4 +259,90 @@ export interface IDashboardStats {
   budgetProgress: IBudget[];
   savingsGoals: ISavingsGoal[];
   currencySymbol: string;
+}
+
+export type UdhaarType = 'lent' | 'borrowed';
+export type UdhaarStatus = 'pending' | 'partially_paid' | 'cleared' | 'overdue';
+
+export interface IUdhaarRepayment {
+  _id?: string;
+  repaymentId: string;
+  amount: number;
+  date: string;
+  paymentMethod: string;
+  accountId?: string;
+  accountName?: string;
+  notes?: string;
+  attachmentUrl?: string;
+  attachmentName?: string;
+  createdAt?: string;
+}
+
+export interface IUdhaar {
+  _id: string;
+  recordId: string;
+  userId: string;
+  type: UdhaarType;
+  personName: string;
+  phoneNumber?: string;
+  originalAmount: number;
+  remainingAmount: number;
+  totalRepaid: number;
+  udhaarDate: string;
+  expectedRepaymentDate?: string;
+  settlementDate?: string;
+  settlementDurationDays?: number;
+  paymentMethod: string;
+  accountId?: string;
+  accountName?: string;
+  description?: string;
+  notes?: string;
+  attachmentUrl?: string;
+  attachmentName?: string;
+  status: UdhaarStatus;
+  repayments: IUdhaarRepayment[];
+  isDeleted?: boolean;
+  deletedAt?: string;
+  deletedBy?: string;
+  originalModule?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IUdhaarSummary {
+  totalMoneyLent: number;
+  totalMoneyBorrowed: number;
+  totalAmountReceived: number;
+  totalAmountRepaid: number;
+  pendingReceivables: number;
+  pendingPayables: number;
+  partiallyRepaidCount: number;
+  fullyClearedCount: number;
+  overdueCount: number;
+}
+
+export interface ITrashItem {
+  _id: string;
+  recordName: string;
+  originalModule: 'transactions' | 'accounts' | 'categories' | 'budgets' | 'savings' | 'loans' | 'udhaar' | 'recurring';
+  recordType?: string;
+  amount?: number;
+  deletedAt: string;
+  deletedBy?: string;
+  createdAt?: string;
+  originalData?: any;
+}
+
+export interface IPagination {
+  page: number;
+  limit: number;
+  totalCount: number;
+  totalPages: number;
+}
+
+export interface IPaginatedResponse<T> {
+  success: boolean;
+  data: T[];
+  pagination: IPagination;
+  summary?: any;
 }

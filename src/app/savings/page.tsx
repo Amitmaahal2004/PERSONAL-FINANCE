@@ -272,11 +272,10 @@ export default function SavingsPage() {
 
                   <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
                     <span
-                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                        g.status === 'completed'
-                          ? 'bg-emerald-100 text-emerald-800'
-                          : 'bg-blue-50 text-blue-700'
-                      }`}
+                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${g.status === 'completed'
+                        ? 'bg-emerald-100 text-emerald-800'
+                        : 'bg-blue-50 text-blue-700'
+                        }`}
                     >
                       {g.status.toUpperCase()}
                     </span>

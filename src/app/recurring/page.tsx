@@ -203,17 +203,15 @@ export default function RecurringPage() {
             {recurringList.map((rec) => (
               <div
                 key={rec._id}
-                className={`p-5 rounded-3xl bg-white border transition shadow-subtle hover:shadow-card flex flex-col justify-between ${
-                  rec.status === 'paused' ? 'opacity-65 border-dashed border-slate-300' : 'border-slate-200/80'
-                }`}
+                className={`p-5 rounded-3xl bg-white border transition shadow-subtle hover:shadow-card flex flex-col justify-between ${rec.status === 'paused' ? 'opacity-65 border-dashed border-slate-300' : 'border-slate-200/80'
+                  }`}
               >
                 <div>
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2.5">
                       <div
-                        className={`w-10 h-10 rounded-2xl flex items-center justify-center font-bold ${
-                          rec.type === 'income' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'
-                        }`}
+                        className={`w-10 h-10 rounded-2xl flex items-center justify-center font-bold ${rec.type === 'income' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'
+                          }`}
                       >
                         {rec.type === 'income' ? <ArrowDownLeft className="w-5 h-5" /> : <ArrowUpRight className="w-5 h-5" />}
                       </div>

@@ -13,8 +13,20 @@ export async function GET(req: Request) {
     const format = searchParams.get('format') || 'csv'; // csv or json
     const startDate = searchParams.get('startDate');
     const endDate = searchParams.get('endDate');
+    const idsParam = searchParams.get('ids');
 
-    const filter: Record<string, any> = { userId: session.userId };
+    const filter: Record<string, any> = {
+      userId: session.userId,
+      isDeleted: { $ne: true },
+    };
+
+    if (idsParam) {
+      const idList = idsParam.split(',').map((s) => s.trim()).filter(Boolean);
+      if (idList.length > 0) {
+        filter._id = { $in: idList };
+      }
+    }
+
     if (startDate || endDate) {
       filter.date = {};
       if (startDate) filter.date.$gte = new Date(startDate);

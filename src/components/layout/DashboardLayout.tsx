@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -25,6 +25,8 @@ import {
   ChevronRight,
   TrendingUp,
   Sparkles,
+  Trash2,
+  Coins,
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import GlobalSearchModal from '@/components/common/GlobalSearchModal';
@@ -40,18 +42,40 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [searchOpen, setSearchOpen] = useState(false);
   const [quickAddOpen, setQuickAddOpen] = useState(false);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
+  const [trashCount, setTrashCount] = useState<number>(0);
+
+  useEffect(() => {
+    const fetchTrashCount = async () => {
+      try {
+        const res = await fetch('/api/trash?limit=1');
+        if (res.ok) {
+          const data = await res.json();
+          setTrashCount(data?.counts?.all || 0);
+        }
+      } catch (err) {
+        // silent
+      }
+    };
+    fetchTrashCount();
+
+    const handleUpdate = () => fetchTrashCount();
+    window.addEventListener('finance_updated', handleUpdate);
+    return () => window.removeEventListener('finance_updated', handleUpdate);
+  }, [pathname]);
 
   const mainNavItems = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Transactions', href: '/transactions', icon: ArrowLeftRight },
+    { name: 'Udhaar Management', href: '/udhaar', icon: HandCoins },
     { name: 'Accounts', href: '/accounts', icon: Wallet },
     { name: 'Categories', href: '/categories', icon: Tag },
     { name: 'Budgets', href: '/budgets', icon: PieChart },
     { name: 'Savings Goals', href: '/savings', icon: Target },
-    { name: 'Loans & Borrowing', href: '/loans', icon: HandCoins },
+    { name: 'Loans & Borrowing', href: '/loans', icon: Coins },
     { name: 'Recurring Payments', href: '/recurring', icon: Repeat },
     { name: 'Calendar', href: '/calendar', icon: Calendar },
     { name: 'Reports', href: '/reports', icon: BarChart3 },
+    { name: 'Recycle Bin', href: '/trash', icon: Trash2, badge: trashCount > 0 ? trashCount : undefined },
     { name: 'Profile', href: '/profile', icon: User },
     { name: 'Settings', href: '/settings', icon: Settings },
   ];
@@ -108,19 +132,23 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition ${
-                  isActive
-                    ? 'bg-emerald-50 text-emerald-800 font-semibold'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                }`}
+                className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition ${isActive
+                  ? 'bg-emerald-50 text-emerald-800 font-semibold'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                  }`}
               >
                 <Icon
                   className={`w-4 h-4 ${isActive ? 'text-emerald-600' : 'text-slate-400'}`}
                 />
-                <span>{item.name}</span>
+                <span className="truncate">{item.name}</span>
                 {item.name === 'Admin Panel' && (
                   <span className="ml-auto text-[10px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-bold">
                     ADMIN
+                  </span>
+                )}
+                {item.badge !== undefined && (
+                  <span className="ml-auto text-[10px] bg-rose-500 text-white font-bold px-1.5 py-0.5 rounded-full shadow-xs">
+                    {item.badge}
                   </span>
                 )}
               </Link>
@@ -213,8 +241,15 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         </header>
 
         {/* PAGE CONTENT */}
-        <main className="flex-1 pb-24 md:pb-12 overflow-x-hidden">
-          {children}
+        <main
+          className="flex-1 pb-24 md:pb-12 overflow-x-hidden"
+          style={{
+            maxWidth: "1560px",
+            margin: "0px auto",
+            width: "100%",
+            padding: "0px 20px"
+          }}
+        >          {children}
         </main>
 
         {/* MOBILE BOTTOM NAVIGATION BAR */}
@@ -253,9 +288,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`flex flex-col items-center gap-1 transition ${
-                  isActive ? 'text-emerald-700 font-semibold' : 'text-slate-400 hover:text-slate-600'
-                }`}
+                className={`flex flex-col items-center gap-1 transition ${isActive ? 'text-emerald-700 font-semibold' : 'text-slate-400 hover:text-slate-600'
+                  }`}
               >
                 <Icon className={`w-5 h-5 ${isActive ? 'text-emerald-600' : ''}`} />
                 <span className="text-[10px] font-medium">{item.name}</span>
@@ -286,10 +320,17 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                       key={item.href}
                       href={item.href}
                       onClick={() => setMobileDrawerOpen(false)}
-                      className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-emerald-50 hover:text-emerald-800 text-slate-700 text-xs font-medium transition border border-slate-100"
+                      className="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-emerald-50 hover:text-emerald-800 text-slate-700 text-xs font-medium transition border border-slate-100"
                     >
-                      <Icon className="w-4 h-4 text-emerald-600 shrink-0" />
-                      <span className="truncate">{item.name}</span>
+                      <div className="flex items-center gap-2.5 truncate">
+                        <Icon className="w-4 h-4 text-emerald-600 shrink-0" />
+                        <span className="truncate">{item.name}</span>
+                      </div>
+                      {item.badge !== undefined && (
+                        <span className="text-[10px] bg-rose-500 text-white font-bold px-1.5 py-0.5 rounded-full">
+                          {item.badge}
+                        </span>
+                      )}
                     </Link>
                   );
                 })}

@@ -245,9 +245,8 @@ function AccountsContent() {
           {accounts.map((acc) => (
             <div
               key={acc._id}
-              className={`p-5 rounded-3xl bg-white border transition shadow-subtle hover:shadow-card flex flex-col justify-between ${
-                acc.isArchived ? 'opacity-60 border-dashed border-slate-300' : 'border-slate-200/80'
-              }`}
+              className={`p-5 rounded-3xl bg-white border transition shadow-subtle hover:shadow-card flex flex-col justify-between ${acc.isArchived ? 'opacity-60 border-dashed border-slate-300' : 'border-slate-200/80'
+                }`}
             >
               <div>
                 <div className="flex items-center justify-between mb-3">
@@ -392,9 +391,8 @@ function AccountsContent() {
                       key={c}
                       type="button"
                       onClick={() => setNewAccColor(c)}
-                      className={`w-7 h-7 rounded-full border-2 ${
-                        newAccColor === c ? 'border-slate-900 scale-110' : 'border-transparent'
-                      }`}
+                      className={`w-7 h-7 rounded-full border-2 ${newAccColor === c ? 'border-slate-900 scale-110' : 'border-transparent'
+                        }`}
                       style={{ backgroundColor: c }}
                     />
                   ))}
@@ -557,9 +555,8 @@ function AccountsContent() {
                       </div>
                     </div>
                     <div
-                      className={`font-bold ${
-                        tx.type === 'income' ? 'text-emerald-600' : 'text-slate-900'
-                      }`}
+                      className={`font-bold ${tx.type === 'income' ? 'text-emerald-600' : 'text-slate-900'
+                        }`}
                     >
                       {tx.type === 'income' ? '+' : '-'}
                       {formatCurrency(tx.amount, cur, sym)}

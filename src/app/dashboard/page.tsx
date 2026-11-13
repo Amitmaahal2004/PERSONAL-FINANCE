@@ -300,9 +300,8 @@ export default function DashboardPage() {
               <PieIcon className="w-4 h-4 text-purple-500" />
             </div>
             <div
-              className={`text-base sm:text-xl font-bold truncate ${
-                (stats?.budgetRemaining?.remaining || 0) < 0 ? 'text-rose-600' : 'text-slate-900'
-              }`}
+              className={`text-base sm:text-xl font-bold truncate ${(stats?.budgetRemaining?.remaining || 0) < 0 ? 'text-rose-600' : 'text-slate-900'
+                }`}
             >
               {formatCurrency(stats?.budgetRemaining?.remaining, cur, sym)}
             </div>
@@ -433,11 +432,10 @@ export default function DashboardPage() {
                   >
                     <div className="flex items-center gap-3">
                       <div
-                        className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                          tx.type === 'income'
-                            ? 'bg-emerald-50 text-emerald-600'
-                            : 'bg-rose-50 text-rose-600'
-                        }`}
+                        className={`w-10 h-10 rounded-xl flex items-center justify-center ${tx.type === 'income'
+                          ? 'bg-emerald-50 text-emerald-600'
+                          : 'bg-rose-50 text-rose-600'
+                          }`}
                       >
                         {tx.type === 'income' ? (
                           <ArrowDownLeft className="w-5 h-5" />
@@ -459,9 +457,8 @@ export default function DashboardPage() {
 
                     <div className="text-right">
                       <div
-                        className={`text-sm font-bold ${
-                          tx.type === 'income' ? 'text-emerald-600' : 'text-slate-900'
-                        }`}
+                        className={`text-sm font-bold ${tx.type === 'income' ? 'text-emerald-600' : 'text-slate-900'
+                          }`}
                       >
                         {tx.type === 'income' ? '+' : '-'}
                         {formatCurrency(tx.amount, cur, sym)}

@@ -11,6 +11,10 @@ export interface IBudgetDocument extends Document {
   alertThreshold70: boolean;
   alertThreshold90: boolean;
   alertThreshold100: boolean;
+  isDeleted: boolean;
+  deletedAt?: Date;
+  deletedBy?: mongoose.Types.ObjectId;
+  originalModule: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -27,6 +31,10 @@ const BudgetSchema = new Schema<IBudgetDocument>(
     alertThreshold70: { type: Boolean, default: true },
     alertThreshold90: { type: Boolean, default: true },
     alertThreshold100: { type: Boolean, default: true },
+    isDeleted: { type: Boolean, default: false, index: true },
+    deletedAt: { type: Date },
+    deletedBy: { type: Schema.Types.ObjectId, ref: 'User' },
+    originalModule: { type: String, default: 'budgets' },
   },
   {
     timestamps: true,
@@ -34,6 +42,7 @@ const BudgetSchema = new Schema<IBudgetDocument>(
 );
 
 BudgetSchema.index({ userId: 1, categoryName: 1 });
+BudgetSchema.index({ userId: 1, isDeleted: 1 });
 
 export const Budget: Model<IBudgetDocument> =
   mongoose.models.Budget || mongoose.model<IBudgetDocument>('Budget', BudgetSchema);

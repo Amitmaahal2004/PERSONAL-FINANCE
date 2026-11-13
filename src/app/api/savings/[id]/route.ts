@@ -45,12 +45,18 @@ export async function DELETE(
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     await connectToDatabase();
-    const result = await SavingsGoal.deleteOne({ _id: params.id, userId: session.userId });
-    if (result.deletedCount === 0) {
+    const goal = await SavingsGoal.findOne({ _id: params.id, userId: session.userId, isDeleted: { $ne: true } });
+    if (!goal) {
       return NextResponse.json({ error: 'Savings goal not found' }, { status: 404 });
     }
 
-    return NextResponse.json({ message: 'Savings goal deleted successfully' });
+    goal.isDeleted = true;
+    goal.deletedAt = new Date();
+    goal.deletedBy = session.userId as any;
+    goal.originalModule = 'savings';
+    await goal.save();
+
+    return NextResponse.json({ message: 'Savings goal moved to Trash successfully' });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

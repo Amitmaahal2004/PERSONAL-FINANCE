@@ -55,28 +55,18 @@ export async function DELETE(
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     await connectToDatabase();
-    const category = await Category.findOne({ _id: params.id, userId: session.userId });
+    const category = await Category.findOne({ _id: params.id, userId: session.userId, isDeleted: { $ne: true } });
     if (!category) {
       return NextResponse.json({ error: 'Category not found' }, { status: 404 });
     }
 
-    // Check if any transactions reference this category
-    const count = await Transaction.countDocuments({
-      userId: session.userId,
-      $or: [{ categoryId: category._id }, { category: category.name }],
-    });
+    category.isDeleted = true;
+    category.deletedAt = new Date();
+    category.deletedBy = session.userId as any;
+    category.originalModule = 'categories';
+    await category.save();
 
-    if (count > 0) {
-      return NextResponse.json(
-        {
-          error: `Cannot delete category "${category.name}" because it is used by ${count} transaction(s). Please reassign or delete those transactions first.`,
-        },
-        { status: 400 }
-      );
-    }
-
-    await Category.deleteOne({ _id: category._id });
-    return NextResponse.json({ message: 'Category deleted successfully' });
+    return NextResponse.json({ message: 'Category moved to Trash successfully' });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

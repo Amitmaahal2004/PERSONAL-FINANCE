@@ -20,7 +20,7 @@ export async function GET(
     if (!isValidObjectId(params.id)) return NextResponse.json({ error: 'Transaction not found' }, { status: 404 });
 
     await connectToDatabase();
-    const transaction = await Transaction.findOne({ _id: params.id, userId: session.userId });
+    const transaction = await Transaction.findOne({ _id: params.id, userId: session.userId, isDeleted: { $ne: true } });
     if (!transaction) {
       return NextResponse.json({ error: 'Transaction not found' }, { status: 404 });
     }
@@ -143,7 +143,7 @@ export async function DELETE(
     if (!isValidObjectId(params.id)) return NextResponse.json({ error: 'Transaction not found' }, { status: 404 });
 
     await connectToDatabase();
-    const transaction = await Transaction.findOne({ _id: params.id, userId: session.userId });
+    const transaction = await Transaction.findOne({ _id: params.id, userId: session.userId, isDeleted: { $ne: true } });
     if (!transaction) {
       return NextResponse.json({ error: 'Transaction not found' }, { status: 404 });
     }
@@ -159,10 +159,14 @@ export async function DELETE(
       await account.save();
     }
 
-    await Transaction.deleteOne({ _id: transaction._id });
+    transaction.isDeleted = true;
+    transaction.deletedAt = new Date();
+    transaction.deletedBy = session.userId as any;
+    transaction.originalModule = 'transactions';
+    await transaction.save();
 
     return NextResponse.json({
-      message: 'Transaction deleted successfully',
+      message: 'Transaction moved to Trash successfully',
       revertedAccountBalance: account?.currentBalance,
     });
   } catch (error: any) {

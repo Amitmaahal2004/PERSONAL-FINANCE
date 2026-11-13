@@ -63,6 +63,7 @@ export async function GET(req: Request) {
 
     const txMatch = {
       userId: new mongoose.Types.ObjectId(session.userId),
+      isDeleted: { $ne: true },
       date: { $gte: startDate, $lte: endDate },
     };
 
