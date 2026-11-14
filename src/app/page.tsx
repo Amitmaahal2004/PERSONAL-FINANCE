@@ -22,6 +22,7 @@ import {
   CreditCard,
 } from 'lucide-react';
 import { formatCurrency } from '@/lib/currency';
+import HeroCarousel from '@/components/home/HeroCarousel';
 
 export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -95,158 +96,8 @@ export default function LandingPage() {
         </div>
       </header>
 
-      {/* 2. HERO SECTION */}
-      <section className="landing-hero">
-        <div className="landing-hero-container">
-          <div className="landing-badge">
-            <Sparkles style={{ width: 14, height: 14 }} />
-            <span>Tagline: Your Money. Your Records. Your Control.</span>
-          </div>
-
-          <h1 className="landing-headline">
-            Take Control of <span>Your Money.</span>
-          </h1>
-
-          <p className="landing-subheading">
-            Track your income, manage expenses, plan savings and understand where every rupee goes.
-          </p>
-
-          <div className="landing-hero-actions">
-            <Link
-              href="/signup"
-              className="landing-btn-hero-primary"
-            >
-              <span>Start Free Personal Account</span>
-              <ArrowRight style={{ width: 16, height: 16 }} />
-            </Link>
-            <Link
-              href="/login"
-              className="landing-btn-hero-secondary"
-            >
-              Login to Workspace
-            </Link>
-          </div>
-
-          {/* 6. DASHBOARD PREVIEW SECTION */}
-          <div className="landing-preview-wrapper">
-            <div className="landing-preview-card">
-              <div className="landing-preview-topbar">
-                <div className="landing-window-dots">
-                  <div className="landing-window-dot landing-window-dot-red" />
-                  <div className="landing-window-dot landing-window-dot-amber" />
-                  <div className="landing-window-dot landing-window-dot-green" />
-                  <span className="landing-window-url">myfinance.app/dashboard</span>
-                </div>
-                <span className="landing-preview-tag">
-                  Sample Financial Preview
-                </span>
-              </div>
-
-              {/* Sample Dashboard UI Mock */}
-              <div className="landing-preview-content">
-                {/* KPI row */}
-                <div className="landing-preview-kpis">
-                  <div className="landing-preview-kpi">
-                    <span className="landing-preview-kpi-label">Available Balance</span>
-                    <div className="landing-preview-kpi-value">₹1,84,500.00</div>
-                    <span className="landing-preview-kpi-sub" style={{ color: '#059669' }}>Across 3 accounts</span>
-                  </div>
-                  <div className="landing-preview-kpi landing-preview-kpi-green">
-                    <span className="landing-preview-kpi-label" style={{ color: '#047857' }}>Monthly Income</span>
-                    <div className="landing-preview-kpi-value" style={{ color: '#047857' }}>₹95,000.00</div>
-                    <span className="landing-preview-kpi-sub" style={{ color: '#059669' }}>+8.4% from last mo.</span>
-                  </div>
-                  <div className="landing-preview-kpi landing-preview-kpi-rose">
-                    <span className="landing-preview-kpi-label" style={{ color: '#be123c' }}>Monthly Expenses</span>
-                    <div className="landing-preview-kpi-value" style={{ color: '#be123c' }}>₹34,220.00</div>
-                    <span className="landing-preview-kpi-sub">36% of monthly budget</span>
-                  </div>
-                  <div className="landing-preview-kpi landing-preview-kpi-blue">
-                    <span className="landing-preview-kpi-label" style={{ color: '#1d4ed8' }}>Total Savings</span>
-                    <div className="landing-preview-kpi-value" style={{ color: '#1d4ed8' }}>₹4,20,000.00</div>
-                    <span className="landing-preview-kpi-sub" style={{ color: '#2563eb' }}>3 active goals</span>
-                  </div>
-                </div>
-
-                {/* Sample Chart and Transactions preview */}
-                <div className="landing-preview-middle">
-                  <div className="landing-preview-chart-card">
-                    <div className="landing-preview-chart-header">
-                      <span>Income vs Expense (6-Month Trend)</span>
-                      <span style={{ color: '#059669', fontSize: 11, fontWeight: 500 }}>Net positive: +₹60,780</span>
-                    </div>
-                    {/* Simulated chart bars */}
-                    <div className="landing-preview-chart-bars">
-                      {[
-                        { mo: 'Jun', inc: 70, exp: 40 },
-                        { mo: 'Jul', inc: 75, exp: 45 },
-                        { mo: 'Aug', inc: 80, exp: 35 },
-                        { mo: 'Sep', inc: 85, exp: 50 },
-                        { mo: 'Oct', inc: 90, exp: 38 },
-                        { mo: 'Nov', inc: 95, exp: 34 },
-                      ].map((item, idx) => (
-                        <div key={idx} className="landing-preview-bar-col">
-                          <div className="landing-preview-bar-track">
-                            <div className="landing-preview-bar-income" style={{ height: `${item.inc}%` }} />
-                            <div className="landing-preview-bar-expense" style={{ height: `${item.exp}%` }} />
-                          </div>
-                          <span className="landing-preview-bar-label">{item.mo}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Recent Transactions List */}
-                  <div className="landing-preview-recent-card">
-                    <span style={{ fontSize: 12, fontWeight: 700, color: '#0f172a', marginBottom: 8, display: 'block' }}>Recent Records</span>
-                    <div className="landing-preview-recent-list">
-                      <div className="landing-preview-recent-item">
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                          <div className="landing-preview-recent-icon landing-preview-recent-icon-income">
-                            ₹
-                          </div>
-                          <div>
-                            <div className="landing-preview-recent-title">Salary Deposit</div>
-                            <div className="landing-preview-recent-sub">Main Bank • UPI</div>
-                          </div>
-                        </div>
-                        <span style={{ fontWeight: 700, color: '#059669' }}>+₹85,000</span>
-                      </div>
-
-                      <div className="landing-preview-recent-item">
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                          <div className="landing-preview-recent-icon landing-preview-recent-icon-expense">
-                            ₹
-                          </div>
-                          <div>
-                            <div className="landing-preview-recent-title">Fresh Grocery</div>
-                            <div className="landing-preview-recent-sub">Cash Wallet • Dining</div>
-                          </div>
-                        </div>
-                        <span style={{ fontWeight: 700, color: '#0f172a' }}>-₹2,450</span>
-                      </div>
-
-                      <div className="landing-preview-recent-item">
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                          <div className="landing-preview-recent-icon landing-preview-recent-icon-expense">
-                            ₹
-                          </div>
-                          <div>
-                            <div className="landing-preview-recent-title">Electric Bill</div>
-                            <div className="landing-preview-recent-sub">Utilities • NetBanking</div>
-                          </div>
-                        </div>
-                        <span style={{ fontWeight: 700, color: '#0f172a' }}>-₹1,820</span>
-                      </div>
-                    </div>
-                    <span className="landing-preview-recent-footer">100% private to your account</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* 2. HERO CAROUSEL SECTION */}
+      <HeroCarousel />
 
       {/* 7. FEATURES SECTION */}
       <section id="features" className="landing-features-section">
