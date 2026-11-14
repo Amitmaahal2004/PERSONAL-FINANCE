@@ -33,6 +33,7 @@
 @use 'components/tabs';
 @use 'components/alerts';
 @use 'components/bulk-actions';
+@use 'components/login-transition-loader';
 
 // 5. PAGES
 @use 'pages/landing';

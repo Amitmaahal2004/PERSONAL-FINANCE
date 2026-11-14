@@ -47,6 +47,7 @@ import {
   PiggyBankIllustration,
   CalendarDuesIllustration,
 } from './DashboardIllustrations';
+import LoginTransitionLoader from '@/components/loaders/LoginTransitionLoader';
 
 export default function DashboardPage() {
   const { user, loading: authLoading } = useAuth();
@@ -93,6 +94,7 @@ export default function DashboardPage() {
   if (authLoading || (loading && !stats)) {
     return (
       <DashboardLayout>
+        <LoginTransitionLoader isReady={false} />
         <div className="dashboard-loading">
           <div className="dashboard-skeleton dashboard-skeleton-title"></div>
           <div className="dashboard-skeleton-grid">
@@ -135,6 +137,7 @@ export default function DashboardPage() {
 
   return (
     <DashboardLayout>
+      <LoginTransitionLoader isReady={!loading && !!stats} />
       <div className="dashboard">
         {/* TOP ROW: WELCOME BANNER (LEFT) & 3 QUICK ACTIONS (RIGHT) */}
         <div className="dashboard-top-row">

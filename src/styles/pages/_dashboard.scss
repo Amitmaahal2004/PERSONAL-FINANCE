@@ -104,10 +104,6 @@
   gap: 12px;
   flex-shrink: 0;
 
-  @media (min-width: 1024px) {
-    width: 320px;
-  }
-
   @media (max-width: 640px) {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -125,6 +121,7 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
+  min-width: 180px;
   text-align: center;
   text-decoration: none;
   cursor: pointer;

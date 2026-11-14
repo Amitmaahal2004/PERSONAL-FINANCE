@@ -1,0 +1,587 @@
+// ==============================================================================
+// MYFINANCE – PREMIUM FULL-SCREEN LOGIN TRANSITION LOADER
+// DYNAMIC DASHBOARD-THEME HARMONIZED STYLING
+// ==============================================================================
+
+.login-loader {
+  --loader-primary: var(--color-primary, #10b981);
+  --loader-secondary: var(--color-secondary, #0f766e);
+  --loader-glow: rgba(var(--color-primary-rgb, 16, 185, 129), 0.5);
+  --loader-glow-subtle: rgba(var(--color-primary-rgb, 16, 185, 129), 0.18);
+  --loader-secondary-glow: rgba(var(--color-secondary-rgb, 15, 118, 110), 0.35);
+
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 999999;
+  background-color: #020807;
+  background: radial-gradient(
+    circle at 50% 40%,
+    #052420 0%,
+    #03100e 45%,
+    #020807 100%
+  );
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 36px 20px 28px;
+  overflow: hidden;
+  user-select: none;
+  box-sizing: border-box;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.6s;
+
+  // Finishing Dissolve Animation
+  &.loader-finishing {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    .login-loader-orbit-ring {
+      transform: translate(-50%, -50%) scale(1.3) !important;
+      opacity: 0 !important;
+      transition: all 0.5s ease-out;
+    }
+
+    .login-loader-stage {
+      transform: scale(1.04);
+      filter: brightness(1.2);
+      transition: all 0.5s ease-out;
+    }
+
+    .login-loader-brand,
+    .login-loader-controls {
+      opacity: 0;
+      transform: translateY(-8px);
+      transition: all 0.4s ease-out;
+    }
+  }
+}
+
+// ------------------------------------------------------------------------------
+// AMBIENT THEME LIGHTING GLOWS
+// ------------------------------------------------------------------------------
+
+.login-loader-ambient {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(85px);
+  z-index: 1;
+}
+
+.login-loader-ambient-left {
+  top: -60px;
+  left: -80px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, var(--loader-glow) 0%, transparent 70%);
+  opacity: 0.35;
+}
+
+.login-loader-ambient-right {
+  top: -60px;
+  right: -80px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, var(--loader-secondary-glow) 0%, transparent 70%);
+  opacity: 0.3;
+}
+
+.login-loader-ambient-center {
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, var(--loader-glow-subtle) 0%, transparent 70%);
+  opacity: 0.45;
+}
+
+// ------------------------------------------------------------------------------
+// TOP BRANDING (ENTRANCE ANIMATION)
+// ------------------------------------------------------------------------------
+
+.login-loader-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  z-index: 10;
+  animation: loaderFadeDown 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.login-loader-brand-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.login-loader-brand-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--loader-primary) 0%, var(--loader-secondary) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 0 25px var(--loader-glow), inset 0 0 10px rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.login-loader-brand-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  text-shadow: 0 0 20px var(--loader-glow);
+  line-height: 1;
+}
+
+.login-loader-brand-tag {
+  font-size: 10px;
+  font-weight: 700;
+  color: #94a3b8;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+// ------------------------------------------------------------------------------
+// CENTRAL ANIMATION: FINANCIAL UNIVERSE & SECURE WORKSPACE
+// ------------------------------------------------------------------------------
+
+.login-loader-stage {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  margin: auto 0;
+  transition: transform 0.4s ease, filter 0.4s ease;
+
+  @media (max-width: 640px) {
+    max-width: 320px;
+    height: 280px;
+    transform: scale(0.9);
+  }
+}
+
+// Concentric Cybernetic Pedestal Base
+.login-loader-pedestal {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 250px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.login-loader-pedestal-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 18px var(--loader-glow));
+}
+
+// 3D Orbital Gyro Rings
+.login-loader-orbit-ring {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  border-radius: 50%;
+  pointer-events: none;
+  border: 1.5px solid;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.login-loader-orbit-primary {
+  width: 280px;
+  height: 110px;
+  border-color: rgba(var(--color-primary-rgb, 16, 185, 129), 0.65);
+  box-shadow: 0 0 20px var(--loader-glow);
+  transform: translate(-50%, -50%) rotateX(68deg) rotateY(-20deg);
+  animation: orbitPulsePrimary 3s ease-in-out infinite alternate;
+}
+
+.login-loader-orbit-secondary {
+  width: 270px;
+  height: 100px;
+  border-color: rgba(var(--color-secondary-rgb, 15, 118, 110), 0.55);
+  box-shadow: 0 0 20px var(--loader-secondary-glow);
+  transform: translate(-50%, -50%) rotateX(68deg) rotateY(25deg);
+  animation: orbitPulseSecondary 3s ease-in-out infinite alternate 1.5s;
+}
+
+// Central 3D Glass Object
+.login-loader-central-wrap {
+  position: relative;
+  z-index: 5;
+  width: 150px;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: floatCentralObject 4s ease-in-out infinite;
+}
+
+.login-loader-central-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 25px var(--loader-glow));
+}
+
+// ------------------------------------------------------------------------------
+// 6 FLOATING GLASSMORPHIC FINANCIAL TILES
+// ------------------------------------------------------------------------------
+
+.login-loader-tile {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  background: rgba(7, 26, 23, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(var(--color-primary-rgb, 16, 185, 129), 0.4);
+  box-shadow: 0 0 18px var(--loader-glow-subtle), inset 0 0 10px rgba(var(--color-primary-rgb, 16, 185, 129), 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  z-index: 6;
+
+  @media (max-width: 640px) {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+  }
+}
+
+// 6 Orbital positions matching the financial universe
+.login-loader-tile-wallet {
+  top: 15px;
+  left: 20px;
+  animation: floatTileA 3.5s ease-in-out infinite;
+}
+
+.login-loader-tile-bank {
+  top: 100px;
+  left: -5px;
+  animation: floatTileB 4s ease-in-out infinite 0.5s;
+}
+
+.login-loader-tile-analytics {
+  bottom: 30px;
+  left: 25px;
+  animation: floatTileC 3.8s ease-in-out infinite 1s;
+}
+
+.login-loader-tile-pie {
+  top: 15px;
+  right: 20px;
+  border-color: rgba(var(--color-secondary-rgb, 15, 118, 110), 0.5);
+  animation: floatTileB 3.6s ease-in-out infinite 0.7s;
+}
+
+.login-loader-tile-savings {
+  top: 100px;
+  right: -5px;
+  animation: floatTileA 4.2s ease-in-out infinite 1.2s;
+}
+
+.login-loader-tile-security {
+  bottom: 30px;
+  right: 25px;
+  animation: floatTileC 3.9s ease-in-out infinite 0.3s;
+}
+
+// ------------------------------------------------------------------------------
+// BOTTOM CONTROLS: DYNAMIC MESSAGES, PROGRESS BAR & STATUS
+// ------------------------------------------------------------------------------
+
+.login-loader-controls {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  z-index: 10;
+  animation: loaderFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+// Dynamic Loading Message
+.login-loader-message {
+  font-size: 15px;
+  font-weight: 600;
+  color: #e2e8f0;
+  letter-spacing: -0.01em;
+  text-align: center;
+  text-shadow: 0 0 16px var(--loader-glow);
+  min-height: 22px;
+  transition: opacity 0.2s ease;
+}
+
+// Progress Track and Gradient Fill
+.login-loader-progress-wrap {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.login-loader-progress-track {
+  flex: 1;
+  height: 12px;
+  border-radius: 9999px;
+  background: rgba(4, 18, 16, 0.85);
+  border: 1px solid rgba(var(--color-primary-rgb, 16, 185, 129), 0.3);
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.6);
+  padding: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.login-loader-progress-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background: linear-gradient(
+    90deg,
+    var(--loader-secondary) 0%,
+    var(--loader-primary) 50%,
+    #34d399 100%
+  );
+  box-shadow: 0 0 16px var(--loader-glow);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 6px;
+    height: 100%;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 0 10px #ffffff, 0 0 18px var(--loader-primary);
+  }
+}
+
+.login-loader-progress-pct {
+  font-size: 13px;
+  font-weight: 700;
+  color: #cbd5e1;
+  font-variant-numeric: tabular-nums;
+  min-width: 40px;
+  text-align: right;
+  text-shadow: 0 0 8px var(--loader-glow);
+}
+
+// Status Milestones
+.login-loader-milestones {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 4px;
+}
+
+.login-loader-milestone-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11.5px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.login-loader-milestone-completed {
+  color: var(--loader-primary);
+
+  .login-loader-milestone-icon {
+    border-color: var(--loader-primary);
+    background-color: rgba(var(--color-primary-rgb, 16, 185, 129), 0.15);
+    color: var(--loader-primary);
+    box-shadow: 0 0 10px var(--loader-glow);
+  }
+}
+
+.login-loader-milestone-active {
+  color: #ffffff;
+  text-shadow: 0 0 10px var(--loader-glow);
+
+  .login-loader-milestone-icon {
+    border-color: var(--loader-primary);
+    color: var(--loader-primary);
+    box-shadow: 0 0 12px var(--loader-glow);
+    animation: pulseRing 1.5s infinite;
+  }
+}
+
+.login-loader-milestone-pending {
+  color: #64748b;
+
+  .login-loader-milestone-icon {
+    border-color: rgba(148, 163, 184, 0.3);
+    color: transparent;
+  }
+}
+
+.login-loader-milestone-icon {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  border: 1.5px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.login-loader-milestone-divider {
+  flex: 1;
+  height: 1px;
+  background: rgba(148, 163, 184, 0.2);
+  margin: 0 8px;
+}
+
+// Fallback Enter Workspace Button (Appears if network is abnormally slow)
+.login-loader-fallback-btn {
+  margin-top: 4px;
+  background: transparent;
+  border: 1px solid rgba(var(--color-primary-rgb, 16, 185, 129), 0.35);
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: #ffffff;
+    border-color: var(--loader-primary);
+    background-color: rgba(var(--color-primary-rgb, 16, 185, 129), 0.15);
+  }
+}
+
+// ------------------------------------------------------------------------------
+// ANIMATION KEYFRAMES
+// ------------------------------------------------------------------------------
+
+@keyframes loaderFadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes loaderFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes floatCentralObject {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-7px) rotate(-1deg);
+  }
+}
+
+@keyframes floatTileA {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-7px) rotate(2deg);
+  }
+}
+
+@keyframes floatTileB {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-9px) rotate(-2deg);
+  }
+}
+
+@keyframes floatTileC {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(1.5deg);
+  }
+}
+
+@keyframes orbitPulsePrimary {
+  0% {
+    border-color: rgba(var(--color-primary-rgb, 16, 185, 129), 0.4);
+    box-shadow: 0 0 15px rgba(var(--color-primary-rgb, 16, 185, 129), 0.25);
+  }
+  100% {
+    border-color: rgba(var(--color-primary-rgb, 16, 185, 129), 0.85);
+    box-shadow: 0 0 28px rgba(var(--color-primary-rgb, 16, 185, 129), 0.6);
+  }
+}
+
+@keyframes orbitPulseSecondary {
+  0% {
+    border-color: rgba(var(--color-secondary-rgb, 15, 118, 110), 0.35);
+    box-shadow: 0 0 15px rgba(var(--color-secondary-rgb, 15, 118, 110), 0.2);
+  }
+  100% {
+    border-color: rgba(var(--color-secondary-rgb, 15, 118, 110), 0.8);
+    box-shadow: 0 0 28px rgba(var(--color-secondary-rgb, 15, 118, 110), 0.55);
+  }
+}
+
+@keyframes pulseRing {
+  0%, 100% {
+    box-shadow: 0 0 8px var(--loader-glow);
+  }
+  50% {
+    box-shadow: 0 0 18px var(--loader-glow);
+  }
+}
+
+// Reduced motion accessibility
+@media (prefers-reduced-motion: reduce) {
+  .login-loader-central-wrap,
+  .login-loader-tile,
+  .login-loader-orbit-ring {
+    animation: none !important;
+  }
+  .login-loader {
+    transition: none !important;
+  }
+}
+

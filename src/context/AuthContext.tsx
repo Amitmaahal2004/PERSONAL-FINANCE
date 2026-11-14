@@ -64,6 +64,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       setUser(data.user);
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('myfinance_login_transition', 'true');
+      }
       router.push('/dashboard');
       return { success: true };
     } catch (err: any) {
@@ -85,6 +88,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       setUser(data.user);
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('myfinance_login_transition', 'true');
+      }
       router.push('/dashboard');
       return { success: true };
     } catch (err: any) {
