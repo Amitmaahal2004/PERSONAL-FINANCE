@@ -1,0 +1,44 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ==============================================================================
+// BUDGETS PAGE STYLES
+// ==============================================================================
+
+.budgets-page {
+  padding: $space-6 0 $space-16;
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $space-4;
+
+    @include respond-to('md') {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  &__progress-bar {
+    height: 8px;
+    background-color: $color-bg-surface-subtle;
+    border-radius: $radius-full;
+    overflow: hidden;
+    margin: $space-2 0;
+  }
+
+  &__progress-fill {
+    height: 100%;
+    background-color: var(--color-primary);
+    border-radius: $radius-full;
+    transition: width $transition-normal;
+
+    &--warning {
+      background-color: $color-warning;
+    }
+
+    &--danger {
+      background-color: $color-danger;
+    }
+  }
+}
+

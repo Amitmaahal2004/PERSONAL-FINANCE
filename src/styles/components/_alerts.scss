@@ -1,0 +1,47 @@
+@use '../abstracts/variables' as *;
+
+// ==============================================================================
+// ALERTS COMPONENT
+// ==============================================================================
+
+.alert {
+  padding: $space-3 $space-4;
+  border-radius: $radius-md;
+  font-size: $font-size-xs;
+  display: flex;
+  align-items: flex-start;
+  gap: $space-3;
+  line-height: $line-height-normal;
+
+  &--info {
+    background-color: $color-info-light;
+    border: 1px solid $color-info-border;
+    color: $color-info-text;
+  }
+
+  &--success {
+    background-color: $color-success-light;
+    border: 1px solid $color-success-border;
+    color: $color-success-text;
+  }
+
+  &--warning {
+    background-color: $color-warning-light;
+    border: 1px solid $color-warning-border;
+    color: $color-warning-text;
+  }
+
+  &--danger {
+    background-color: $color-danger-light;
+    border: 1px solid $color-danger-border;
+    color: $color-danger-text;
+  }
+
+  &__icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+}
+

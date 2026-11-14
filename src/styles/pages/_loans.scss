@@ -1,0 +1,21 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ==============================================================================
+// LOANS & BORROWING PAGE STYLES
+// ==============================================================================
+
+.loans-page {
+  padding: $space-6 0 $space-16;
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $space-4;
+
+    @include respond-to('md') {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+

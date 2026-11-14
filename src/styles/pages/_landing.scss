@@ -1,0 +1,101 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ==============================================================================
+// PUBLIC LANDING PAGE STYLES
+// ==============================================================================
+
+.landing-page {
+  background-color: #ffffff;
+  color: $color-text-primary;
+  min-height: 100vh;
+
+  &__hero {
+    padding: $space-16 0 $space-12;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: -120px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(var(--color-primary-rgb), 0.12) 0%, rgba(255, 255, 255, 0) 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+  }
+
+  &__headline {
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    color: $color-text-primary;
+    max-width: 760px;
+    margin: 0 auto;
+
+    @include respond-to('md') {
+      font-size: 54px;
+    }
+  }
+
+  &__subheading {
+    font-size: $font-size-base;
+    color: $color-text-secondary;
+    max-width: 620px;
+    margin: $space-4 auto 0;
+    line-height: 1.6;
+
+    @include respond-to('md') {
+      font-size: $font-size-md;
+    }
+  }
+
+  &__hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: $space-3;
+    margin-top: $space-8;
+  }
+
+  &__preview-wrapper {
+    margin-top: $space-12;
+    position: relative;
+    border-radius: $radius-2xl;
+    box-shadow: $shadow-2xl;
+    border: 1px solid $color-border-default;
+    overflow: hidden;
+    background-color: $color-bg-app;
+  }
+
+  &__features-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $space-6;
+    margin-top: $space-10;
+
+    @include respond-to('md') {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  &__feature-card {
+    @include card-surface;
+    padding: $space-6;
+    transition: transform $transition-fast, box-shadow $transition-fast;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: $shadow-lg;
+    }
+  }
+}
+

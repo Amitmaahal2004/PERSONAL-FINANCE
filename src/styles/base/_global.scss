@@ -1,0 +1,99 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ==============================================================================
+// GLOBAL STYLES & BEHAVIORS
+// ==============================================================================
+
+:root {
+  --color-primary: #10b981;
+  --color-primary-rgb: 16, 185, 129;
+  --color-primary-hover: #059669;
+  --color-primary-active: #047857;
+  --color-primary-light: rgba(16, 185, 129, 0.08);
+  --color-primary-subtle: rgba(16, 185, 129, 0.15);
+  --color-primary-border: rgba(16, 185, 129, 0.3);
+  --color-primary-ring: rgba(16, 185, 129, 0.25);
+
+  --color-secondary: #0f766e;
+  --color-secondary-rgb: 15, 118, 110;
+  --color-secondary-hover: #115e59;
+  --color-secondary-active: #134e4a;
+  --color-secondary-light: rgba(15, 118, 110, 0.08);
+  --color-secondary-border: rgba(15, 118, 110, 0.3);
+
+  --background: #f8fafc;
+  --foreground: #0f172a;
+}
+
+body {
+  background-color: $color-bg-app;
+  color: $color-text-primary;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+// Global Scrollbars
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: $radius-full;
+
+  &:hover {
+    background: #94a3b8;
+  }
+}
+
+// Global Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 150ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+

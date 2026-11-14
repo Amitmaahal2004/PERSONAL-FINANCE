@@ -1,0 +1,152 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ==============================================================================
+// SIDEBAR LAYOUT
+// ==============================================================================
+
+.app-sidebar {
+  display: none;
+  flex-direction: column;
+  width: 260px;
+  background-color: $color-bg-surface;
+  border-right: 1px solid $color-border-default;
+  flex-shrink: 0;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  z-index: $z-fixed;
+  user-select: none;
+
+  @include respond-to('md') {
+    display: flex;
+  }
+
+  &__brand {
+    height: 64px;
+    padding: 0 $space-6;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid $color-border-light;
+  }
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+  }
+
+  &__logo-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: $radius-md;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    @include flex-center;
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(var(--color-primary-rgb), 0.25);
+  }
+
+  &__brand-name {
+    font-size: $font-size-md;
+    font-weight: $font-weight-bold;
+    color: $color-text-primary;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  &__brand-tag {
+    font-size: $font-size-2xs;
+    font-weight: $font-weight-semibold;
+    color: var(--color-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    display: block;
+  }
+
+  &__action {
+    padding: $space-4 $space-4 $space-2;
+  }
+
+  &__nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: $space-2 $space-3;
+    @include scrollbar-custom(4px);
+  }
+
+  &__nav-item {
+    margin-bottom: 4px;
+  }
+
+  &__nav-link {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    padding: 10px 14px;
+    border-radius: $radius-md;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    color: $color-text-secondary;
+    transition: background-color $transition-fast, color $transition-fast;
+
+    &:hover {
+      background-color: $color-bg-surface-subtle;
+      color: $color-text-primary;
+    }
+
+    &--active {
+      background-color: var(--color-primary-light);
+      color: var(--color-primary);
+      font-weight: $font-weight-semibold;
+
+      .app-sidebar__nav-icon {
+        color: var(--color-primary);
+      }
+    }
+  }
+
+  &__nav-icon {
+    width: 16px;
+    height: 16px;
+    color: $color-text-muted;
+    transition: color $transition-fast;
+    flex-shrink: 0;
+  }
+
+  &__badge {
+    margin-left: auto;
+    font-size: $font-size-2xs;
+    font-weight: $font-weight-bold;
+    padding: 2px 6px;
+    border-radius: $radius-full;
+  }
+
+  &__user-card {
+    padding: $space-3;
+    border-top: 1px solid $color-border-light;
+  }
+
+  &__user-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $space-2 $space-3;
+    border-radius: $radius-md;
+    background-color: $color-bg-surface-subtle;
+    border: 1px solid $color-border-light;
+  }
+
+  &__user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: $radius-full;
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+    font-weight: $font-weight-bold;
+    font-size: $font-size-xs;
+    @include flex-center;
+    flex-shrink: 0;
+  }
+}
+

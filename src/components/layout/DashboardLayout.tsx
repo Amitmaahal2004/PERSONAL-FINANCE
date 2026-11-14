@@ -100,12 +100,20 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         {/* Brand Header */}
         <div className="h-16 px-6 flex items-center justify-between border-b border-slate-100">
           <Link href="/dashboard" className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-500/20">
+            <div
+              className="w-9 h-9 rounded-xl flex items-center justify-center text-white shadow-md"
+              style={{
+                background: 'linear-gradient(135deg, var(--color-primary, #10b981), var(--color-secondary, #0f766e))',
+              }}
+            >
               <TrendingUp className="w-5 h-5" />
             </div>
             <div>
               <span className="font-bold text-lg text-slate-900 tracking-tight">MyFinance</span>
-              <span className="block text-[10px] font-semibold text-emerald-600 uppercase tracking-widest leading-none">
+              <span
+                className="block text-[10px] font-semibold uppercase tracking-widest leading-none"
+                style={{ color: 'var(--color-primary, #10b981)' }}
+              >
                 Private & Secure
               </span>
             </div>
@@ -116,7 +124,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         <div className="p-4 pb-2">
           <button
             onClick={() => setQuickAddOpen(true)}
-            className="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl flex items-center justify-center gap-2 shadow-sm transition active:scale-[0.98]"
+            className="w-full py-2.5 px-4 text-white text-xs font-semibold rounded-xl flex items-center justify-center gap-2 shadow-sm transition active:scale-[0.98]"
+            style={{ backgroundColor: 'var(--color-primary, #10b981)' }}
           >
             <Plus className="w-4 h-4" />
             <span>New Transaction</span>
@@ -132,13 +141,22 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition ${isActive
-                  ? 'bg-emerald-50 text-emerald-800 font-semibold'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                  }`}
+                style={
+                  isActive
+                    ? {
+                        backgroundColor: 'var(--color-primary-light, rgba(16, 185, 129, 0.08))',
+                        color: 'var(--color-primary, #10b981)',
+                        fontWeight: 600,
+                      }
+                    : undefined
+                }
+                className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition ${
+                  isActive ? '' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                }`}
               >
                 <Icon
-                  className={`w-4 h-4 ${isActive ? 'text-emerald-600' : 'text-slate-400'}`}
+                  className="w-4 h-4"
+                  style={isActive ? { color: 'var(--color-primary, #10b981)' } : undefined}
                 />
                 <span className="truncate">{item.name}</span>
                 {item.name === 'Admin Panel' && (
@@ -160,7 +178,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         <div className="p-3 border-t border-slate-100">
           <div className="flex items-center justify-between p-2 rounded-xl bg-slate-50 border border-slate-100">
             <Link href="/profile" className="flex items-center gap-2.5 truncate">
-              <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 font-bold flex items-center justify-center text-xs shrink-0">
+              <div
+                className="w-8 h-8 rounded-full font-bold flex items-center justify-center text-xs shrink-0"
+                style={{
+                  backgroundColor: 'var(--color-primary-light, rgba(16, 185, 129, 0.1))',
+                  color: 'var(--color-primary, #10b981)',
+                }}
+              >
                 {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
               </div>
               <div className="truncate text-left">
@@ -197,16 +221,29 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
           {/* Right Header items */}
           <div className="flex items-center gap-4">
-            <div className="px-3 py-1.5 bg-emerald-50 text-emerald-800 text-xs font-semibold rounded-lg border border-emerald-100 flex items-center gap-1.5">
+            <div
+              className="px-3 py-1.5 text-xs font-semibold rounded-lg border flex items-center gap-1.5"
+              style={{
+                backgroundColor: 'var(--color-primary-light, rgba(16, 185, 129, 0.08))',
+                color: 'var(--color-primary, #10b981)',
+                borderColor: 'var(--color-primary-border, rgba(16, 185, 129, 0.2))',
+              }}
+            >
               <span>Currency:</span>
               <span className="font-bold">{user?.preferredCurrency || 'INR'} ({user?.currencySymbol || '₹'})</span>
             </div>
 
             <Link
               href="/profile"
-              className="flex items-center gap-2 text-xs font-medium text-slate-700 hover:text-emerald-700 transition"
+              className="flex items-center gap-2 text-xs font-medium text-slate-700 hover:text-slate-900 transition"
             >
-              <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 font-bold flex items-center justify-center text-xs">
+              <div
+                className="w-8 h-8 rounded-full font-bold flex items-center justify-center text-xs"
+                style={{
+                  backgroundColor: 'var(--color-primary-light, rgba(16, 185, 129, 0.1))',
+                  color: 'var(--color-primary, #10b981)',
+                }}
+              >
                 {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
               </div>
               <span className="font-semibold">{user?.name}</span>
@@ -217,7 +254,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         {/* MOBILE TOP BAR */}
         <header className="md:hidden h-14 bg-white border-b border-slate-200 px-4 flex items-center justify-between sticky top-0 z-30">
           <Link href="/dashboard" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center shadow-sm">
+            <div
+              className="w-7 h-7 rounded-lg text-white flex items-center justify-center shadow-sm"
+              style={{ backgroundColor: 'var(--color-primary, #10b981)' }}
+            >
               <TrendingUp className="w-4 h-4" />
             </div>
             <span className="font-bold text-base text-slate-900">MyFinance</span>
@@ -233,7 +273,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             </button>
             <Link
               href="/profile"
-              className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center text-xs"
+              className="w-8 h-8 rounded-full font-bold flex items-center justify-center text-xs"
+              style={{
+                backgroundColor: 'var(--color-primary-light, rgba(16, 185, 129, 0.1))',
+                color: 'var(--color-primary, #10b981)',
+              }}
             >
               {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
             </Link>
@@ -241,15 +285,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         </header>
 
         {/* PAGE CONTENT */}
-        <main
-          className="flex-1 pb-24 md:pb-12 overflow-x-hidden"
-          style={{
-            maxWidth: "1560px",
-            margin: "0px auto",
-            width: "100%",
-            padding: "0px 20px"
-          }}
-        >          {children}
+        <main className="flex-1 pb-24 md:pb-12 overflow-x-hidden container app-container">
+          {children}
         </main>
 
         {/* MOBILE BOTTOM NAVIGATION BAR */}
@@ -263,7 +300,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 <button
                   key="add-btn"
                   onClick={() => setQuickAddOpen(true)}
-                  className="w-12 h-12 -mt-5 rounded-full bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 flex items-center justify-center active:scale-95 transition"
+                  className="w-12 h-12 -mt-5 rounded-full text-white shadow-lg flex items-center justify-center active:scale-95 transition"
+                  style={{
+                    backgroundColor: 'var(--color-primary, #10b981)',
+                    boxShadow: '0 8px 16px var(--color-primary-ring, rgba(16, 185, 129, 0.3))',
+                  }}
                   aria-label="Add Transaction"
                 >
                   <Plus className="w-6 h-6 stroke-[2.5]" />
@@ -288,10 +329,12 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`flex flex-col items-center gap-1 transition ${isActive ? 'text-emerald-700 font-semibold' : 'text-slate-400 hover:text-slate-600'
-                  }`}
+                style={isActive ? { color: 'var(--color-primary, #10b981)' } : undefined}
+                className={`flex flex-col items-center gap-1 transition ${
+                  isActive ? 'font-semibold' : 'text-slate-400 hover:text-slate-600'
+                }`}
               >
-                <Icon className={`w-5 h-5 ${isActive ? 'text-emerald-600' : ''}`} />
+                <Icon className="w-5 h-5" />
                 <span className="text-[10px] font-medium">{item.name}</span>
               </Link>
             );

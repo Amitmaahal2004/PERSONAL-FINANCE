@@ -596,6 +596,86 @@ async function runTests() {
     const userBTrash = await userBTrashRes.json();
     assert(userBTrash.data.length === 0, `User B sees 0 Trash items (isolated from User A, got ${userBTrash.data.length})`);
 
+    // 19. PUBLIC THEME ENDPOINT & ZERO-FLASH SERVER RENDERING
+    console.log('\n--- TEST 19: Public Theme Endpoint & Zero-Flash Styling ---');
+    const themeGetRes = await fetch(`${BASE_URL}/api/theme`);
+    assert(themeGetRes.status === 200, 'Public GET /api/theme responds with HTTP 200');
+    const themeGetData = await themeGetRes.json();
+    assert(themeGetData.success === true, 'Theme response indicates success: true');
+    assert(themeGetData.theme && themeGetData.theme.primaryColor, `Primary color returned (${themeGetData.theme?.primaryColor})`);
+    assert(themeGetData.theme && themeGetData.theme.secondaryColor, `Secondary color returned (${themeGetData.theme?.secondaryColor})`);
+
+    // Verify initial bootstrap in Landing Page HTML payload (Zero-FOUC)
+    const initialPageRes = await fetch(`${BASE_URL}/`);
+    const initialPageHtml = await initialPageRes.text();
+    assert(initialPageHtml.includes('server-theme-bootstrap'), 'Landing page contains server-theme-bootstrap style element in <head>');
+    assert(initialPageHtml.includes('--color-primary:'), 'Server-rendered :root contains --color-primary definition');
+
+    // 20. ROLE-BASED ACCESS CONTROL ON THEME MODIFICATION
+    console.log('\n--- TEST 20: Role-Based Access Control on Theme Modification ---');
+    // Normal User A tries to modify theme
+    const userAThemeAttempt = await fetch(`${BASE_URL}/api/admin/theme`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', Cookie: cookieA },
+      body: JSON.stringify({ primaryColor: '#2563EB', secondaryColor: '#1E40AF' }),
+    });
+    assert(userAThemeAttempt.status === 403, 'Normal User A blocked from PUT /api/admin/theme with 403 Forbidden');
+
+    // Normal User A tries to reset theme
+    const userAResetAttempt = await fetch(`${BASE_URL}/api/admin/theme/reset`, {
+      method: 'POST',
+      headers: { Cookie: cookieA },
+    });
+    assert(userAResetAttempt.status === 403, 'Normal User A blocked from POST /api/admin/theme/reset with 403 Forbidden');
+
+    // 21. SUPER ADMIN GLOBAL THEME CUSTOMIZATION & MONGODB PERSISTENCE
+    console.log('\n--- TEST 21: Super Admin Theme Customization & Persistence ---');
+    // Validation rejection test: Invalid HEX format
+    const invalidHexRes = await fetch(`${BASE_URL}/api/admin/theme`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', Cookie: adminCookie },
+      body: JSON.stringify({ primaryColor: 'not-a-hex-color', secondaryColor: '#1E40AF' }),
+    });
+    assert(invalidHexRes.status === 400, 'Invalid HEX format rejected with HTTP 400 Bad Request');
+
+    // Admin sets custom theme: Sapphire Blue (#2563EB) & Navy (#1E40AF)
+    const setCustomThemeRes = await fetch(`${BASE_URL}/api/admin/theme`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', Cookie: adminCookie },
+      body: JSON.stringify({ primaryColor: '#2563EB', secondaryColor: '#1E40AF' }),
+    });
+    assert(setCustomThemeRes.status === 200, 'Super Admin successfully updated global theme to #2563EB / #1E40AF');
+    const customThemeData = await setCustomThemeRes.json();
+    assert(customThemeData.theme.primaryColor === '#2563EB', 'Updated primary color matches #2563EB');
+    assert(customThemeData.theme.secondaryColor === '#1E40AF', 'Updated secondary color matches #1E40AF');
+
+    // 22. GLOBAL PROPAGATION TO ALL USERS & PUBLIC VISITORS
+    console.log('\n--- TEST 22: Global Propagation Across Multi-Tenant Platform ---');
+    // Public theme endpoint immediately reflects the new colors
+    const publicThemeUpdated = await (await fetch(`${BASE_URL}/api/theme`)).json();
+    assert(publicThemeUpdated.theme.primaryColor === '#2563EB', 'Public API immediately reflects new primary color #2563EB');
+    assert(publicThemeUpdated.theme.secondaryColor === '#1E40AF', 'Public API immediately reflects new secondary color #1E40AF');
+
+    // Server-rendered HTML for User A reflects new theme
+    const userAPageRes = await fetch(`${BASE_URL}/dashboard`, { headers: { Cookie: cookieA } });
+    const userAPageHtml = await userAPageRes.text();
+    assert(userAPageHtml.includes('#2563EB'), 'User A dashboard server-renders with updated primary color #2563EB');
+
+    // 23. SUPER ADMIN THEME RESET TO DEFAULT
+    console.log('\n--- TEST 23: Super Admin Theme Reset to Default ---');
+    const resetThemeRes = await fetch(`${BASE_URL}/api/admin/theme/reset`, {
+      method: 'POST',
+      headers: { Cookie: adminCookie },
+    });
+    assert(resetThemeRes.status === 200, 'Theme reset endpoint responded with HTTP 200');
+    const resetThemeData = await resetThemeRes.json();
+    assert(resetThemeData.theme.primaryColor === '#10B981', 'Theme reset successfully restored default primary #10B981');
+    assert(resetThemeData.theme.secondaryColor === '#0F766E', 'Theme reset successfully restored default secondary #0F766E');
+
+    // Verify public endpoint reflects reset
+    const publicThemeAfterReset = await (await fetch(`${BASE_URL}/api/theme`)).json();
+    assert(publicThemeAfterReset.theme.primaryColor === '#10B981', 'Public theme returns default Emerald #10B981');
+
     console.log('\n=========================================');
     console.log(`TEST RESULTS: ${passed} PASSED, ${failed} FAILED`);
     console.log('=========================================\n');

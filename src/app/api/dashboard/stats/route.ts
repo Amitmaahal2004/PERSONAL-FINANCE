@@ -13,6 +13,8 @@ import { User } from '@/models/User';
 import { getAuthSession } from '@/lib/auth';
 import { safeAdd, safeSubtract } from '@/lib/currency';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(req: Request) {
   try {
     const session = await getAuthSession(req);

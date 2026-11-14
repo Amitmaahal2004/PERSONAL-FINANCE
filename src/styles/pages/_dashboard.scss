@@ -1,0 +1,54 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ==============================================================================
+// DASHBOARD PAGE STYLES
+// ==============================================================================
+
+.dashboard-page {
+  padding: $space-6 0 $space-16;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: $space-3;
+    margin-bottom: $space-6;
+
+    @include respond-to('sm') {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  &__kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $space-3;
+    margin-bottom: $space-6;
+
+    @include respond-to('md') {
+      grid-template-columns: repeat(4, 1fr);
+      gap: $space-4;
+    }
+  }
+
+  &__charts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $space-5;
+    margin-bottom: $space-6;
+
+    @include respond-to('lg') {
+      grid-template-columns: 2fr 1fr;
+    }
+  }
+
+  &__quick-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $space-2;
+  }
+}
+

@@ -1,0 +1,61 @@
+@use '../abstracts/variables' as *;
+
+// ==============================================================================
+// TABS COMPONENT
+// ==============================================================================
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid $color-border-default;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 0 $space-4;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &__item {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    padding: $space-3 $space-4;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    color: $color-text-secondary;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    background: transparent;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    white-space: nowrap;
+    transition: all $transition-fast;
+
+    &:hover {
+      color: $color-text-primary;
+      border-bottom-color: $color-border-hover;
+    }
+
+    &--active {
+      color: var(--color-primary);
+      border-bottom-color: var(--color-primary);
+      background-color: var(--color-primary-light);
+    }
+  }
+
+  &__count {
+    font-size: 10px;
+    font-weight: $font-weight-bold;
+    padding: 1px 6px;
+    border-radius: $radius-full;
+    background-color: $color-bg-surface-subtle;
+    color: $color-text-secondary;
+
+    .tabs__item--active & {
+      background-color: var(--color-primary);
+      color: #ffffff;
+    }
+  }
+}
+

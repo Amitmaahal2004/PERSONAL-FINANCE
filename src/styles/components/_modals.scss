@@ -1,0 +1,68 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ==============================================================================
+// MODAL COMPONENT
+// ==============================================================================
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: $z-modal-backdrop;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-4;
+  animation: fadeIn $transition-fast forwards;
+}
+
+.modal {
+  width: 100%;
+  max-width: 520px;
+  background-color: $color-bg-surface;
+  border-radius: $radius-2xl;
+  box-shadow: $shadow-2xl;
+  border: 1px solid $color-border-light;
+  overflow: hidden;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  animation: slideDown $transition-fast forwards;
+
+  &--sm { max-width: 400px; }
+  &--lg { max-width: 680px; }
+  &--xl { max-width: 860px; }
+
+  &__header {
+    padding: $space-4 $space-5;
+    border-bottom: 1px solid $color-border-light;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__title {
+    font-size: $font-size-base;
+    font-weight: $font-weight-bold;
+    color: $color-text-primary;
+  }
+
+  &__body {
+    padding: $space-5;
+    overflow-y: auto;
+    @include scrollbar-custom;
+  }
+
+  &__footer {
+    padding: $space-3 $space-5;
+    border-top: 1px solid $color-border-light;
+    background-color: $color-bg-surface-subtle;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: $space-2;
+  }
+}
+

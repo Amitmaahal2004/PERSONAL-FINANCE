@@ -1,0 +1,65 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ==============================================================================
+// TRANSACTIONS PAGE STYLES
+// ==============================================================================
+
+.transaction-page {
+  padding: $space-6 0 $space-16;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: $space-4;
+    margin-bottom: $space-6;
+
+    @include respond-to('sm') {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  &__filters {
+    @include card-surface;
+    padding: $space-4;
+    margin-bottom: $space-5;
+    display: flex;
+    flex-direction: column;
+    gap: $space-3;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-4;
+    padding: $space-4 $space-5;
+    border-bottom: 1px solid $color-border-light;
+    transition: background-color $transition-fast;
+
+    &:hover {
+      background-color: rgba(248, 250, 252, 0.85);
+    }
+
+    &--selected {
+      background-color: var(--color-primary-light);
+    }
+  }
+
+  &__amount {
+    font-size: $font-size-base;
+    font-weight: $font-weight-extrabold;
+    font-variant-numeric: tabular-nums;
+
+    &--income {
+      color: $color-success;
+    }
+
+    &--expense {
+      color: $color-text-primary;
+    }
+  }
+}
+

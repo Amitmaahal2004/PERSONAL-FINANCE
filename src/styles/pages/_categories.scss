@@ -1,0 +1,33 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ==============================================================================
+// CATEGORIES PAGE STYLES
+// ==============================================================================
+
+.categories-page {
+  padding: $space-6 0 $space-16;
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $space-3;
+
+    @include respond-to('sm') {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @include respond-to('lg') {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  &__item {
+    @include card-surface;
+    padding: $space-3 $space-4;
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+  }
+}
+

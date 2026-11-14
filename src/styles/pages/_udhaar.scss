@@ -1,0 +1,44 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ==============================================================================
+// UDHAAR MANAGEMENT PAGE STYLES
+// ==============================================================================
+
+.udhaar-page {
+  padding: $space-6 0 $space-16;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: $space-4;
+    margin-bottom: $space-6;
+
+    @include respond-to('sm') {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  &__kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $space-3;
+    margin-bottom: $space-6;
+
+    @include respond-to('md') {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @include respond-to('lg') {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+
+  &__table-card {
+    @include card-surface;
+    overflow: hidden;
+  }
+}
+

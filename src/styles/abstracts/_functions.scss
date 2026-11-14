@@ -1,0 +1,14 @@
+// ==============================================================================
+// SCSS FUNCTIONS
+// ==============================================================================
+
+// Convert px to rem if needed for accessibility
+@function rem($px) {
+  @return calc(#{$px} / 16px * 1rem);
+}
+
+// Alpha wrapper for CSS custom properties with RGB values
+@function alpha-rgb($rgb-var, $alpha) {
+  @return rgba(var(#{$rgb-var}), $alpha);
+}
+

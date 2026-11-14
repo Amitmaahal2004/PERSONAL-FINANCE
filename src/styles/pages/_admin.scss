@@ -1,0 +1,100 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ==============================================================================
+// SUPER ADMIN & THEME CUSTOMIZATION STYLES
+// ==============================================================================
+
+.admin-page {
+  padding: $space-6 0 $space-16;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+    margin-bottom: $space-6;
+
+    @include respond-to('sm') {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  &__section {
+    @include card-surface;
+    padding: $space-6;
+    margin-bottom: $space-6;
+  }
+}
+
+// SUPER ADMIN APPEARANCE & THEME SETTINGS
+.theme-settings {
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $space-6;
+    margin-top: $space-5;
+
+    @include respond-to('lg') {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  &__picker-card {
+    @include card-surface;
+    padding: $space-5;
+  }
+
+  &__color-row {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    margin-top: $space-2;
+  }
+
+  &__color-swatch {
+    width: 44px;
+    height: 44px;
+    border-radius: $radius-md;
+    border: 2px solid $color-border-default;
+    cursor: pointer;
+    overflow: hidden;
+    flex-shrink: 0;
+
+    input[type='color'] {
+      width: 200%;
+      height: 200%;
+      cursor: pointer;
+      margin: -50%;
+      border: none;
+      background: transparent;
+    }
+  }
+
+  &__hex-input {
+    font-family: $font-family-mono;
+    font-weight: $font-weight-bold;
+    text-transform: uppercase;
+    font-size: $font-size-sm;
+    max-width: 160px;
+  }
+
+  &__preview-card {
+    @include card-surface;
+    padding: $space-6;
+    background-color: $color-bg-app;
+    border: 2px dashed $color-border-hover;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $space-3;
+    margin-top: $space-6;
+    padding-top: $space-5;
+    border-top: 1px solid $color-border-light;
+  }
+}
+

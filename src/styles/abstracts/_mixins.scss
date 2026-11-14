@@ -1,0 +1,100 @@
+@use 'variables' as *;
+
+// ==============================================================================
+// RESPONSIVE MEDIA QUERY MIXIN
+// ==============================================================================
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media screen and (min-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  } @else {
+    @media screen and (min-width: $breakpoint) {
+      @content;
+    }
+  }
+}
+
+@mixin respond-below($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media screen and (max-width: (map-get($breakpoints, $breakpoint) - 1px)) {
+      @content;
+    }
+  } @else {
+    @media screen and (max-width: $breakpoint) {
+      @content;
+    }
+  }
+}
+
+// FLEXBOX HELPERS
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+// TEXT TRUNCATION
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin text-clamp($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// CARD SURFACE MIXIN
+@mixin card-surface {
+  background-color: $color-bg-card;
+  border: 1px solid $color-border-default;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-card;
+}
+
+// BUTTON RESET
+@mixin button-reset {
+  appearance: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  font-family: inherit;
+  color: inherit;
+  line-height: inherit;
+}
+
+// SCROLLBAR STYLING
+@mixin scrollbar-custom($size: 6px, $thumb-color: #cbd5e1) {
+  &::-webkit-scrollbar {
+    width: $size;
+    height: $size;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: $thumb-color;
+    border-radius: $radius-full;
+    &:hover {
+      background: darken($thumb-color, 15%);
+    }
+  }
+}
+

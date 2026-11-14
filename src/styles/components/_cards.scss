@@ -1,0 +1,110 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ==============================================================================
+// CARD COMPONENT
+// ==============================================================================
+
+.card {
+  @include card-surface;
+  padding: $space-5;
+  transition: box-shadow $transition-fast, border-color $transition-fast;
+
+  &--interactive {
+    cursor: pointer;
+
+    &:hover {
+      box-shadow: $shadow-md;
+      border-color: $color-border-hover;
+    }
+  }
+
+  &--highlight {
+    border-top: 3px solid var(--color-primary);
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: $space-4;
+    padding-bottom: $space-3;
+    border-bottom: 1px solid $color-border-light;
+  }
+
+  &__title {
+    font-size: $font-size-base;
+    font-weight: $font-weight-bold;
+    color: $color-text-primary;
+    letter-spacing: -0.01em;
+  }
+
+  &__subtitle {
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+    margin-top: 2px;
+  }
+
+  &__body {
+    position: relative;
+  }
+
+  &__footer {
+    margin-top: $space-4;
+    padding-top: $space-3;
+    border-top: 1px solid $color-border-light;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+// KPI STAT CARD
+.stat-card {
+  @include card-surface;
+  padding: $space-4;
+  position: relative;
+  overflow: hidden;
+
+  &__label {
+    font-size: 11px;
+    font-weight: $font-weight-semibold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: $color-text-muted;
+  }
+
+  &__value {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-extrabold;
+    color: $color-text-primary;
+    margin-top: 4px;
+    letter-spacing: -0.02em;
+
+    &--primary {
+      color: var(--color-primary);
+    }
+    &--danger {
+      color: $color-danger;
+    }
+    &--warning {
+      color: $color-warning;
+    }
+  }
+
+  &__meta {
+    font-size: 11px;
+    color: $color-text-muted;
+    margin-top: 2px;
+  }
+
+  &__icon-box {
+    width: 36px;
+    height: 36px;
+    border-radius: $radius-md;
+    @include flex-center;
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+  }
+}
+

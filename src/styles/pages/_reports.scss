@@ -1,0 +1,21 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ==============================================================================
+// REPORTS PAGE STYLES
+// ==============================================================================
+
+.reports-page {
+  padding: $space-6 0 $space-16;
+
+  &__charts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $space-5;
+
+    @include respond-to('lg') {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+}
+

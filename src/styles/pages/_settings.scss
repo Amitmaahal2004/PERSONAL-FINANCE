@@ -1,0 +1,17 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ==============================================================================
+// SETTINGS PAGE STYLES
+// ==============================================================================
+
+.settings-page {
+  padding: $space-6 0 $space-16;
+
+  &__section {
+    @include card-surface;
+    padding: $space-6;
+    margin-bottom: $space-6;
+  }
+}
+

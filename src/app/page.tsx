@@ -57,36 +57,53 @@ export default function LandingPage() {
     <div className="min-h-screen bg-white text-slate-900 selection:bg-emerald-100 selection:text-emerald-900">
       {/* 1. HEADER */}
       <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+        <div className="container app-container h-16 sm:h-20 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-2xl bg-emerald-600 flex items-center justify-center text-white shadow-md shadow-emerald-600/20">
+            <div
+              className="w-10 h-10 rounded-2xl flex items-center justify-center text-white shadow-md"
+              style={{
+                background: 'linear-gradient(135deg, var(--color-primary, #10b981), var(--color-secondary, #0f766e))',
+                boxShadow: '0 4px 12px var(--color-primary-ring, rgba(16, 185, 129, 0.2))',
+              }}
+            >
               <TrendingUp className="w-5 h-5 stroke-[2.5]" />
             </div>
             <div>
               <span className="font-extrabold text-xl text-slate-900 tracking-tight">MyFinance</span>
-              <span className="hidden sm:inline-block ml-2 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">
+              <span
+                className="hidden sm:inline-block ml-2 text-[11px] font-semibold px-2 py-0.5 rounded-full border"
+                style={{
+                  backgroundColor: 'var(--color-primary-light, rgba(16, 185, 129, 0.08))',
+                  color: 'var(--color-primary, #10b981)',
+                  borderColor: 'var(--color-primary-border, rgba(16, 185, 129, 0.2))',
+                }}
+              >
                 Personal Control
               </span>
             </div>
           </Link>
 
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
-            <a href="#features" className="hover:text-emerald-600 transition">Features</a>
-            <a href="#how-it-works" className="hover:text-emerald-600 transition">How It Works</a>
-            <a href="#security" className="hover:text-emerald-600 transition">Privacy & Security</a>
-            <a href="#faq" className="hover:text-emerald-600 transition">FAQ</a>
+            <a href="#features" className="hover:text-slate-900 transition">Features</a>
+            <a href="#how-it-works" className="hover:text-slate-900 transition">How It Works</a>
+            <a href="#security" className="hover:text-slate-900 transition">Privacy & Security</a>
+            <a href="#faq" className="hover:text-slate-900 transition">FAQ</a>
           </nav>
 
           <div className="flex items-center gap-3">
             <Link
               href="/login"
-              className="text-sm font-semibold text-slate-700 hover:text-emerald-600 px-3.5 py-2 transition"
+              className="text-sm font-semibold text-slate-700 hover:text-slate-900 px-3.5 py-2 transition"
             >
               Login
             </Link>
             <Link
               href="/signup"
-              className="text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl shadow-md shadow-emerald-600/20 transition active:scale-95 flex items-center gap-1.5"
+              style={{
+                backgroundColor: 'var(--color-primary, #10b981)',
+                boxShadow: '0 4px 14px var(--color-primary-ring, rgba(16, 185, 129, 0.25))',
+              }}
+              className="text-sm font-semibold text-white px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl shadow-md transition active:scale-95 flex items-center gap-1.5"
             >
               <span>Get Started</span>
               <ArrowRight className="w-4 h-4" />
@@ -97,14 +114,21 @@ export default function LandingPage() {
 
       {/* 2. HERO SECTION */}
       <section className="relative overflow-hidden pt-12 pb-20 sm:pt-20 sm:pb-28 bg-gradient-to-b from-slate-50/60 to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/60 text-emerald-800 text-xs font-semibold mb-6 animate-fadeIn">
-            <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+        <div className="container app-container text-center relative z-10">
+          <div
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold mb-6 animate-fadeIn border"
+            style={{
+              backgroundColor: 'var(--color-primary-light, rgba(16, 185, 129, 0.08))',
+              color: 'var(--color-primary, #10b981)',
+              borderColor: 'var(--color-primary-border, rgba(16, 185, 129, 0.2))',
+            }}
+          >
+            <Sparkles className="w-3.5 h-3.5" style={{ color: 'var(--color-primary, #10b981)' }} />
             <span>Tagline: Your Money. Your Records. Your Control.</span>
           </div>
 
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-slate-900 tracking-tight max-w-4xl mx-auto leading-[1.12]">
-            Take Control of <span className="text-emerald-600">Your Money.</span>
+            Take Control of <span style={{ color: 'var(--color-primary, #10b981)' }}>Your Money.</span>
           </h1>
 
           <p className="mt-6 text-base sm:text-xl text-slate-600 max-w-2xl mx-auto font-normal leading-relaxed">
@@ -114,7 +138,11 @@ export default function LandingPage() {
           <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-md mx-auto">
             <Link
               href="/signup"
-              className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-base shadow-lg shadow-emerald-600/25 transition active:scale-95 flex items-center justify-center gap-2"
+              style={{
+                backgroundColor: 'var(--color-primary, #10b981)',
+                boxShadow: '0 8px 20px var(--color-primary-ring, rgba(16, 185, 129, 0.3))',
+              }}
+              className="w-full sm:w-auto px-7 py-3.5 rounded-xl text-white font-semibold text-base shadow-lg transition active:scale-95 flex items-center justify-center gap-2"
             >
               <span>Start Free Personal Account</span>
               <ArrowRight className="w-4 h-4" />
@@ -250,9 +278,12 @@ export default function LandingPage() {
 
       {/* 7. FEATURES SECTION */}
       <section id="features" className="py-20 sm:py-28 bg-white border-t border-slate-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container app-container">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-emerald-600 mb-2">
+            <h2
+              className="text-xs font-bold uppercase tracking-wider mb-2"
+              style={{ color: 'var(--color-primary, #10b981)' }}
+            >
               Comprehensive Financial Engine
             </h2>
             <h3 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
@@ -265,8 +296,14 @@ export default function LandingPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {/* Feature 1 */}
-            <div className="p-6 sm:p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:border-emerald-200 transition shadow-subtle hover:shadow-hover">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center mb-5">
+            <div className="p-6 sm:p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:border-slate-300 transition shadow-subtle">
+              <div
+                className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5"
+                style={{
+                  backgroundColor: 'var(--color-primary-light, rgba(16, 185, 129, 0.1))',
+                  color: 'var(--color-primary, #10b981)',
+                }}
+              >
                 <Wallet className="w-6 h-6" />
               </div>
               <h4 className="text-lg font-bold text-slate-900 mb-2">Multiple Financial Accounts</h4>
@@ -276,8 +313,14 @@ export default function LandingPage() {
             </div>
 
             {/* Feature 2 */}
-            <div className="p-6 sm:p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:border-emerald-200 transition shadow-subtle hover:shadow-hover">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center mb-5">
+            <div className="p-6 sm:p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:border-slate-300 transition shadow-subtle">
+              <div
+                className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5"
+                style={{
+                  backgroundColor: 'var(--color-primary-light, rgba(16, 185, 129, 0.1))',
+                  color: 'var(--color-primary, #10b981)',
+                }}
+              >
                 <ArrowRight className="w-6 h-6" />
               </div>
               <h4 className="text-lg font-bold text-slate-900 mb-2">Zero-Impact Internal Transfers</h4>
@@ -287,8 +330,14 @@ export default function LandingPage() {
             </div>
 
             {/* Feature 3 */}
-            <div className="p-6 sm:p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:border-emerald-200 transition shadow-subtle hover:shadow-hover">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center mb-5">
+            <div className="p-6 sm:p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:border-slate-300 transition shadow-subtle">
+              <div
+                className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5"
+                style={{
+                  backgroundColor: 'var(--color-primary-light, rgba(16, 185, 129, 0.1))',
+                  color: 'var(--color-primary, #10b981)',
+                }}
+              >
                 <PieChart className="w-6 h-6" />
               </div>
               <h4 className="text-lg font-bold text-slate-900 mb-2">Category-Wise Budgets</h4>
@@ -298,8 +347,14 @@ export default function LandingPage() {
             </div>
 
             {/* Feature 4 */}
-            <div className="p-6 sm:p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:border-emerald-200 transition shadow-subtle hover:shadow-hover">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center mb-5">
+            <div className="p-6 sm:p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:border-slate-300 transition shadow-subtle">
+              <div
+                className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5"
+                style={{
+                  backgroundColor: 'var(--color-primary-light, rgba(16, 185, 129, 0.1))',
+                  color: 'var(--color-primary, #10b981)',
+                }}
+              >
                 <Target className="w-6 h-6" />
               </div>
               <h4 className="text-lg font-bold text-slate-900 mb-2">Savings Goals with Contributions</h4>
@@ -309,8 +364,14 @@ export default function LandingPage() {
             </div>
 
             {/* Feature 5 */}
-            <div className="p-6 sm:p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:border-emerald-200 transition shadow-subtle hover:shadow-hover">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center mb-5">
+            <div className="p-6 sm:p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:border-slate-300 transition shadow-subtle">
+              <div
+                className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5"
+                style={{
+                  backgroundColor: 'var(--color-primary-light, rgba(16, 185, 129, 0.1))',
+                  color: 'var(--color-primary, #10b981)',
+                }}
+              >
                 <BarChart3 className="w-6 h-6" />
               </div>
               <h4 className="text-lg font-bold text-slate-900 mb-2">Lending & Borrowed Money</h4>
@@ -320,8 +381,14 @@ export default function LandingPage() {
             </div>
 
             {/* Feature 6 */}
-            <div className="p-6 sm:p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:border-emerald-200 transition shadow-subtle hover:shadow-hover">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center mb-5">
+            <div className="p-6 sm:p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:border-slate-300 transition shadow-subtle">
+              <div
+                className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5"
+                style={{
+                  backgroundColor: 'var(--color-primary-light, rgba(16, 185, 129, 0.1))',
+                  color: 'var(--color-primary, #10b981)',
+                }}
+              >
                 <Smartphone className="w-6 h-6" />
               </div>
               <h4 className="text-lg font-bold text-slate-900 mb-2">Mobile-First PWA</h4>
@@ -335,9 +402,12 @@ export default function LandingPage() {
 
       {/* 8. HOW IT WORKS SECTION */}
       <section id="how-it-works" className="py-20 bg-slate-50/70 border-t border-slate-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container app-container">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-emerald-600 mb-2">
+            <h2
+              className="text-xs font-bold uppercase tracking-wider mb-2"
+              style={{ color: 'var(--color-primary, #10b981)' }}
+            >
               Simple 3-Step Flow
             </h2>
             <h3 className="text-3xl font-extrabold text-slate-900 tracking-tight">
@@ -347,7 +417,10 @@ export default function LandingPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div className="p-6 rounded-2xl bg-white border border-slate-100 shadow-subtle">
-              <div className="w-12 h-12 rounded-full bg-emerald-600 text-white font-extrabold flex items-center justify-center mx-auto mb-4 text-lg">
+              <div
+                className="w-12 h-12 rounded-full text-white font-extrabold flex items-center justify-center mx-auto mb-4 text-lg"
+                style={{ backgroundColor: 'var(--color-primary, #10b981)' }}
+              >
                 1
               </div>
               <h4 className="font-bold text-slate-900 text-base mb-2">Create Your Account</h4>
@@ -357,7 +430,10 @@ export default function LandingPage() {
             </div>
 
             <div className="p-6 rounded-2xl bg-white border border-slate-100 shadow-subtle">
-              <div className="w-12 h-12 rounded-full bg-emerald-600 text-white font-extrabold flex items-center justify-center mx-auto mb-4 text-lg">
+              <div
+                className="w-12 h-12 rounded-full text-white font-extrabold flex items-center justify-center mx-auto mb-4 text-lg"
+                style={{ backgroundColor: 'var(--color-primary, #10b981)' }}
+              >
                 2
               </div>
               <h4 className="font-bold text-slate-900 text-base mb-2">Record Income & Expenses</h4>
@@ -367,7 +443,10 @@ export default function LandingPage() {
             </div>
 
             <div className="p-6 rounded-2xl bg-white border border-slate-100 shadow-subtle">
-              <div className="w-12 h-12 rounded-full bg-emerald-600 text-white font-extrabold flex items-center justify-center mx-auto mb-4 text-lg">
+              <div
+                className="w-12 h-12 rounded-full text-white font-extrabold flex items-center justify-center mx-auto mb-4 text-lg"
+                style={{ backgroundColor: 'var(--color-primary, #10b981)' }}
+              >
                 3
               </div>
               <h4 className="font-bold text-slate-900 text-base mb-2">Gain True Financial Clarity</h4>
@@ -381,7 +460,7 @@ export default function LandingPage() {
 
       {/* 10. PRIVACY AND SECURITY SECTION */}
       <section id="security" className="py-20 sm:py-28 bg-white border-t border-slate-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container app-container">
           <div className="p-8 sm:p-12 rounded-3xl bg-slate-900 text-white relative overflow-hidden shadow-2xl">
             <div className="relative z-10 max-w-3xl">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-semibold mb-4">
@@ -420,9 +499,12 @@ export default function LandingPage() {
 
       {/* 11. FAQ SECTION */}
       <section id="faq" className="py-20 bg-slate-50/50 border-t border-slate-100">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container app-container max-w-4xl">
           <div className="text-center mb-12">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-emerald-600 mb-2">
+            <h2
+              className="text-xs font-bold uppercase tracking-wider mb-2"
+              style={{ color: 'var(--color-primary, #10b981)' }}
+            >
               Got Questions?
             </h2>
             <h3 className="text-3xl font-extrabold text-slate-900 tracking-tight">
@@ -438,12 +520,14 @@ export default function LandingPage() {
               >
                 <button
                   onClick={() => toggleFaq(idx)}
-                  className="w-full px-5 py-4 text-left flex items-center justify-between text-sm font-bold text-slate-900 hover:text-emerald-700 transition"
+                  className="w-full px-5 py-4 text-left flex items-center justify-between text-sm font-bold text-slate-900 hover:text-slate-700 transition"
                 >
                   <span>{faq.q}</span>
                   <ChevronDown
-                    className={`w-4 h-4 text-slate-400 transition-transform ${openFaq === idx ? 'rotate-180 text-emerald-600' : ''
-                      }`}
+                    className={`w-4 h-4 text-slate-400 transition-transform ${
+                      openFaq === idx ? 'rotate-180' : ''
+                    }`}
+                    style={openFaq === idx ? { color: 'var(--color-primary, #10b981)' } : undefined}
                   />
                 </button>
                 {openFaq === idx && (
@@ -459,9 +543,12 @@ export default function LandingPage() {
 
       {/* 12. FOOTER */}
       <footer className="bg-white border-t border-slate-200/80 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="container app-container flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-emerald-600 flex items-center justify-center text-white">
+            <div
+              className="w-8 h-8 rounded-xl flex items-center justify-center text-white"
+              style={{ backgroundColor: 'var(--color-primary, #10b981)' }}
+            >
               <TrendingUp className="w-4 h-4" />
             </div>
             <span className="font-bold text-slate-900 text-base">MyFinance</span>
@@ -469,9 +556,9 @@ export default function LandingPage() {
           </div>
 
           <div className="text-xs text-slate-500 flex items-center gap-6">
-            <Link href="/login" className="hover:text-emerald-600 transition">Login</Link>
-            <Link href="/signup" className="hover:text-emerald-600 transition">Sign Up</Link>
-            <Link href="/dashboard" className="hover:text-emerald-600 transition">Dashboard</Link>
+            <Link href="/login" className="hover:text-slate-900 transition">Login</Link>
+            <Link href="/signup" className="hover:text-slate-900 transition">Sign Up</Link>
+            <Link href="/dashboard" className="hover:text-slate-900 transition">Dashboard</Link>
           </div>
         </div>
       </footer>

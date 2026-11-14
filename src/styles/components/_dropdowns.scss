@@ -1,0 +1,56 @@
+@use '../abstracts/variables' as *;
+
+// ==============================================================================
+// DROPDOWNS COMPONENT
+// ==============================================================================
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+
+  &__menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 4px;
+    min-width: 180px;
+    background-color: $color-bg-surface;
+    border: 1px solid $color-border-default;
+    border-radius: $radius-md;
+    box-shadow: $shadow-lg;
+    padding: 4px;
+    z-index: $z-dropdown;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    padding: 8px 12px;
+    font-size: $font-size-xs;
+    color: $color-text-secondary;
+    border-radius: $radius-sm;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color $transition-fast, color $transition-fast;
+
+    &:hover {
+      background-color: $color-bg-surface-subtle;
+      color: $color-text-primary;
+    }
+
+    &--danger {
+      color: $color-danger;
+      &:hover {
+        background-color: $color-danger-light;
+      }
+    }
+  }
+
+  &__divider {
+    height: 1px;
+    background-color: $color-border-light;
+    margin: 4px 0;
+  }
+}
+

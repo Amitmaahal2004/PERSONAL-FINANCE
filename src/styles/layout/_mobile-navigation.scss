@@ -1,0 +1,129 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ==============================================================================
+// MOBILE BOTTOM NAVIGATION & DRAWER
+// ==============================================================================
+
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid $color-border-default;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: $z-fixed;
+  padding: 0 $space-2;
+
+  @include respond-to('md') {
+    display: none;
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    font-size: $font-size-2xs;
+    font-weight: $font-weight-medium;
+    color: $color-text-muted;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color $transition-fast;
+
+    &--active {
+      color: var(--color-primary);
+      font-weight: $font-weight-semibold;
+    }
+
+    &--center-add {
+      position: relative;
+      top: -12px;
+
+      .mobile-bottom-nav__icon-box {
+        width: 44px;
+        height: 44px;
+        border-radius: $radius-full;
+        background-color: var(--color-primary);
+        color: #ffffff;
+        @include flex-center;
+        box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.35);
+        transition: transform $transition-fast;
+
+        &:active {
+          transform: scale(0.95);
+        }
+      }
+    }
+  }
+}
+
+// Mobile "More" Drawer
+.mobile-drawer {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: $z-modal;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  animation: fadeIn $transition-fast;
+
+  @include respond-to('md') {
+    display: none;
+  }
+
+  &__panel {
+    background-color: $color-bg-surface;
+    border-top-left-radius: $radius-2xl;
+    border-top-right-radius: $radius-2xl;
+    padding: $space-5;
+    max-height: 85vh;
+    overflow-y: auto;
+    @include scrollbar-custom;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: $space-3;
+    border-bottom: 1px solid $color-border-light;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $space-2;
+    margin-top: $space-4;
+  }
+
+  &__card {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    padding: $space-3;
+    border-radius: $radius-md;
+    background-color: $color-bg-surface-subtle;
+    border: 1px solid $color-border-light;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    color: $color-text-secondary;
+    transition: all $transition-fast;
+
+    &:hover {
+      background-color: var(--color-primary-light);
+      color: var(--color-primary);
+      border-color: var(--color-primary-border);
+    }
+  }
+}
+

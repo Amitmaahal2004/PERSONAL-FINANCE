@@ -1,0 +1,36 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ==============================================================================
+// CALENDAR PAGE STYLES
+// ==============================================================================
+
+.calendar-page {
+  padding: $space-6 0 $space-16;
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    background-color: $color-border-default;
+    border: 1px solid $color-border-default;
+    border-radius: $radius-xl;
+    overflow: hidden;
+  }
+
+  &__day-cell {
+    background-color: $color-bg-surface;
+    min-height: 90px;
+    padding: $space-2;
+    transition: background-color $transition-fast;
+
+    &:hover {
+      background-color: rgba(248, 250, 252, 0.9);
+    }
+
+    &--today {
+      background-color: var(--color-primary-light);
+    }
+  }
+}
+

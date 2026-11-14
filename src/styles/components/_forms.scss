@@ -1,0 +1,47 @@
+@use '../abstracts/variables' as *;
+
+// ==============================================================================
+// FORM COMPONENT
+// ==============================================================================
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: $space-4;
+
+  &--inline {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.form-label {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: $color-text-secondary;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  &__required {
+    color: $color-danger;
+  }
+}
+
+.form-hint {
+  font-size: 11px;
+  color: $color-text-muted;
+  margin-top: 2px;
+}
+
+.form-error {
+  font-size: 11px;
+  font-weight: $font-weight-medium;
+  color: $color-danger;
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+

@@ -1,0 +1,16 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ==============================================================================
+// RECURRING PAYMENTS PAGE STYLES
+// ==============================================================================
+
+.recurring-page {
+  padding: $space-6 0 $space-16;
+
+  &__list {
+    @include card-surface;
+    overflow: hidden;
+  }
+}
+

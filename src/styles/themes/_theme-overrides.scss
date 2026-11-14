@@ -1,0 +1,58 @@
+// ==============================================================================
+// DYNAMIC THEME OVERRIDES (SUPER ADMIN DYNAMIC COLORS)
+// ==============================================================================
+
+// Text & Link Highlights
+a.brand-link,
+.link-primary {
+  color: var(--color-primary);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--color-primary-hover);
+    text-decoration: underline;
+  }
+}
+
+// Focus ring overrides
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+button:focus-visible {
+  outline-color: var(--color-primary) !important;
+}
+
+// Dynamic brand backgrounds
+.bg-brand-primary {
+  background-color: var(--color-primary) !important;
+}
+
+.bg-brand-primary-light {
+  background-color: var(--color-primary-light) !important;
+}
+
+.text-brand-primary {
+  color: var(--color-primary) !important;
+}
+
+.border-brand-primary {
+  border-color: var(--color-primary) !important;
+}
+
+.bg-brand-secondary {
+  background-color: var(--color-secondary) !important;
+}
+
+.text-brand-secondary {
+  color: var(--color-secondary) !important;
+}
+
+// Chart accents
+.chart-primary-stroke {
+  stroke: var(--color-primary) !important;
+}
+
+.chart-primary-fill {
+  fill: var(--color-primary) !important;
+}
+

@@ -1,0 +1,89 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ==============================================================================
+// HEADER LAYOUT
+// ==============================================================================
+
+.app-header {
+  height: 64px;
+  background-color: $color-bg-surface;
+  border-bottom: 1px solid $color-border-default;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 $space-6;
+  position: sticky;
+  top: 0;
+  z-index: $z-sticky;
+
+  &__search-btn {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    padding: $space-2 $space-3;
+    background-color: $color-bg-surface-subtle;
+    border: 1px solid $color-border-default;
+    border-radius: $radius-md;
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+    width: 280px;
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    &:hover {
+      background-color: $color-bg-surface;
+      border-color: $color-border-hover;
+      color: $color-text-primary;
+    }
+  }
+
+  &__search-kbd {
+    margin-left: auto;
+    font-size: $font-size-2xs;
+    font-weight: $font-weight-semibold;
+    background-color: $color-bg-surface;
+    border: 1px solid $color-border-default;
+    border-radius: $radius-xs;
+    padding: 2px 6px;
+    color: $color-text-secondary;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: $space-4;
+  }
+
+  &__currency-badge {
+    padding: 6px 12px;
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary-border);
+    border-radius: $radius-sm;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+  }
+
+  // Mobile Top Header
+  &--mobile {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    padding: 0 $space-4;
+    background-color: $color-bg-surface;
+    border-bottom: 1px solid $color-border-default;
+    position: sticky;
+    top: 0;
+    z-index: $z-sticky;
+
+    @include respond-to('md') {
+      display: none;
+    }
+  }
+}
+

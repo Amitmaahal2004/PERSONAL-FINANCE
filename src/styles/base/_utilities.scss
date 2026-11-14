@@ -1,0 +1,53 @@
+@use '../abstracts/variables' as *;
+
+// ==============================================================================
+// BASE UTILITY CLASSES
+// ==============================================================================
+
+.d-flex { display: flex; }
+.d-inline-flex { display: inline-flex; }
+.d-block { display: block; }
+.d-none { display: none; }
+
+.flex-col { flex-direction: column; }
+.flex-row { flex-direction: row; }
+.flex-wrap { flex-wrap: wrap; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.items-end { align-items: flex-end; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-end { justify-content: flex-end; }
+
+.gap-1 { gap: $space-1; }
+.gap-2 { gap: $space-2; }
+.gap-3 { gap: $space-3; }
+.gap-4 { gap: $space-4; }
+.gap-6 { gap: $space-6; }
+.gap-8 { gap: $space-8; }
+
+.w-full { width: 100%; }
+.h-full { height: 100%; }
+
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
