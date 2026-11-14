@@ -22,11 +22,12 @@ import {
   Menu,
   X,
   LogOut,
-  ChevronRight,
   TrendingUp,
-  Sparkles,
   Trash2,
   Coins,
+  Bell,
+  Crown,
+  ChevronDown,
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import GlobalSearchModal from '@/components/common/GlobalSearchModal';
@@ -34,6 +35,13 @@ import QuickAddModal from '@/components/common/QuickAddModal';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
+}
+
+interface NavItem {
+  name: string;
+  href: string;
+  icon: any;
+  badge?: number;
 }
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
@@ -63,7 +71,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     return () => window.removeEventListener('finance_updated', handleUpdate);
   }, [pathname]);
 
-  const mainNavItems = [
+  const financeNavItems: NavItem[] = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Transactions', href: '/transactions', icon: ArrowLeftRight },
     { name: 'Udhaar Management', href: '/udhaar', icon: HandCoins },
@@ -76,14 +84,18 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     { name: 'Calendar', href: '/calendar', icon: Calendar },
     { name: 'Reports', href: '/reports', icon: BarChart3 },
     { name: 'Recycle Bin', href: '/trash', icon: Trash2, badge: trashCount > 0 ? trashCount : undefined },
+  ];
+
+  const settingsNavItems: NavItem[] = [
     { name: 'Profile', href: '/profile', icon: User },
     { name: 'Settings', href: '/settings', icon: Settings },
   ];
 
-  // Super Admin section
   if (user?.role === 'admin') {
-    mainNavItems.push({ name: 'Admin Panel', href: '/admin', icon: Shield });
+    settingsNavItems.push({ name: 'Admin Panel', href: '/admin', icon: Shield });
   }
+
+  const allNavItems = [...financeNavItems, ...settingsNavItems];
 
   const mobileBottomItems = [
     { name: 'Home', href: '/dashboard', icon: LayoutDashboard },
@@ -94,108 +106,99 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] text-slate-900 flex flex-col md:flex-row">
+    <div className="app">
       {/* DESKTOP SIDEBAR */}
-      <aside className="hidden md:flex flex-col w-64 bg-white border-r border-slate-200/80 shrink-0 h-screen sticky top-0 z-30 select-none">
+      <aside className="sidebar">
         {/* Brand Header */}
-        <div className="h-16 px-6 flex items-center justify-between border-b border-slate-100">
-          <Link href="/dashboard" className="flex items-center gap-2.5">
-            <div
-              className="w-9 h-9 rounded-xl flex items-center justify-center text-white shadow-md"
-              style={{
-                background: 'linear-gradient(135deg, var(--color-primary, #10b981), var(--color-secondary, #0f766e))',
-              }}
-            >
+        <div className="sidebar-header">
+          <Link href="/dashboard" className="sidebar-logo">
+            <div className="sidebar-logo-icon">
               <TrendingUp className="w-5 h-5" />
             </div>
-            <div>
-              <span className="font-bold text-lg text-slate-900 tracking-tight">MyFinance</span>
-              <span
-                className="block text-[10px] font-semibold uppercase tracking-widest leading-none"
-                style={{ color: 'var(--color-primary, #10b981)' }}
-              >
-                Private & Secure
-              </span>
+            <div className="sidebar-brand-text">
+              <span className="sidebar-brand-name">MyFinance</span>
+              <span className="sidebar-brand-tag">PRIVATE & SECURE</span>
             </div>
           </Link>
         </div>
 
-        {/* Quick Add Button in Sidebar */}
-        <div className="p-4 pb-2">
-          <button
-            onClick={() => setQuickAddOpen(true)}
-            className="w-full py-2.5 px-4 text-white text-xs font-semibold rounded-xl flex items-center justify-center gap-2 shadow-sm transition active:scale-[0.98]"
-            style={{ backgroundColor: 'var(--color-primary, #10b981)' }}
-          >
-            <Plus className="w-4 h-4" />
-            <span>New Transaction</span>
-          </button>
-        </div>
-
         {/* Navigation items */}
-        <nav className="flex-1 overflow-y-auto px-3 py-2 space-y-1">
-          {mainNavItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href));
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                style={
-                  isActive
-                    ? {
-                        backgroundColor: 'var(--color-primary-light, rgba(16, 185, 129, 0.08))',
-                        color: 'var(--color-primary, #10b981)',
-                        fontWeight: 600,
-                      }
-                    : undefined
-                }
-                className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition ${
-                  isActive ? '' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                }`}
-              >
-                <Icon
-                  className="w-4 h-4"
-                  style={isActive ? { color: 'var(--color-primary, #10b981)' } : undefined}
-                />
-                <span className="truncate">{item.name}</span>
-                {item.name === 'Admin Panel' && (
-                  <span className="ml-auto text-[10px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-bold">
-                    ADMIN
-                  </span>
-                )}
-                {item.badge !== undefined && (
-                  <span className="ml-auto text-[10px] bg-rose-500 text-white font-bold px-1.5 py-0.5 rounded-full shadow-xs">
-                    {item.badge}
-                  </span>
-                )}
-              </Link>
-            );
-          })}
+        <nav className="sidebar-nav">
+          <div className="sidebar-nav-group">
+            {financeNavItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href));
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`sidebar-nav-link ${isActive ? 'sidebar-nav-link-active' : ''}`}
+                >
+                  <Icon className="sidebar-nav-icon" />
+                  <span className="sidebar-nav-text">{item.name}</span>
+                  {item.badge !== undefined && (
+                    <span className="sidebar-nav-badge sidebar-nav-badge-alert">{item.badge}</span>
+                  )}
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Settings Section */}
+          <div className="sidebar-section-title">SETTINGS</div>
+          <div className="sidebar-nav-group">
+            {settingsNavItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = pathname === item.href || pathname.startsWith(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`sidebar-nav-link ${isActive ? 'sidebar-nav-link-active' : ''}`}
+                >
+                  <Icon className="sidebar-nav-icon" />
+                  <span className="sidebar-nav-text">{item.name}</span>
+                  {item.name === 'Admin Panel' && (
+                    <span className="sidebar-nav-badge sidebar-nav-badge-admin">ADMIN</span>
+                  )}
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Decorative Promo Card */}
+          <div className="sidebar-promo">
+            <div className="sidebar-promo-icon">
+              <Crown className="w-5 h-5 text-amber-300" />
+            </div>
+            <div className="sidebar-promo-title">
+              Keep Your Finances Organized & Secure
+            </div>
+            <div className="sidebar-promo-wave" aria-hidden="true">
+              <svg viewBox="0 0 160 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 25 C40 10, 80 35, 120 18 C140 10, 150 15, 160 12 L160 40 L0 40 Z" fill="rgba(16, 185, 129, 0.25)" />
+                <path d="M0 32 C50 20, 90 38, 130 25 C145 20, 155 24, 160 22 L160 40 L0 40 Z" fill="rgba(56, 189, 248, 0.2)" />
+              </svg>
+            </div>
+          </div>
         </nav>
 
-        {/* User Profile Mini Footer */}
-        <div className="p-3 border-t border-slate-100">
-          <div className="flex items-center justify-between p-2 rounded-xl bg-slate-50 border border-slate-100">
-            <Link href="/profile" className="flex items-center gap-2.5 truncate">
-              <div
-                className="w-8 h-8 rounded-full font-bold flex items-center justify-center text-xs shrink-0"
-                style={{
-                  backgroundColor: 'var(--color-primary-light, rgba(16, 185, 129, 0.1))',
-                  color: 'var(--color-primary, #10b981)',
-                }}
-              >
-                {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+        {/* User Mini Footer */}
+        <div className="sidebar-footer">
+          <div className="sidebar-user">
+            <Link href="/profile" className="sidebar-user-link">
+              <div className="sidebar-user-avatar">
+                {user?.name ? user.name.charAt(0).toUpperCase() : 'S'}
               </div>
-              <div className="truncate text-left">
-                <div className="text-xs font-semibold text-slate-800 truncate">{user?.name || 'User'}</div>
-                <div className="text-[11px] text-slate-400 truncate">{user?.email}</div>
+              <div className="sidebar-user-info">
+                <div className="sidebar-user-name">{user?.name || 'Super Administrator'}</div>
+                <div className="sidebar-user-email">{user?.email || 'admin@myfinance.app'}</div>
               </div>
             </Link>
             <button
               onClick={() => logout()}
               title="Logout"
-              className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition"
+              className="sidebar-logout-btn"
             >
               <LogOut className="w-4 h-4" />
             </button>
@@ -203,94 +206,81 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         </div>
       </aside>
 
-      {/* MAIN CONTENT AREA */}
-      <div className="flex-1 flex flex-col min-w-0">
-        {/* DESKTOP TOP HEADER */}
-        <header className="hidden md:flex h-16 bg-white border-b border-slate-200/80 items-center justify-between px-8 sticky top-0 z-20">
-          {/* Global Search Bar */}
-          <button
-            onClick={() => setSearchOpen(true)}
-            className="flex items-center gap-3 px-3.5 py-2 bg-slate-50 hover:bg-slate-100 text-slate-400 hover:text-slate-600 border border-slate-200 rounded-xl text-xs transition w-72"
-          >
-            <Search className="w-4 h-4" />
-            <span className="truncate">Search transactions, tags, accounts...</span>
-            <kbd className="ml-auto text-[10px] bg-white px-1.5 py-0.5 rounded border border-slate-200 font-semibold text-slate-500">
-              Ctrl K
-            </kbd>
-          </button>
-
-          {/* Right Header items */}
-          <div className="flex items-center gap-4">
-            <div
-              className="px-3 py-1.5 text-xs font-semibold rounded-lg border flex items-center gap-1.5"
-              style={{
-                backgroundColor: 'var(--color-primary-light, rgba(16, 185, 129, 0.08))',
-                color: 'var(--color-primary, #10b981)',
-                borderColor: 'var(--color-primary-border, rgba(16, 185, 129, 0.2))',
-              }}
+      {/* MAIN APPLICATION CONTENT */}
+      <div className="app-content">
+        {/* DESKTOP HEADER */}
+        <header className="header">
+          <div className="header-inner-container">
+            {/* Global Search Bar */}
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="header-search-btn"
             >
-              <span>Currency:</span>
-              <span className="font-bold">{user?.preferredCurrency || 'INR'} ({user?.currencySymbol || '₹'})</span>
-            </div>
+              <Search className="w-4 h-4 shrink-0" />
+              <span className="header-search-text">Search transactions, tags, accounts...</span>
+              <kbd className="header-search-kbd">Ctrl K</kbd>
+            </button>
 
-            <Link
-              href="/profile"
-              className="flex items-center gap-2 text-xs font-medium text-slate-700 hover:text-slate-900 transition"
-            >
-              <div
-                className="w-8 h-8 rounded-full font-bold flex items-center justify-center text-xs"
-                style={{
-                  backgroundColor: 'var(--color-primary-light, rgba(16, 185, 129, 0.1))',
-                  color: 'var(--color-primary, #10b981)',
-                }}
+            {/* Right Header items */}
+            <div className="header-actions">
+              <Link href="/profile" className="header-currency" title="Change preferred currency">
+                <span>Currency:</span>
+                <strong>{user?.preferredCurrency || 'INR'} ({user?.currencySymbol || '₹'})</strong>
+                <ChevronDown className="w-3.5 h-3.5 opacity-70" />
+              </Link>
+
+              <button
+                type="button"
+                className="header-notification-btn"
+                title="Notifications"
+                aria-label="Notifications"
+                onClick={() => {}}
               >
-                {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
-              </div>
-              <span className="font-semibold">{user?.name}</span>
-            </Link>
+                <Bell className="w-4 h-4" />
+                <span className="header-notification-dot" />
+              </button>
+
+              <Link href="/profile" className="header-profile-link" title="My Profile">
+                <div className="header-profile-avatar">
+                  {user?.name ? user.name.charAt(0).toUpperCase() : 'S'}
+                </div>
+              </Link>
+            </div>
           </div>
         </header>
 
-        {/* MOBILE TOP BAR */}
-        <header className="md:hidden h-14 bg-white border-b border-slate-200 px-4 flex items-center justify-between sticky top-0 z-30">
-          <Link href="/dashboard" className="flex items-center gap-2">
-            <div
-              className="w-7 h-7 rounded-lg text-white flex items-center justify-center shadow-sm"
-              style={{ backgroundColor: 'var(--color-primary, #10b981)' }}
-            >
+        {/* MOBILE HEADER */}
+        <header className="mobile-header">
+          <Link href="/dashboard" className="mobile-header-logo">
+            <div className="mobile-header-logo-icon">
               <TrendingUp className="w-4 h-4" />
             </div>
-            <span className="font-bold text-base text-slate-900">MyFinance</span>
+            <span className="mobile-header-brand-name">MyFinance</span>
           </Link>
 
-          <div className="flex items-center gap-2">
+          <div className="mobile-header-actions">
             <button
               onClick={() => setSearchOpen(true)}
-              className="p-2 text-slate-600 hover:bg-slate-100 rounded-xl transition"
+              className="mobile-header-search-btn"
               aria-label="Search"
             >
               <Search className="w-5 h-5" />
             </button>
-            <Link
-              href="/profile"
-              className="w-8 h-8 rounded-full font-bold flex items-center justify-center text-xs"
-              style={{
-                backgroundColor: 'var(--color-primary-light, rgba(16, 185, 129, 0.1))',
-                color: 'var(--color-primary, #10b981)',
-              }}
-            >
+            <Link href="/profile" className="header-profile-avatar">
               {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
             </Link>
           </div>
         </header>
 
-        {/* PAGE CONTENT */}
-        <main className="flex-1 pb-24 md:pb-12 overflow-x-hidden container app-container">
-          {children}
+        {/* MAIN VIEWPORT WITH 1440PX MAXIMUM CONTAINER */}
+        <main className="main">
+          <div className="main-container">
+            {children}
+          </div>
         </main>
 
-        {/* MOBILE BOTTOM NAVIGATION BAR */}
-        <div className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-white/95 backdrop-blur-md border-t border-slate-200 px-4 flex items-center justify-around z-40">
+        {/* MOBILE BOTTOM NAVIGATION */}
+        <div className="mobile-bottom-nav">
           {mobileBottomItems.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
@@ -300,11 +290,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 <button
                   key="add-btn"
                   onClick={() => setQuickAddOpen(true)}
-                  className="w-12 h-12 -mt-5 rounded-full text-white shadow-lg flex items-center justify-center active:scale-95 transition"
-                  style={{
-                    backgroundColor: 'var(--color-primary, #10b981)',
-                    boxShadow: '0 8px 16px var(--color-primary-ring, rgba(16, 185, 129, 0.3))',
-                  }}
+                  className="mobile-nav-add-btn"
                   aria-label="Add Transaction"
                 >
                   <Plus className="w-6 h-6 stroke-[2.5]" />
@@ -317,10 +303,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 <button
                   key="more-btn"
                   onClick={() => setMobileDrawerOpen(true)}
-                  className="flex flex-col items-center gap-1 text-slate-500 hover:text-slate-900 transition"
+                  className="mobile-nav-item"
                 >
                   <Icon className="w-5 h-5" />
-                  <span className="text-[10px] font-medium">More</span>
+                  <span>More</span>
                 </button>
               );
             }
@@ -329,13 +315,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <Link
                 key={item.name}
                 href={item.href}
-                style={isActive ? { color: 'var(--color-primary, #10b981)' } : undefined}
-                className={`flex flex-col items-center gap-1 transition ${
-                  isActive ? 'font-semibold' : 'text-slate-400 hover:text-slate-600'
-                }`}
+                className={`mobile-nav-item ${isActive ? 'mobile-nav-item-active' : ''}`}
               >
                 <Icon className="w-5 h-5" />
-                <span className="text-[10px] font-medium">{item.name}</span>
+                <span>{item.name}</span>
               </Link>
             );
           })}
@@ -343,34 +326,34 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
         {/* MOBILE "MORE" DRAWER */}
         {mobileDrawerOpen && (
-          <div className="fixed inset-0 z-50 flex flex-col justify-end bg-slate-900/60 backdrop-blur-sm md:hidden animate-fadeIn">
-            <div className="w-full bg-white rounded-t-3xl max-h-[85vh] overflow-y-auto p-5 space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                <span className="font-bold text-slate-900 text-base">All Modules</span>
+          <div className="mobile-drawer-backdrop" onClick={() => setMobileDrawerOpen(false)}>
+            <div className="mobile-drawer" onClick={(e) => e.stopPropagation()}>
+              <div className="mobile-drawer-header">
+                <span className="mobile-drawer-title">All Modules</span>
                 <button
                   onClick={() => setMobileDrawerOpen(false)}
-                  className="p-1.5 text-slate-400 hover:text-slate-700 rounded-full bg-slate-100"
+                  className="mobile-drawer-close-btn"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
-              <div className="grid grid-cols-2 gap-2.5">
-                {mainNavItems.map((item) => {
+              <div className="mobile-drawer-grid">
+                {allNavItems.map((item) => {
                   const Icon = item.icon;
                   return (
                     <Link
                       key={item.href}
                       href={item.href}
                       onClick={() => setMobileDrawerOpen(false)}
-                      className="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-emerald-50 hover:text-emerald-800 text-slate-700 text-xs font-medium transition border border-slate-100"
+                      className="mobile-drawer-link"
                     >
-                      <div className="flex items-center gap-2.5 truncate">
-                        <Icon className="w-4 h-4 text-emerald-600 shrink-0" />
-                        <span className="truncate">{item.name}</span>
+                      <div className="mobile-drawer-link-content">
+                        <Icon className="w-4 h-4 shrink-0 text-emerald-600" />
+                        <span>{item.name}</span>
                       </div>
                       {item.badge !== undefined && (
-                        <span className="text-[10px] bg-rose-500 text-white font-bold px-1.5 py-0.5 rounded-full">
+                        <span className="sidebar-nav-badge sidebar-nav-badge-alert">
                           {item.badge}
                         </span>
                       )}
@@ -379,19 +362,19 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 })}
               </div>
 
-              <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
-                <div className="text-xs text-slate-500">
-                  Signed in as <span className="font-semibold text-slate-800">{user?.name}</span>
+              <div className="mobile-drawer-footer">
+                <div>
+                  Signed in as <strong>{user?.name}</strong>
                 </div>
                 <button
                   onClick={() => {
                     setMobileDrawerOpen(false);
                     logout();
                   }}
-                  className="flex items-center gap-1.5 text-xs font-semibold text-rose-600 bg-rose-50 px-3 py-1.5 rounded-lg"
+                  className="mobile-drawer-logout-btn"
                 >
                   <LogOut className="w-3.5 h-3.5" />
-                  Logout
+                  <span>Logout</span>
                 </button>
               </div>
             </div>
@@ -407,7 +390,6 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         isOpen={quickAddOpen}
         onClose={() => setQuickAddOpen(false)}
         onSuccess={() => {
-          // If on transactions or dashboard, dispatch event or reload data
           if (typeof window !== 'undefined') {
             window.dispatchEvent(new CustomEvent('finance_updated'));
           }
@@ -416,4 +398,3 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     </div>
   );
 }
-

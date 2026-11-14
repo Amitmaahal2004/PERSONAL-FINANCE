@@ -113,57 +113,59 @@ export default function CalendarPage() {
 
   return (
     <DashboardLayout>
-      <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
+      <div className="calendar">
         {/* HEADER */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+        <div className="calendar-header">
+          <div className="calendar-header-info">
+            <h1 className="calendar-title">
               Financial Activity Calendar
             </h1>
-            <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+            <p className="calendar-description">
               Visual roadmap of past transactions and upcoming payment dues.
             </p>
           </div>
 
-          <div className="flex items-center gap-3 bg-white p-1 rounded-2xl border border-slate-200/80 shadow-subtle">
+          <div className="calendar-nav">
             <button
               onClick={prevMonth}
-              className="p-1.5 hover:bg-slate-100 rounded-xl text-slate-600 transition"
+              className="calendar-nav-btn"
+              aria-label="Previous Month"
             >
-              <ChevronLeft className="w-4 h-4" />
+              <ChevronLeft style={{ width: 16, height: 16 }} />
             </button>
-            <span className="font-bold text-xs sm:text-sm text-slate-900 px-2 min-w-[120px] text-center">
+            <span className="calendar-month-label">
               {monthNames[month]} {year}
             </span>
             <button
               onClick={nextMonth}
-              className="p-1.5 hover:bg-slate-100 rounded-xl text-slate-600 transition"
+              className="calendar-nav-btn"
+              aria-label="Next Month"
             >
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight style={{ width: 16, height: 16 }} />
             </button>
           </div>
         </div>
 
         {/* CALENDAR & SELECTED DAY PANEL */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Calendar Grid (2 Cols on lg) */}
-          <div className="lg:col-span-2 bg-white rounded-3xl border border-slate-200/80 shadow-subtle p-5 sm:p-6">
+        <div className="calendar-layout">
+          {/* Calendar Grid */}
+          <div className="calendar-main">
             {/* Days of week header */}
-            <div className="grid grid-cols-7 gap-1 text-center font-bold text-xs text-slate-400 mb-2 uppercase tracking-wider">
-              <span>Sun</span>
-              <span>Mon</span>
-              <span>Tue</span>
-              <span>Wed</span>
-              <span>Thu</span>
-              <span>Fri</span>
-              <span>Sat</span>
+            <div className="calendar-weekdays">
+              <span className="calendar-weekday">Sun</span>
+              <span className="calendar-weekday">Mon</span>
+              <span className="calendar-weekday">Tue</span>
+              <span className="calendar-weekday">Wed</span>
+              <span className="calendar-weekday">Thu</span>
+              <span className="calendar-weekday">Fri</span>
+              <span className="calendar-weekday">Sat</span>
             </div>
 
             {/* Calendar Cells */}
-            <div className="grid grid-cols-7 gap-1 sm:gap-2">
+            <div className="calendar-grid">
               {/* Empty leading slots */}
               {Array.from({ length: firstDayOfWeek }).map((_, i) => (
-                <div key={`empty-${i}`} className="h-16 sm:h-20 bg-slate-50/50 rounded-2xl" />
+                <div key={`empty-${i}`} className="calendar-slot-empty" />
               ))}
 
               {/* Day cells */}
@@ -183,35 +185,35 @@ export default function CalendarPage() {
                   <button
                     key={`day-${day}`}
                     onClick={() => setSelectedDay(day)}
-                    className={`h-16 sm:h-20 p-1.5 sm:p-2 rounded-2xl flex flex-col justify-between transition border text-left ${isSelected
-                      ? 'border-emerald-600 bg-emerald-50/50 shadow-sm'
-                      : isToday
-                        ? 'border-slate-300 bg-slate-50'
-                        : 'border-slate-100 hover:border-slate-200 hover:bg-slate-50'
-                      }`}
+                    className={`calendar-day ${
+                      isSelected
+                        ? 'calendar-day-selected'
+                        : isToday
+                        ? 'calendar-day-today'
+                        : ''
+                    }`}
                   >
-                    <div className="flex items-center justify-between w-full">
+                    <div className="calendar-day-top">
                       <span
-                        className={`text-xs font-bold ${isSelected
-                          ? 'text-emerald-700'
-                          : isToday
-                            ? 'w-5 h-5 rounded-full bg-slate-900 text-white flex items-center justify-center text-[10px]'
-                            : 'text-slate-800'
-                          }`}
+                        className={
+                          isToday
+                            ? 'calendar-day-number-today'
+                            : 'calendar-day-number'
+                        }
                       >
                         {day}
                       </span>
 
                       {dayRecs.length > 0 && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-purple-500" title="Recurring Due" />
+                        <span className="calendar-dot-recurring" title="Recurring Due" />
                       )}
                     </div>
 
-                    <div className="flex items-center gap-1 mt-auto">
-                      {hasIncome && <span className="w-2 h-2 rounded-full bg-emerald-500" title="Income" />}
-                      {hasExpense && <span className="w-2 h-2 rounded-full bg-rose-500" title="Expense" />}
+                    <div className="calendar-day-dots">
+                      {hasIncome && <span className="calendar-dot-income" title="Income" />}
+                      {hasExpense && <span className="calendar-dot-expense" title="Expense" />}
                       {dayTxs.length > 2 && (
-                        <span className="text-[9px] font-bold text-slate-400">+{dayTxs.length - 2}</span>
+                        <span className="calendar-more-count">+{dayTxs.length - 2}</span>
                       )}
                     </div>
                   </button>
@@ -221,77 +223,79 @@ export default function CalendarPage() {
           </div>
 
           {/* Day Detail Sidebar */}
-          <div className="bg-white rounded-3xl border border-slate-200/80 shadow-subtle p-5 sm:p-6 flex flex-col justify-between">
+          <div className="calendar-sidebar">
             <div>
-              <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+              <div className="calendar-sidebar-header">
                 <div>
-                  <h3 className="font-bold text-slate-900 text-base">
+                  <h3 className="calendar-sidebar-title">
                     {selectedDay ? `${monthNames[month]} ${selectedDay}, ${year}` : 'Select a Day'}
                   </h3>
-                  <p className="text-xs text-slate-400">Activity on this date</p>
+                  <p className="calendar-sidebar-subtitle">Activity on this date</p>
                 </div>
               </div>
 
               {selectedDay && (
-                <div className="space-y-4">
+                <div>
                   {/* Recurring dues on this day */}
                   {selectedRecurring.length > 0 && (
-                    <div className="space-y-2">
-                      <span className="text-[11px] font-bold text-purple-700 uppercase tracking-wider block">
+                    <div className="calendar-section">
+                      <span className="calendar-section-title calendar-section-title-purple">
                         Recurring Dues
                       </span>
                       {selectedRecurring.map((r) => (
                         <div
                           key={r._id}
-                          className="p-2.5 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-between text-xs"
+                          className="calendar-event-item calendar-event-item-recurring"
                         >
                           <div>
-                            <div className="font-bold text-purple-900">{r.title}</div>
-                            <span className="text-[10px] text-purple-600">{r.frequency}</span>
+                            <div className="calendar-event-title">{r.title}</div>
+                            <span className="calendar-event-meta">{r.frequency}</span>
                           </div>
-                          <span className="font-bold text-purple-900">{formatCurrency(r.amount, cur, sym)}</span>
+                          <span className="calendar-event-amount">{formatCurrency(r.amount, cur, sym)}</span>
                         </div>
                       ))}
                     </div>
                   )}
 
                   {/* Transactions on this day */}
-                  <div className="space-y-2">
-                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
+                  <div className="calendar-section">
+                    <span className="calendar-section-title">
                       Transactions ({selectedTransactions.length})
                     </span>
 
                     {selectedTransactions.length === 0 ? (
-                      <div className="py-8 text-center text-xs text-slate-400">
+                      <div className="calendar-event-empty">
                         No transactions recorded on this date.
                       </div>
                     ) : (
                       selectedTransactions.map((tx) => (
                         <div
                           key={tx._id}
-                          className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between text-xs"
+                          className="calendar-event-item"
                         >
-                          <div className="flex items-center gap-2">
+                          <div className="calendar-event-info">
                             <div
-                              className={`w-6 h-6 rounded-md flex items-center justify-center ${tx.type === 'income' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'
-                                }`}
+                              className={`calendar-event-icon ${
+                                tx.type === 'income' ? 'calendar-event-icon-income' : 'calendar-event-icon-expense'
+                              }`}
                             >
                               {tx.type === 'income' ? (
-                                <ArrowDownLeft className="w-3.5 h-3.5" />
+                                <ArrowDownLeft style={{ width: 14, height: 14 }} />
                               ) : (
-                                <ArrowUpRight className="w-3.5 h-3.5" />
+                                <ArrowUpRight style={{ width: 14, height: 14 }} />
                               )}
                             </div>
                             <div>
-                              <div className="font-bold text-slate-800">{tx.title}</div>
-                              <span className="text-[10px] text-slate-400">
+                              <div className="calendar-event-title">{tx.title}</div>
+                              <span className="calendar-event-meta">
                                 {tx.category} • {tx.account}
                               </span>
                             </div>
                           </div>
                           <span
-                            className={`font-bold ${tx.type === 'income' ? 'text-emerald-600' : 'text-slate-900'
-                              }`}
+                            className={`calendar-event-amount ${
+                              tx.type === 'income' ? 'calendar-event-amount-income' : ''
+                            }`}
                           >
                             {tx.type === 'income' ? '+' : '-'}
                             {formatCurrency(tx.amount, cur, sym)}
@@ -304,15 +308,15 @@ export default function CalendarPage() {
               )}
             </div>
 
-            <div className="pt-4 border-t border-slate-100 text-xs text-slate-400 flex items-center justify-between">
-              <span className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-500" /> Income
+            <div className="calendar-legend">
+              <span className="calendar-legend-item">
+                <span className="calendar-legend-dot calendar-legend-dot-income" /> Income
               </span>
-              <span className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-rose-500" /> Expense
+              <span className="calendar-legend-item">
+                <span className="calendar-legend-dot calendar-legend-dot-expense" /> Expense
               </span>
-              <span className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-purple-500" /> Recurring
+              <span className="calendar-legend-item">
+                <span className="calendar-legend-dot calendar-legend-dot-recurring" /> Recurring
               </span>
             </div>
           </div>

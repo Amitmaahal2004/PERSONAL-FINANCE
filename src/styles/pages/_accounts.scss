@@ -2,31 +2,476 @@
 @use '../abstracts/mixins' as *;
 
 // ==============================================================================
-// ACCOUNTS PAGE STYLES
+// ACCOUNTS & WALLETS - SEMANTIC SCSS
 // ==============================================================================
 
-.accounts-page {
-  padding: $space-6 0 $space-16;
+.accounts {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 8px 0 48px;
+}
 
-  &__grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: $space-4;
+// 1. HEADER
+.accounts-header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 
-    @include respond-to('sm') {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    @include respond-to('lg') {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  &__card {
-    @include card-surface;
-    padding: $space-5;
-    position: relative;
-    border-top: 4px solid var(--color-primary);
+  @media (min-width: 640px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
   }
 }
 
+.accounts-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: $color-text-primary;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+.accounts-description {
+  font-size: 13px;
+  color: $color-text-muted;
+  margin: 4px 0 0;
+}
+
+.accounts-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.accounts-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 14px;
+  background-color: #ffffff;
+  border: 1px solid $color-border-default;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  color: $color-text-secondary;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background-color: $color-bg-surface-subtle;
+    color: $color-text-primary;
+  }
+}
+
+.accounts-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  background-color: var(--color-primary, #10b981);
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);
+  transition: opacity 0.15s ease;
+
+  &:hover {
+    opacity: 0.92;
+  }
+}
+
+// 2. TOTAL BALANCE HERO CARD
+.accounts-balance-card {
+  padding: 24px;
+  border-radius: 20px;
+  background-color: #ffffff;
+  border: 1px solid $color-border-default;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @media (min-width: 640px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.accounts-balance-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: $color-text-muted;
+}
+
+.accounts-balance-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: $color-text-primary;
+  margin-top: 4px;
+}
+
+.accounts-balance-desc {
+  font-size: 12px;
+  color: $color-text-muted;
+  margin-top: 2px;
+}
+
+.accounts-balance-tip {
+  font-size: 12px;
+  color: $color-text-muted;
+  background-color: #f8fafc;
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+// 3. ACCOUNTS GRID
+.accounts-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.account-card {
+  padding: 20px;
+  border-radius: 20px;
+  background-color: #ffffff;
+  border: 1px solid $color-border-default;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.15s ease;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+  }
+}
+
+.account-card-archived {
+  opacity: 0.6;
+  border-style: dashed;
+}
+
+.account-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.account-card-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.account-card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.account-card-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: $color-text-primary;
+  margin: 0;
+}
+
+.account-card-type {
+  font-size: 11px;
+  color: $color-text-muted;
+  margin-top: 2px;
+}
+
+.account-card-badge-archived {
+  font-size: 10px;
+  background-color: #f1f5f9;
+  color: #475569;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 9999px;
+}
+
+.account-card-body {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid $color-border-light;
+}
+
+.account-card-balance-label {
+  font-size: 11px;
+  color: $color-text-muted;
+}
+
+.account-card-balance-value {
+  font-size: 20px;
+  font-weight: 800;
+  color: $color-text-primary;
+  margin-top: 2px;
+}
+
+.account-card-description {
+  font-size: 12px;
+  color: $color-text-muted;
+  margin-top: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.account-card-footer {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid $color-border-light;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.account-card-history-btn {
+  font-weight: 600;
+  color: var(--color-primary, #10b981);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.account-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.account-card-action-btn {
+  padding: 6px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: $color-text-muted;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $color-bg-surface-subtle;
+    color: $color-text-primary;
+  }
+}
+
+// 4. TRANSFERS CARD
+.accounts-transfers-card {
+  background-color: #ffffff;
+  border: 1px solid $color-border-default;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.accounts-transfers-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: $color-text-primary;
+  margin: 0;
+}
+
+.accounts-transfers-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.accounts-transfer-item {
+  padding: 10px 0;
+  border-bottom: 1px solid $color-border-light;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.accounts-transfer-route {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.accounts-transfer-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+// 5. MODALS
+.accounts-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+.accounts-modal {
+  width: 100%;
+  max-width: 440px;
+  background-color: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+  padding: 24px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.accounts-modal-lg {
+  max-width: 520px;
+}
+
+.accounts-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid $color-border-light;
+}
+
+.accounts-modal-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: $color-text-primary;
+  margin: 0;
+}
+
+.accounts-modal-close-btn {
+  padding: 6px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: $color-text-muted;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $color-bg-surface-subtle;
+    color: $color-text-primary;
+  }
+}
+
+.accounts-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.accounts-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.accounts-form-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: $color-text-secondary;
+}
+
+.accounts-form-input,
+.accounts-form-select {
+  width: 100%;
+  padding: 10px 14px;
+  background-color: $color-bg-surface-subtle;
+  border: 1px solid $color-border-default;
+  border-radius: 5px;
+  font-size: 13px;
+  color: $color-text-primary;
+  outline: none;
+  box-sizing: border-box;
+
+  &:focus {
+    background-color: #ffffff;
+    border-color: var(--color-primary, #10b981);
+    box-shadow: 0 0 0 3px var(--color-primary-ring, rgba(16, 185, 129, 0.18));
+  }
+}
+
+.accounts-form-colors {
+  display: flex;
+  gap: 8px;
+}
+
+.accounts-form-color-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.accounts-form-color-btn-active {
+  border-color: #0f172a;
+  transform: scale(1.1);
+}
+
+.accounts-form-actions {
+  display: flex;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.accounts-history-item {
+  padding: 12px;
+  background-color: #f8fafc;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  border: 1px solid #f1f5f9;
+}

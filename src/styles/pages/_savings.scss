@@ -2,32 +2,503 @@
 @use '../abstracts/mixins' as *;
 
 // ==============================================================================
-// SAVINGS GOALS PAGE STYLES
+// SAVINGS GOALS PAGE STYLES (Strict Semantic Architecture)
 // ==============================================================================
 
-.savings-page {
-  padding: $space-6 0 $space-16;
+.savings {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
 
-  &__grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: $space-4;
+// 1. HEADER
+.savings-header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 
-    @include respond-to('md') {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    @include respond-to('lg') {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  &__card {
-    @include card-surface;
-    padding: $space-5;
-    display: flex;
-    flex-direction: column;
+  @media (min-width: 640px) {
+    flex-direction: row;
+    align-items: center;
     justify-content: space-between;
   }
 }
 
+.savings-header-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.savings-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: $color-text-primary;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.savings-description {
+  font-size: 13px;
+  color: $color-text-muted;
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+
+.savings-btn-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  background-color: var(--color-primary, #10b981);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.25);
+  transition: all 0.15s ease;
+  align-self: flex-start;
+
+  @media (min-width: 640px) {
+    align-self: auto;
+  }
+
+  &:hover {
+    background-color: var(--color-primary-hover, #059669);
+  }
+}
+
+// 2. STATS KPI
+.savings-stats {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.savings-stat-card {
+  padding: 20px;
+  border-radius: 20px;
+  background-color: #ffffff;
+  border: 1px solid $color-border-default;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+}
+
+.savings-stat-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: $color-text-muted;
+  display: block;
+}
+
+.savings-stat-value {
+  font-size: 24px;
+  font-weight: 800;
+  margin-top: 6px;
+  color: $color-text-primary;
+}
+
+.savings-stat-value-saved {
+  color: #2563eb;
+}
+
+.savings-stat-value-target {
+  color: $color-text-primary;
+}
+
+.savings-stat-value-progress {
+  color: var(--color-primary, #10b981);
+}
+
+// 3. EMPTY STATE & LOADING
+.savings-loading {
+  padding: 48px;
+  text-align: center;
+  font-size: 13px;
+  color: $color-text-muted;
+}
+
+.savings-empty {
+  padding: 64px 20px;
+  text-align: center;
+  background-color: #ffffff;
+  border-radius: 24px;
+  border: 1px solid $color-border-default;
+}
+
+.savings-empty-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  background-color: #eff6ff;
+  color: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+}
+
+.savings-empty-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: $color-text-primary;
+  margin: 0;
+}
+
+.savings-empty-desc {
+  font-size: 13px;
+  color: $color-text-muted;
+  margin: 6px auto 0;
+  max-width: 400px;
+}
+
+// 4. GOALS GRID & CARD
+.savings-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.savings-card {
+  padding: 20px;
+  border-radius: 20px;
+  background-color: #ffffff;
+  border: 1px solid $color-border-default;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.15s ease;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+  }
+}
+
+.savings-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.savings-card-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.savings-card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  background-color: #eff6ff;
+  color: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.savings-card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: $color-text-primary;
+  margin: 0;
+}
+
+.savings-card-target-date {
+  font-size: 11px;
+  color: $color-text-muted;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.savings-card-delete-btn {
+  padding: 6px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: $color-text-muted;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background-color: #fff1f2;
+    color: #e11d48;
+  }
+}
+
+.savings-card-desc {
+  font-size: 12px;
+  color: $color-text-secondary;
+  margin: 0 0 12px 0;
+  line-height: 1.4;
+}
+
+// Progress
+.savings-progress-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 12px 0;
+}
+
+.savings-progress-amounts {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.savings-progress-current {
+  color: $color-text-primary;
+}
+
+.savings-progress-percent {
+  color: #2563eb;
+}
+
+.savings-progress-bar {
+  width: 100%;
+  height: 10px;
+  background-color: $color-bg-surface-subtle;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.savings-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, var(--color-primary, #10b981));
+  border-radius: 9999px;
+  transition: width 0.3s ease;
+}
+
+.savings-progress-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: $color-text-muted;
+}
+
+// Bottom
+.savings-card-bottom {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid $color-border-light;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.savings-status-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  text-transform: uppercase;
+}
+
+.savings-status-completed {
+  background-color: #ecfdf5;
+  color: #065f46;
+}
+
+.savings-status-active {
+  background-color: #eff6ff;
+  color: #1e40af;
+}
+
+.savings-btn-contribute {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  background-color: var(--color-primary, #10b981);
+  color: #ffffff;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(16, 185, 129, 0.2);
+  transition: all 0.15s ease;
+
+  &:hover {
+    background-color: var(--color-primary-hover, #059669);
+  }
+}
+
+// 5. MODALS
+.savings-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+.savings-modal {
+  width: 100%;
+  max-width: 440px;
+  background-color: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+  padding: 24px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.savings-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid $color-border-light;
+}
+
+.savings-modal-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: $color-text-primary;
+  margin: 0;
+}
+
+.savings-modal-subtitle {
+  font-size: 12px;
+  color: $color-text-muted;
+  margin-top: 2px;
+}
+
+.savings-modal-close-btn {
+  padding: 6px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: $color-text-muted;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $color-bg-surface-subtle;
+    color: $color-text-primary;
+  }
+}
+
+.savings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.savings-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.savings-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.savings-form-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: $color-text-secondary;
+}
+
+.savings-form-input,
+.savings-form-select {
+  width: 100%;
+  padding: 10px 14px;
+  background-color: $color-bg-surface-subtle;
+  border: 1px solid $color-border-default;
+  border-radius: 5px;
+  font-size: 13px;
+  color: $color-text-primary;
+  outline: none;
+  box-sizing: border-box;
+
+  &:focus {
+    background-color: #ffffff;
+    border-color: var(--color-primary, #10b981);
+    box-shadow: 0 0 0 3px var(--color-primary-ring, rgba(16, 185, 129, 0.18));
+  }
+}
+
+.savings-form-hint {
+  font-size: 11px;
+  color: $color-text-muted;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.savings-form-error {
+  padding: 10px 14px;
+  background-color: #fff1f2;
+  border: 1px solid #fecdd3;
+  color: #e11d48;
+  border-radius: 5px;
+  font-size: 12px;
+}
+
+.savings-form-actions {
+  display: flex;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.savings-btn-cancel {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 5px;
+  border: none;
+  background-color: $color-bg-surface-subtle;
+  color: $color-text-secondary;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $color-border-light;
+    color: $color-text-primary;
+  }
+}
+
+.savings-btn-submit {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 5px;
+  border: none;
+  background-color: var(--color-primary, #10b981);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.2);
+
+  &:hover {
+    background-color: var(--color-primary-hover, #059669);
+  }
+}

@@ -2,64 +2,729 @@
 @use '../abstracts/mixins' as *;
 
 // ==============================================================================
-// TRANSACTIONS PAGE STYLES
+// TRANSACTIONS LEDGER (CLEAN SEMANTIC ARCHITECTURE)
 // ==============================================================================
 
-.transaction-page {
-  padding: $space-6 0 $space-16;
+.transaction {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
 
-  &__header {
-    display: flex;
-    flex-direction: column;
-    gap: $space-4;
-    margin-bottom: $space-6;
+.transaction-header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 
-    @include respond-to('sm') {
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-    }
-  }
-
-  &__filters {
-    @include card-surface;
-    padding: $space-4;
-    margin-bottom: $space-5;
-    display: flex;
-    flex-direction: column;
-    gap: $space-3;
-  }
-
-  &__item {
-    display: flex;
+  @media (min-width: 640px) {
+    flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    gap: $space-4;
-    padding: $space-4 $space-5;
-    border-bottom: 1px solid $color-border-light;
-    transition: background-color $transition-fast;
-
-    &:hover {
-      background-color: rgba(248, 250, 252, 0.85);
-    }
-
-    &--selected {
-      background-color: var(--color-primary-light);
-    }
-  }
-
-  &__amount {
-    font-size: $font-size-base;
-    font-weight: $font-weight-extrabold;
-    font-variant-numeric: tabular-nums;
-
-    &--income {
-      color: $color-success;
-    }
-
-    &--expense {
-      color: $color-text-primary;
-    }
   }
 }
 
+.transaction-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: $color-text-primary;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.transaction-description {
+  font-size: 13px;
+  color: $color-text-muted;
+  margin-top: 4px;
+}
+
+.transaction-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.transaction-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid $color-border-default;
+  background-color: #ffffff;
+  color: $color-text-primary;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background-color: $color-bg-surface-subtle;
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+.transaction-btn-primary {
+  background-color: var(--color-primary, #10b981);
+  color: #ffffff;
+  border-color: transparent;
+
+  &:hover {
+    background-color: var(--color-primary-hover, #059669);
+  }
+}
+
+// 1. SUMMARY METRICS
+.transaction-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.transaction-summary-card {
+  background-color: #ffffff;
+  border: 1px solid $color-border-default;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+}
+
+.transaction-summary-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: $color-text-muted;
+}
+
+.transaction-summary-value {
+  font-size: 20px;
+  font-weight: 800;
+  margin-top: 4px;
+  color: $color-text-primary;
+}
+
+.transaction-summary-income {
+  color: #10b981;
+}
+
+.transaction-summary-expense {
+  color: #e11d48;
+}
+
+// 2. FILTERS TOOLBAR
+.transaction-filters {
+  background-color: #ffffff;
+  border: 1px solid $color-border-default;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.transaction-filters-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.transaction-search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.transaction-search-icon {
+  position: absolute;
+  left: 12px;
+  width: 16px;
+  height: 16px;
+  color: $color-text-muted;
+  pointer-events: none;
+}
+
+.transaction-search-input {
+  width: 100%;
+  padding: 8px 12px 8px 36px;
+  background-color: $color-bg-surface-subtle;
+  border: 1px solid $color-border-default;
+  border-radius: 5px;
+  font-size: 12px;
+  color: $color-text-primary;
+
+  &:focus {
+    background-color: #ffffff;
+    border-color: var(--color-primary, #10b981);
+    outline: none;
+    box-shadow: 0 0 0 3px var(--color-primary-ring, rgba(16, 185, 129, 0.2));
+  }
+}
+
+.transaction-select {
+  width: 100%;
+  padding: 8px 12px;
+  background-color: $color-bg-surface-subtle;
+  border: 1px solid $color-border-default;
+  border-radius: 5px;
+  font-size: 12px;
+  color: $color-text-secondary;
+
+  &:focus {
+    background-color: #ffffff;
+    border-color: var(--color-primary, #10b981);
+    outline: none;
+    box-shadow: 0 0 0 3px var(--color-primary-ring, rgba(16, 185, 129, 0.2));
+  }
+}
+
+.transaction-sort-group {
+  display: flex;
+  gap: 8px;
+}
+
+.transaction-sort-btn {
+  padding: 8px 12px;
+  background-color: $color-bg-surface-subtle;
+  border: 1px solid $color-border-default;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  color: $color-text-secondary;
+  cursor: pointer;
+  flex-shrink: 0;
+
+  &:hover {
+    background-color: #e2e8f0;
+    color: $color-text-primary;
+  }
+}
+
+.transaction-filters-dates {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid $color-border-light;
+  font-size: 12px;
+  color: $color-text-muted;
+}
+
+.transaction-date-input {
+  padding: 6px 10px;
+  background-color: $color-bg-surface-subtle;
+  border: 1px solid $color-border-default;
+  border-radius: 8px;
+  font-size: 12px;
+  color: $color-text-secondary;
+}
+
+.transaction-reset-btn {
+  margin-left: auto;
+  border: none;
+  background: transparent;
+  color: var(--color-primary, #10b981);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// 3. TABLE / LIST CONTAINER
+.transaction-table-container {
+  background-color: #ffffff;
+  border: 1px solid $color-border-default;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+}
+
+.transaction-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.transaction-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 20px;
+  border-bottom: 1px solid $color-border-light;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: #f8fafc;
+  }
+}
+
+.transaction-item-selected {
+  background-color: var(--color-primary-light, rgba(16, 185, 129, 0.08));
+
+  &:hover {
+    background-color: var(--color-primary-light, rgba(16, 185, 129, 0.12));
+  }
+}
+
+.transaction-item-checkbox {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1px solid $color-border-default;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.transaction-item-main {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  flex: 1;
+  cursor: pointer;
+}
+
+.transaction-item-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.transaction-item-icon-income {
+  background-color: #ecfdf5;
+  color: #059669;
+}
+
+.transaction-item-icon-expense {
+  background-color: #fff1f2;
+  color: #e11d48;
+}
+
+.transaction-item-details {
+  min-width: 0;
+  flex: 1;
+}
+
+.transaction-item-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.transaction-item-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: $color-text-primary;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.transaction-item-receipt-tag {
+  font-size: 10px;
+  font-weight: 600;
+  background-color: $color-bg-surface-subtle;
+  color: $color-text-secondary;
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.transaction-item-meta {
+  font-size: 11px;
+  color: $color-text-muted;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.transaction-item-end {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.transaction-item-amount {
+  font-size: 15px;
+  font-weight: 800;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.transaction-item-amount-income {
+  color: #10b981;
+}
+
+.transaction-item-amount-expense {
+  color: $color-text-primary;
+}
+
+.transaction-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.transaction-item-btn {
+  padding: 6px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: $color-text-muted;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background-color: #f1f5f9;
+    color: $color-text-primary;
+  }
+}
+
+.transaction-item-btn-delete:hover {
+  background-color: #fff1f2;
+  color: #e11d48;
+}
+
+.transaction-empty {
+  padding: 64px 20px;
+  text-align: center;
+}
+
+.transaction-empty-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  background-color: $color-bg-surface-subtle;
+  color: $color-text-muted;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+}
+
+.transaction-empty-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: $color-text-primary;
+}
+
+.transaction-empty-description {
+  font-size: 12px;
+  color: $color-text-muted;
+  margin-top: 4px;
+  max-width: 380px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+// 4. MODALS & FORMS
+.transaction-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.15s ease;
+}
+
+.transaction-modal {
+  width: 100%;
+  max-width: 460px;
+  background-color: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+  padding: 24px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.transaction-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid $color-border-light;
+}
+
+.transaction-modal-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: $color-text-muted;
+}
+
+.transaction-modal-close-btn {
+  padding: 6px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: $color-text-muted;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $color-bg-surface-subtle;
+    color: $color-text-primary;
+  }
+}
+
+.transaction-detail-header {
+  text-align: center;
+  padding: 8px 0;
+}
+
+.transaction-detail-value {
+  font-size: 26px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.transaction-detail-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: $color-text-primary;
+  text-align: center;
+  margin-top: 4px;
+}
+
+.transaction-detail-date {
+  font-size: 12px;
+  color: $color-text-muted;
+  text-align: center;
+  margin-top: 2px;
+}
+
+.transaction-detail-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background-color: $color-bg-surface-subtle;
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid $color-border-light;
+  font-size: 12px;
+}
+
+.transaction-detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 6px;
+  border-bottom: 1px solid $color-border-default;
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+}
+
+.transaction-detail-label {
+  color: $color-text-muted;
+}
+
+.transaction-detail-text {
+  font-weight: 600;
+  color: $color-text-primary;
+}
+
+// 5. EDIT MODAL & CONFIRMATION DIALOG
+.transaction-modal-lg {
+  max-width: 540px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.transaction-modal-sm {
+  max-width: 400px;
+  text-align: center;
+}
+
+.transaction-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.transaction-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.transaction-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+
+  @media (max-width: 500px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.transaction-form-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: $color-text-secondary;
+}
+
+.transaction-form-input,
+.transaction-form-select,
+.transaction-form-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  background-color: $color-bg-surface-subtle;
+  border: 1px solid $color-border-default;
+  border-radius: 5px;
+  font-size: 13px;
+  color: $color-text-primary;
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.15s ease;
+
+  &:focus {
+    background-color: #ffffff;
+    border-color: var(--color-primary, #10b981);
+    box-shadow: 0 0 0 3px var(--color-primary-ring, rgba(16, 185, 129, 0.18));
+  }
+}
+
+.transaction-form-textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.transaction-form-actions {
+  display: flex;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.transaction-confirm-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background-color: #fff1f2;
+  color: #e11d48;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+}
+
+.transaction-confirm-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: $color-text-primary;
+  margin: 0 0 6px;
+}
+
+.transaction-confirm-text {
+  font-size: 13px;
+  color: $color-text-muted;
+  line-height: 1.5;
+  margin: 0 0 16px;
+}
+
+.transaction-confirm-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.transaction-btn-cancel {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 5px;
+  border: 1px solid $color-border-default;
+  background-color: $color-bg-surface-subtle;
+  color: $color-text-secondary;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s;
+
+  &:hover {
+    background-color: #e2e8f0;
+    color: $color-text-primary;
+  }
+}
+
+.transaction-btn-submit {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 5px;
+  border: none;
+  background-color: var(--color-primary, #10b981);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);
+  transition: opacity 0.15s;
+
+  &:hover {
+    opacity: 0.92;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.transaction-btn-danger {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 5px;
+  border: none;
+  background-color: #e11d48;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(225, 29, 72, 0.25);
+  transition: opacity 0.15s;
+
+  &:hover {
+    opacity: 0.92;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}

@@ -44,41 +44,42 @@ function VerifyEmailContent() {
   }, [token]);
 
   return (
-    <div className="bg-white py-8 px-6 sm:px-10 shadow-card rounded-3xl border border-slate-100 text-center">
+    <div className="auth-card" style={{ textAlign: 'center' }}>
       {success || user?.isEmailVerified ? (
-        <div className="space-y-4">
-          <div className="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto">
-            <CheckCircle2 className="w-6 h-6" />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div style={{ width: 48, height: 48, borderRadius: 9999, backgroundColor: '#ecfdf5', color: '#047857', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto' }}>
+            <CheckCircle2 style={{ width: 24, height: 24 }} />
           </div>
-          <h3 className="font-bold text-slate-900 text-base">Email Address Verified!</h3>
-          <p className="text-xs text-slate-600 leading-relaxed">
+          <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, color: '#0f172a' }}>Email Address Verified!</h3>
+          <p style={{ fontSize: 12, color: '#64748b', lineHeight: 1.6, margin: 0 }}>
             Your email has been successfully verified. You have full access to all features.
           </p>
           <Link
             href="/dashboard"
-            className="inline-flex items-center gap-2 mt-4 px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold shadow-sm transition"
+            className="auth-btn-submit"
+            style={{ textDecoration: 'none', marginTop: 12 }}
           >
             <span>Go to Dashboard</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight style={{ width: 16, height: 16 }} />
           </Link>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           {error && (
-            <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2 text-left">
-              <AlertCircle className="w-4 h-4 shrink-0" />
+            <div className="auth-alert-error" style={{ textAlign: 'left' }}>
+              <AlertCircle style={{ width: 16, height: 16, flexShrink: 0 }} />
               <span>{error}</span>
             </div>
           )}
 
-          <p className="text-xs text-slate-600">
+          <p style={{ fontSize: 12, color: '#64748b', margin: 0 }}>
             Click the button below to confirm and verify your email address.
           </p>
 
           <button
             onClick={handleVerify}
             disabled={loading}
-            className="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl shadow-md transition active:scale-[0.98]"
+            className="auth-btn-submit"
           >
             {loading ? 'Verifying...' : 'Verify My Email'}
           </button>
@@ -90,21 +91,21 @@ function VerifyEmailContent() {
 
 export default function VerifyEmailPage() {
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center mb-6">
-        <Link href="/" className="inline-flex items-center gap-2.5">
-          <div className="w-10 h-10 rounded-2xl bg-emerald-600 flex items-center justify-center text-white shadow-md shadow-emerald-600/20">
-            <TrendingUp className="w-5 h-5" />
-          </div>
-          <span className="font-extrabold text-2xl text-slate-900 tracking-tight">MyFinance</span>
-        </Link>
-        <h2 className="mt-4 text-2xl font-bold tracking-tight text-slate-900">
-          Email Verification
-        </h2>
-      </div>
+    <div className="auth">
+      <div className="auth-container">
+        <div className="auth-header">
+          <Link href="/" className="auth-logo">
+            <div className="auth-logo-icon">
+              <TrendingUp style={{ width: 20, height: 20 }} />
+            </div>
+            <span className="auth-logo-text">MyFinance</span>
+          </Link>
+          <h2 className="auth-title">
+            Email Verification
+          </h2>
+        </div>
 
-      <div className="sm:mx-auto sm:w-full sm:max-w-md px-4 sm:px-0">
-        <Suspense fallback={<div className="p-8 text-center text-xs text-slate-400">Loading...</div>}>
+        <Suspense fallback={<div style={{ padding: 32, textAlign: 'center', fontSize: 12, color: '#94a3b8' }}>Loading...</div>}>
           <VerifyEmailContent />
         </Suspense>
       </div>

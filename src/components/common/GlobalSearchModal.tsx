@@ -73,14 +73,14 @@ export default function GlobalSearchModal({ isOpen, onClose }: GlobalSearchModal
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 px-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
-      <div className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden flex flex-col max-h-[80vh]">
+    <div className="global-search-backdrop">
+      <div className="global-search-modal">
         {/* Search Input */}
-        <div className="flex items-center px-4 py-3.5 border-b border-slate-100">
-          <Search className="w-5 h-5 text-slate-400 mr-3" />
+        <div className="global-search-input-wrapper">
+          <Search className="global-search-icon" />
           <input
             type="text"
-            className="w-full bg-transparent text-slate-800 placeholder-slate-400 text-base focus:outline-none"
+            className="global-search-input"
             placeholder="Search transactions, accounts, categories, tags, notes..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -89,74 +89,74 @@ export default function GlobalSearchModal({ isOpen, onClose }: GlobalSearchModal
           {query && (
             <button
               onClick={() => setQuery('')}
-              className="p-1 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 mr-2"
+              className="global-search-clear-btn"
+              aria-label="Clear search"
             >
-              <X className="w-4 h-4" />
+              <X style={{ width: 16, height: 16 }} />
             </button>
           )}
           <button
             onClick={onClose}
-            className="text-xs font-semibold px-2 py-1 bg-slate-100 text-slate-600 rounded-md hover:bg-slate-200"
+            className="global-search-esc-badge"
           >
             ESC
           </button>
         </div>
 
         {/* Search Results */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div className="global-search-content">
           {loading && (
-            <div className="py-8 text-center text-slate-400 text-sm">
+            <div className="global-search-loading">
               Searching your financial workspace...
             </div>
           )}
 
           {!loading && query && results.transactions.length === 0 && results.accounts.length === 0 && results.categories.length === 0 && (
-            <div className="py-12 text-center">
-              <p className="text-slate-500 font-medium">No results found for &ldquo;{query}&rdquo;</p>
-              <p className="text-xs text-slate-400 mt-1">Try searching with a different keyword or amount.</p>
+            <div className="global-search-empty">
+              <p style={{ fontWeight: 600, color: '#64748b' }}>No results found for &ldquo;{query}&rdquo;</p>
+              <p style={{ fontSize: 11, color: '#94a3b8', marginTop: 4 }}>Try searching with a different keyword or amount.</p>
             </div>
           )}
 
           {/* Transactions */}
           {results.transactions.length > 0 && (
-            <div>
-              <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2 px-2">
+            <div className="global-search-group">
+              <h4 className="global-search-group-title">
                 Transactions ({results.transactions.length})
               </h4>
-              <div className="space-y-1">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                 {results.transactions.map((tx) => (
                   <div
                     key={tx._id}
                     onClick={() => navigateTo(`/transactions?id=${tx._id}`)}
-                    className="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 cursor-pointer transition border border-transparent hover:border-slate-100"
+                    className="global-search-item"
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="global-search-item-info">
                       <div
-                        className={`w-9 h-9 rounded-xl flex items-center justify-center ${
-                          tx.type === 'income' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'
+                        className={`global-search-item-icon ${
+                          tx.type === 'income' ? 'global-search-item-icon-income' : 'global-search-item-icon-expense'
                         }`}
                       >
                         {tx.type === 'income' ? (
-                          <ArrowDownLeft className="w-4 h-4" />
+                          <ArrowDownLeft style={{ width: 16, height: 16 }} />
                         ) : (
-                          <ArrowUpRight className="w-4 h-4" />
+                          <ArrowUpRight style={{ width: 16, height: 16 }} />
                         )}
                       </div>
                       <div>
-                        <div className="font-semibold text-slate-800 text-sm">{tx.title}</div>
-                        <div className="text-xs text-slate-400 flex items-center gap-2">
+                        <div className="global-search-item-title">{tx.title}</div>
+                        <div className="global-search-item-sub">
                           <span>{tx.category}</span>
-                          <span>•</span>
+                          <span> • </span>
                           <span>{tx.account}</span>
-                          <span>•</span>
+                          <span> • </span>
                           <span>{formatDate(tx.date)}</span>
                         </div>
                       </div>
                     </div>
                     <div
-                      className={`text-sm font-bold ${
-                        tx.type === 'income' ? 'text-emerald-600' : 'text-slate-800'
-                      }`}
+                      className="global-search-item-amount"
+                      style={{ color: tx.type === 'income' ? '#059669' : '#0f172a' }}
                     >
                       {tx.type === 'income' ? '+' : '-'}
                       {formatCurrency(tx.amount, user?.preferredCurrency, user?.currencySymbol)}
@@ -169,27 +169,27 @@ export default function GlobalSearchModal({ isOpen, onClose }: GlobalSearchModal
 
           {/* Accounts */}
           {results.accounts.length > 0 && (
-            <div>
-              <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2 px-2">
+            <div className="global-search-group">
+              <h4 className="global-search-group-title">
                 Accounts ({results.accounts.length})
               </h4>
-              <div className="space-y-1">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                 {results.accounts.map((acc) => (
                   <div
                     key={acc._id}
                     onClick={() => navigateTo('/accounts')}
-                    className="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 cursor-pointer transition"
+                    className="global-search-item"
                   >
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                        <Wallet className="w-4 h-4" />
+                    <div className="global-search-item-info">
+                      <div className="global-search-item-icon global-search-item-icon-income">
+                        <Wallet style={{ width: 16, height: 16 }} />
                       </div>
                       <div>
-                        <div className="font-medium text-slate-800 text-sm">{acc.accountName}</div>
-                        <div className="text-xs text-slate-400">{acc.accountType}</div>
+                        <div className="global-search-item-title">{acc.accountName}</div>
+                        <div className="global-search-item-sub">{acc.accountType}</div>
                       </div>
                     </div>
-                    <div className="text-sm font-semibold text-slate-700">
+                    <div className="global-search-item-amount">
                       {formatCurrency(acc.currentBalance, user?.preferredCurrency, user?.currencySymbol)}
                     </div>
                   </div>
@@ -200,20 +200,21 @@ export default function GlobalSearchModal({ isOpen, onClose }: GlobalSearchModal
 
           {/* Categories */}
           {results.categories.length > 0 && (
-            <div>
-              <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2 px-2">
+            <div className="global-search-group">
+              <h4 className="global-search-group-title">
                 Categories ({results.categories.length})
               </h4>
-              <div className="flex flex-wrap gap-2 px-2">
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, padding: '0 8px' }}>
                 {results.categories.map((cat) => (
                   <button
                     key={cat._id}
                     onClick={() => navigateTo(`/categories`)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 text-slate-700 text-xs font-medium rounded-lg transition"
+                    className="quick-add-category-pill"
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '6px 10px' }}
                   >
-                    <Tag className="w-3.5 h-3.5" />
+                    <Tag style={{ width: 14, height: 14 }} />
                     <span>{cat.name}</span>
-                    <span className="text-[10px] text-slate-400 uppercase">({cat.type})</span>
+                    <span style={{ fontSize: 10, color: '#94a3b8', textTransform: 'uppercase' }}>({cat.type})</span>
                   </button>
                 ))}
               </div>
@@ -222,10 +223,10 @@ export default function GlobalSearchModal({ isOpen, onClose }: GlobalSearchModal
         </div>
 
         {/* Footer info */}
-        <div className="px-4 py-2.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+        <div className="global-search-footer">
           <span>Tip: Press ESC or click outside to close</span>
-          <span className="flex items-center gap-1 font-medium text-emerald-700">
-            Search across your entire ledger <ArrowRight className="w-3 h-3" />
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, color: '#047857', fontWeight: 600 }}>
+            Search across your entire ledger <ArrowRight style={{ width: 12, height: 12 }} />
           </span>
         </div>
       </div>

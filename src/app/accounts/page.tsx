@@ -190,117 +190,115 @@ function AccountsContent() {
 
   return (
     <DashboardLayout>
-      <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
+      <div className="accounts">
         {/* HEADER */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="accounts-header">
           <div>
-            <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-              Financial Accounts & Wallets
-            </h1>
-            <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+            <h1 className="accounts-title">Financial Accounts & Wallets</h1>
+            <p className="accounts-description">
               Manage bank accounts, digital wallets, cash balances, and internal money transfers.
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="accounts-actions">
             <button
               onClick={() => setTransferModalOpen(true)}
-              className="px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-xl border border-slate-200 shadow-sm transition flex items-center gap-1.5"
+              className="accounts-btn-secondary"
             >
-              <Repeat className="w-3.5 h-3.5 text-emerald-600" />
+              <Repeat style={{ width: 14, height: 14, color: '#10b981' }} />
               <span>Transfer Money</span>
             </button>
             <button
               onClick={() => setCreateModalOpen(true)}
-              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl shadow-md shadow-emerald-600/20 transition flex items-center gap-1.5"
+              className="accounts-btn-primary"
             >
-              <Plus className="w-4 h-4" />
+              <Plus style={{ width: 16, height: 16 }} />
               <span>Add Account</span>
             </button>
           </div>
         </div>
 
         {/* TOTAL BALANCE CARD */}
-        <div className="p-6 rounded-3xl bg-white border border-slate-200/80 shadow-subtle flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="accounts-balance-card">
           <div>
-            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+            <span className="accounts-balance-label">
               Total Net Worth Across Accounts
             </span>
-            <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">
+            <div className="accounts-balance-value">
               {formatCurrency(totalBalance, cur, sym)}
             </div>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="accounts-balance-desc">
               Reflects all cash, bank holdings, and digital reserves.
             </p>
           </div>
 
-          <div className="text-xs text-slate-500 bg-slate-50 px-4 py-3 rounded-2xl border border-slate-100 flex items-center gap-2">
-            <TrendingUp className="w-4 h-4 text-emerald-600 shrink-0" />
+          <div className="accounts-balance-tip">
+            <TrendingUp style={{ width: 16, height: 16, color: '#10b981', flexShrink: 0 }} />
             <span>Balances are maintained in real-time with atomic transaction updates.</span>
           </div>
         </div>
 
         {/* ACCOUNTS GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="accounts-grid">
           {accounts.map((acc) => (
             <div
               key={acc._id}
-              className={`p-5 rounded-3xl bg-white border transition shadow-subtle hover:shadow-card flex flex-col justify-between ${acc.isArchived ? 'opacity-60 border-dashed border-slate-300' : 'border-slate-200/80'
-                }`}
+              className={`account-card ${acc.isArchived ? 'account-card-archived' : ''}`}
             >
               <div>
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-2.5">
+                <div className="account-card-header">
+                  <div className="account-card-brand">
                     <div
-                      className="w-10 h-10 rounded-2xl flex items-center justify-center text-white font-bold"
+                      className="account-card-icon"
                       style={{ backgroundColor: acc.accountColor || '#10b981' }}
                     >
                       {acc.accountType === 'Cash Wallet' ? (
-                        <Wallet className="w-5 h-5" />
+                        <Wallet style={{ width: 20, height: 20 }} />
                       ) : acc.accountType === 'Credit Card' ? (
-                        <CreditCard className="w-5 h-5" />
+                        <CreditCard style={{ width: 20, height: 20 }} />
                       ) : (
-                        <Building2 className="w-5 h-5" />
+                        <Building2 style={{ width: 20, height: 20 }} />
                       )}
                     </div>
                     <div>
-                      <h3 className="font-bold text-slate-900 text-sm">{acc.accountName}</h3>
-                      <span className="text-[11px] text-slate-400 font-medium">{acc.accountType}</span>
+                      <h3 className="account-card-name">{acc.accountName}</h3>
+                      <span className="account-card-type">{acc.accountType}</span>
                     </div>
                   </div>
 
                   {acc.isArchived && (
-                    <span className="text-[10px] bg-slate-100 text-slate-600 font-bold px-2 py-0.5 rounded-full">
+                    <span className="account-card-badge-archived">
                       Archived
                     </span>
                   )}
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-slate-100">
-                  <span className="text-[11px] text-slate-400">Current Balance</span>
-                  <div className="text-xl font-extrabold text-slate-900 mt-0.5">
+                <div className="account-card-body">
+                  <span className="account-card-balance-label">Current Balance</span>
+                  <div className="account-card-balance-value">
                     {formatCurrency(acc.currentBalance, cur, sym)}
                   </div>
                   {acc.description && (
-                    <p className="text-xs text-slate-500 mt-1 truncate">{acc.description}</p>
+                    <p className="account-card-description">{acc.description}</p>
                   )}
                 </div>
               </div>
 
-              <div className="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+              <div className="account-card-footer">
                 <button
                   onClick={() => viewAccountHistory(acc)}
-                  className="font-semibold text-emerald-600 hover:text-emerald-700 flex items-center gap-1"
+                  className="account-card-history-btn"
                 >
-                  <History className="w-3.5 h-3.5" />
+                  <History style={{ width: 14, height: 14 }} />
                   <span>History</span>
                 </button>
-                <div className="flex items-center gap-2 text-slate-400">
+                <div className="account-card-actions">
                   <button
                     onClick={() => setEditAccount(acc)}
-                    className="p-1 hover:text-slate-700 hover:bg-slate-100 rounded"
+                    className="account-card-action-btn"
+                    title="Edit Account"
                   >
-                    <Edit2 className="w-3.5 h-3.5" />
+                    <Edit2 style={{ width: 14, height: 14 }} />
                   </button>
                 </div>
               </div>
@@ -310,20 +308,20 @@ function AccountsContent() {
 
         {/* RECENT INTERNAL TRANSFERS TABLE */}
         {transfers.length > 0 && (
-          <div className="bg-white rounded-3xl border border-slate-200/80 shadow-subtle p-5 sm:p-6 space-y-4">
-            <h3 className="text-sm font-bold text-slate-900">Recent Internal Transfers</h3>
-            <div className="divide-y divide-slate-100 text-xs">
+          <div className="accounts-transfers-card">
+            <h3 className="accounts-transfers-title">Recent Internal Transfers</h3>
+            <div className="accounts-transfers-list">
               {transfers.slice(0, 5).map((tr) => (
-                <div key={tr._id} className="py-2.5 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="font-semibold text-slate-800">{tr.fromAccountName}</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-                    <span className="font-semibold text-slate-800">{tr.toAccountName}</span>
-                    {tr.notes && <span className="text-slate-400 italic">({tr.notes})</span>}
+                <div key={tr._id} className="accounts-transfer-item">
+                  <div className="accounts-transfer-route">
+                    <span style={{ fontWeight: 600, color: '#0f172a' }}>{tr.fromAccountName}</span>
+                    <ArrowRight style={{ width: 14, height: 14, color: '#94a3b8' }} />
+                    <span style={{ fontWeight: 600, color: '#0f172a' }}>{tr.toAccountName}</span>
+                    {tr.notes && <span style={{ color: '#94a3b8', fontStyle: 'italic' }}>({tr.notes})</span>}
                   </div>
-                  <div className="flex items-center gap-4">
-                    <span className="text-slate-400">{formatDate(tr.date)}</span>
-                    <span className="font-bold text-slate-900">{formatCurrency(tr.amount, cur, sym)}</span>
+                  <div className="accounts-transfer-meta">
+                    <span style={{ color: '#94a3b8' }}>{formatDate(tr.date)}</span>
+                    <span style={{ fontWeight: 700, color: '#0f172a' }}>{formatCurrency(tr.amount, cur, sym)}</span>
                   </div>
                 </div>
               ))}
@@ -334,34 +332,34 @@ function AccountsContent() {
 
       {/* CREATE ACCOUNT MODAL */}
       {createModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
-          <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl p-6 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h3 className="font-bold text-slate-900 text-base">Create New Account</h3>
-              <button onClick={() => setCreateModalOpen(false)} className="p-1.5 text-slate-400 hover:text-slate-600">
-                <X className="w-4 h-4" />
+        <div className="accounts-modal-backdrop">
+          <div className="accounts-modal">
+            <div className="accounts-modal-header">
+              <h3 className="accounts-modal-title">Create New Account</h3>
+              <button onClick={() => setCreateModalOpen(false)} className="accounts-modal-close-btn">
+                <X style={{ width: 16, height: 16 }} />
               </button>
             </div>
 
-            <form onSubmit={handleCreateAccount} className="space-y-3">
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Account Name</label>
+            <form onSubmit={handleCreateAccount} className="accounts-form">
+              <div className="accounts-form-group">
+                <label className="accounts-form-label">Account Name</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. SBI Savings, Cash Wallet, HDFC Credit"
                   value={newAccName}
                   onChange={(e) => setNewAccName(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:bg-white"
+                  className="accounts-form-input"
                 />
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Account Type</label>
+              <div className="accounts-form-group">
+                <label className="accounts-form-label">Account Type</label>
                 <select
                   value={newAccType}
                   onChange={(e) => setNewAccType(e.target.value as AccountType)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:bg-white"
+                  className="accounts-form-select"
                 >
                   {ACCOUNT_TYPES.map((t) => (
                     <option key={t} value={t}>
@@ -371,56 +369,55 @@ function AccountsContent() {
                 </select>
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Opening Balance ({sym})</label>
+              <div className="accounts-form-group">
+                <label className="accounts-form-label">Opening Balance ({sym})</label>
                 <input
                   type="number"
                   step="0.01"
                   placeholder="0.00"
                   value={newOpeningBalance}
                   onChange={(e) => setNewOpeningBalance(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:bg-white"
+                  className="accounts-form-input"
                 />
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Color Theme</label>
-                <div className="flex gap-2">
+              <div className="accounts-form-group">
+                <label className="accounts-form-label">Color Theme</label>
+                <div className="accounts-form-colors">
                   {PRESET_COLORS.map((c) => (
                     <button
                       key={c}
                       type="button"
                       onClick={() => setNewAccColor(c)}
-                      className={`w-7 h-7 rounded-full border-2 ${newAccColor === c ? 'border-slate-900 scale-110' : 'border-transparent'
-                        }`}
+                      className={`accounts-form-color-btn ${newAccColor === c ? 'accounts-form-color-btn-active' : ''}`}
                       style={{ backgroundColor: c }}
                     />
                   ))}
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Description (Optional)</label>
+              <div className="accounts-form-group">
+                <label className="accounts-form-label">Description (Optional)</label>
                 <input
                   type="text"
                   placeholder="e.g. Primary salary account"
                   value={newAccDesc}
                   onChange={(e) => setNewAccDesc(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800"
+                  className="accounts-form-input"
                 />
               </div>
 
-              <div className="pt-2 flex gap-3">
+              <div className="accounts-form-actions">
                 <button
                   type="button"
                   onClick={() => setCreateModalOpen(false)}
-                  className="flex-1 py-2.5 rounded-xl bg-slate-100 text-slate-700 text-xs font-semibold"
+                  className="transaction-btn-cancel"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-md"
+                  className="transaction-btn-submit"
                 >
                   Save Account
                 </button>
@@ -432,32 +429,32 @@ function AccountsContent() {
 
       {/* TRANSFER MONEY MODAL */}
       {transferModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
-          <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl p-6 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div className="accounts-modal-backdrop">
+          <div className="accounts-modal">
+            <div className="accounts-modal-header">
               <div>
-                <h3 className="font-bold text-slate-900 text-base">Internal Money Transfer</h3>
-                <p className="text-[11px] text-slate-400">Zero effect on income or expenses</p>
+                <h3 className="accounts-modal-title">Internal Money Transfer</h3>
+                <p style={{ fontSize: 11, color: '#94a3b8', margin: '2px 0 0' }}>Zero effect on income or expenses</p>
               </div>
-              <button onClick={() => setTransferModalOpen(false)} className="p-1.5 text-slate-400 hover:text-slate-600">
-                <X className="w-4 h-4" />
+              <button onClick={() => setTransferModalOpen(false)} className="accounts-modal-close-btn">
+                <X style={{ width: 16, height: 16 }} />
               </button>
             </div>
 
             {transferError && (
-              <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 rounded-xl text-xs flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 shrink-0" />
+              <div style={{ marginTop: 12, padding: 10, backgroundColor: '#fff1f2', border: '1px solid #fecdd3', color: '#be123c', borderRadius: 12, fontSize: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
+                <AlertCircle style={{ width: 16, height: 16, flexShrink: 0 }} />
                 <span>{transferError}</span>
               </div>
             )}
 
-            <form onSubmit={handleTransferSubmit} className="space-y-3">
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">From Account (Source)</label>
+            <form onSubmit={handleTransferSubmit} className="accounts-form">
+              <div className="accounts-form-group">
+                <label className="accounts-form-label">From Account (Source)</label>
                 <select
                   value={transferFrom}
                   onChange={(e) => setTransferFrom(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800"
+                  className="accounts-form-select"
                 >
                   {accounts.map((acc) => (
                     <option key={acc._id} value={acc._id}>
@@ -467,12 +464,12 @@ function AccountsContent() {
                 </select>
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">To Account (Destination)</label>
+              <div className="accounts-form-group">
+                <label className="accounts-form-label">To Account (Destination)</label>
                 <select
                   value={transferTo}
                   onChange={(e) => setTransferTo(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800"
+                  className="accounts-form-select"
                 >
                   {accounts.map((acc) => (
                     <option key={acc._id} value={acc._id}>
@@ -482,8 +479,8 @@ function AccountsContent() {
                 </select>
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Transfer Amount ({sym})</label>
+              <div className="accounts-form-group">
+                <label className="accounts-form-label">Transfer Amount ({sym})</label>
                 <input
                   type="number"
                   step="0.01"
@@ -491,32 +488,33 @@ function AccountsContent() {
                   placeholder="0.00"
                   value={transferAmount}
                   onChange={(e) => setTransferAmount(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:bg-white text-base font-bold"
+                  className="accounts-form-input"
+                  style={{ fontWeight: 700, fontSize: 15 }}
                 />
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Notes (Optional)</label>
+              <div className="accounts-form-group">
+                <label className="accounts-form-label">Notes (Optional)</label>
                 <input
                   type="text"
                   placeholder="e.g. ATM cash withdrawal, moving to savings"
                   value={transferNotes}
                   onChange={(e) => setTransferNotes(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800"
+                  className="accounts-form-input"
                 />
               </div>
 
-              <div className="pt-2 flex gap-3">
+              <div className="accounts-form-actions">
                 <button
                   type="button"
                   onClick={() => setTransferModalOpen(false)}
-                  className="flex-1 py-2.5 rounded-xl bg-slate-100 text-slate-700 text-xs font-semibold"
+                  className="transaction-btn-cancel"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-md"
+                  className="transaction-btn-submit"
                 >
                   Execute Transfer
                 </button>
@@ -528,35 +526,39 @@ function AccountsContent() {
 
       {/* ACCOUNT HISTORY MODAL */}
       {historyAccount && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
-          <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl p-6 space-y-4 max-h-[85vh] overflow-y-auto">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div className="accounts-modal-backdrop">
+          <div className="accounts-modal accounts-modal-lg">
+            <div className="accounts-modal-header">
               <div>
-                <h3 className="font-bold text-slate-900 text-base">{historyAccount.accountName} Ledger</h3>
-                <span className="text-xs text-slate-400">
+                <h3 className="accounts-modal-title">{historyAccount.accountName} Ledger</h3>
+                <span style={{ fontSize: 12, color: '#94a3b8' }}>
                   Current Balance: {formatCurrency(historyAccount.currentBalance, cur, sym)}
                 </span>
               </div>
-              <button onClick={() => setHistoryAccount(null)} className="p-1.5 text-slate-400 hover:text-slate-600">
-                <X className="w-4 h-4" />
+              <button onClick={() => setHistoryAccount(null)} className="accounts-modal-close-btn">
+                <X style={{ width: 16, height: 16 }} />
               </button>
             </div>
 
-            <div className="space-y-2">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 14 }}>
               {historyTransactions.length === 0 ? (
-                <div className="py-8 text-center text-xs text-slate-400">No transactions for this account yet.</div>
+                <div style={{ padding: '32px 0', textAlign: 'center', fontSize: 12, color: '#94a3b8' }}>
+                  No transactions for this account yet.
+                </div>
               ) : (
                 historyTransactions.map((tx) => (
-                  <div key={tx._id} className="p-3 bg-slate-50 rounded-2xl flex items-center justify-between text-xs">
+                  <div key={tx._id} className="accounts-history-item">
                     <div>
-                      <div className="font-bold text-slate-800">{tx.title}</div>
-                      <div className="text-[10px] text-slate-400">
+                      <div style={{ fontWeight: 700, color: '#0f172a' }}>{tx.title}</div>
+                      <div style={{ fontSize: 10, color: '#94a3b8', marginTop: 2 }}>
                         {formatDate(tx.date)} • {tx.category}
                       </div>
                     </div>
                     <div
-                      className={`font-bold ${tx.type === 'income' ? 'text-emerald-600' : 'text-slate-900'
-                        }`}
+                      style={{
+                        fontWeight: 700,
+                        color: tx.type === 'income' ? '#059669' : '#0f172a'
+                      }}
                     >
                       {tx.type === 'income' ? '+' : '-'}
                       {formatCurrency(tx.amount, cur, sym)}
@@ -574,7 +576,7 @@ function AccountsContent() {
 
 export default function AccountsPage() {
   return (
-    <Suspense fallback={<div className="p-8 text-center text-xs text-slate-400">Loading accounts...</div>}>
+    <Suspense fallback={<div style={{ padding: 32, textAlign: 'center', fontSize: 12, color: '#94a3b8' }}>Loading accounts...</div>}>
       <AccountsContent />
     </Suspense>
   );

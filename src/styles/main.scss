@@ -32,9 +32,11 @@
 @use 'components/pagination';
 @use 'components/tabs';
 @use 'components/alerts';
+@use 'components/bulk-actions';
 
 // 5. PAGES
 @use 'pages/landing';
+@use 'pages/auth';
 @use 'pages/dashboard';
 @use 'pages/transactions';
 @use 'pages/accounts';
@@ -49,6 +51,7 @@
 @use 'pages/profile';
 @use 'pages/settings';
 @use 'pages/admin';
+@use 'pages/trash';
 
 // 6. THEMES
 @use 'themes/light';

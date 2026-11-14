@@ -278,36 +278,28 @@ function TransactionsContent() {
 
   return (
     <DashboardLayout>
-      <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
+      <div className="transaction">
         {/* HEADER */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="transaction-header">
           <div>
-            <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-              Transaction Ledger
-            </h1>
-            <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+            <h1 className="transaction-title">Transaction Ledger</h1>
+            <p className="transaction-description">
               Comprehensive log of all incomes and expenditures.
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
-            <button
-              onClick={handleExportCSV}
-              className="px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-xl border border-slate-200 shadow-sm transition flex items-center gap-1.5"
-            >
+          <div className="transaction-actions">
+            <button onClick={handleExportCSV} className="transaction-btn">
               <Download className="w-3.5 h-3.5" />
               <span>CSV</span>
             </button>
-            <button
-              onClick={handleExportPDF}
-              className="px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-xl border border-slate-200 shadow-sm transition flex items-center gap-1.5"
-            >
+            <button onClick={handleExportPDF} className="transaction-btn">
               <FileText className="w-3.5 h-3.5" />
               <span>PDF</span>
             </button>
             <button
               onClick={() => setQuickAddOpen(true)}
-              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl shadow-md shadow-emerald-600/20 transition flex items-center gap-1.5"
+              className="transaction-btn transaction-btn-primary"
             >
               <Plus className="w-4 h-4" />
               <span>Add Record</span>
@@ -315,25 +307,24 @@ function TransactionsContent() {
           </div>
         </div>
 
-        {/* SUMMARY PILLS */}
-        <div className="grid grid-cols-3 gap-3">
-          <div className="p-3 sm:p-4 rounded-2xl bg-white border border-slate-200/80 shadow-subtle">
-            <span className="text-[11px] font-medium text-slate-400">Filtered Income</span>
-            <div className="text-base sm:text-xl font-bold text-emerald-600 mt-0.5">
+        {/* SUMMARY METRICS */}
+        <div className="transaction-summary">
+          <div className="transaction-summary-card">
+            <span className="transaction-summary-label">Filtered Income</span>
+            <div className="transaction-summary-value transaction-summary-income">
               +{formatCurrency(summary.totalIncome, cur, sym)}
             </div>
           </div>
-          <div className="p-3 sm:p-4 rounded-2xl bg-white border border-slate-200/80 shadow-subtle">
-            <span className="text-[11px] font-medium text-slate-400">Filtered Expenses</span>
-            <div className="text-base sm:text-xl font-bold text-rose-600 mt-0.5">
+          <div className="transaction-summary-card">
+            <span className="transaction-summary-label">Filtered Expenses</span>
+            <div className="transaction-summary-value transaction-summary-expense">
               -{formatCurrency(summary.totalExpenses, cur, sym)}
             </div>
           </div>
-          <div className="p-3 sm:p-4 rounded-2xl bg-white border border-slate-200/80 shadow-subtle">
-            <span className="text-[11px] font-medium text-slate-400">Net Flow</span>
+          <div className="transaction-summary-card">
+            <span className="transaction-summary-label">Net Flow</span>
             <div
-              className={`text-base sm:text-xl font-bold mt-0.5 ${summary.net >= 0 ? 'text-slate-900' : 'text-rose-600'
-                }`}
+              className={`transaction-summary-value ${summary.net >= 0 ? 'transaction-summary-income' : 'transaction-summary-expense'}`}
             >
               {formatCurrency(summary.net, cur, sym)}
             </div>
@@ -341,17 +332,17 @@ function TransactionsContent() {
         </div>
 
         {/* FILTERS TOOLBAR */}
-        <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-subtle space-y-3">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+        <div className="transaction-filters">
+          <div className="transaction-filters-grid">
             {/* Search */}
-            <div className="relative">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <div className="transaction-search-container">
+              <Search className="transaction-search-icon" />
               <input
                 type="text"
                 placeholder="Search description, tag..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="transaction-search-input"
               />
             </div>
 
@@ -362,7 +353,7 @@ function TransactionsContent() {
                 setTypeFilter(e.target.value);
                 setPage(1);
               }}
-              className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="transaction-select"
             >
               <option value="">All Types (Income & Expense)</option>
               <option value="expense">Expense Only</option>
@@ -376,7 +367,7 @@ function TransactionsContent() {
                 setAccountFilter(e.target.value);
                 setPage(1);
               }}
-              className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="transaction-select"
             >
               <option value="">All Accounts</option>
               {accounts.map((acc) => (
@@ -393,7 +384,7 @@ function TransactionsContent() {
                 setCategoryFilter(e.target.value);
                 setPage(1);
               }}
-              className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="transaction-select"
             >
               <option value="">All Categories</option>
               {categories.map((c) => (
@@ -404,11 +395,11 @@ function TransactionsContent() {
             </select>
 
             {/* Sort */}
-            <div className="flex gap-2">
+            <div className="transaction-sort-group">
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800"
+                className="transaction-select"
               >
                 <option value="date">Sort by Date</option>
                 <option value="amount">Sort by Amount</option>
@@ -416,7 +407,7 @@ function TransactionsContent() {
               <button
                 type="button"
                 onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-                className="px-2.5 py-2 bg-slate-100 hover:bg-slate-200 rounded-xl text-xs font-semibold text-slate-700 shrink-0"
+                className="transaction-sort-btn"
               >
                 {sortOrder === 'asc' ? '↑ Asc' : '↓ Desc'}
               </button>
@@ -424,8 +415,8 @@ function TransactionsContent() {
           </div>
 
           {/* Date range row */}
-          <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-100 text-xs">
-            <span className="text-slate-400 font-medium">Date Range:</span>
+          <div className="transaction-filters-dates">
+            <span>Date Range:</span>
             <input
               type="date"
               value={startDate}
@@ -433,9 +424,9 @@ function TransactionsContent() {
                 setStartDate(e.target.value);
                 setPage(1);
               }}
-              className="px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-700"
+              className="transaction-date-input"
             />
-            <span className="text-slate-400">to</span>
+            <span>to</span>
             <input
               type="date"
               value={endDate}
@@ -443,7 +434,7 @@ function TransactionsContent() {
                 setEndDate(e.target.value);
                 setPage(1);
               }}
-              className="px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-700"
+              className="transaction-date-input"
             />
             {(startDate || endDate || search || typeFilter || accountFilter || categoryFilter) && (
               <button
@@ -456,7 +447,7 @@ function TransactionsContent() {
                   setEndDate('');
                   setPage(1);
                 }}
-                className="ml-auto text-emerald-600 hover:text-emerald-700 font-semibold"
+                className="transaction-reset-btn"
               >
                 Reset Filters
               </button>
@@ -464,57 +455,54 @@ function TransactionsContent() {
           </div>
         </div>
 
-        {/* TRANSACTIONS LIST / TABLE */}
-        <div className="bg-white rounded-3xl border border-slate-200/80 shadow-subtle overflow-hidden">
+        {/* TRANSACTIONS LIST CONTAINER */}
+        <div className="transaction-table-container">
           {loading ? (
-            <div className="p-12 text-center text-xs text-slate-400">Loading transactions...</div>
+            <div className="transaction-empty">Loading transactions...</div>
           ) : transactions.length === 0 ? (
-            <div className="p-16 text-center">
-              <div className="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
+            <div className="transaction-empty">
+              <div className="transaction-empty-icon">
                 <ArrowLeftRight className="w-6 h-6" />
               </div>
-              <h3 className="font-bold text-slate-800 text-base">No transactions found</h3>
-              <p className="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
+              <h3 className="transaction-empty-title">No transactions found</h3>
+              <p className="transaction-empty-description">
                 No financial records match your criteria. Tap &ldquo;Add Record&rdquo; to create a new transaction.
               </p>
             </div>
           ) : (
-            <div className="divide-y divide-slate-100">
+            <div className="transaction-list">
               {transactions.map((tx) => (
                 <div
                   key={tx._id}
-                  className={`p-4 sm:px-6 hover:bg-slate-50/80 transition flex items-center justify-between gap-4 ${
-                    selectedIds.includes(tx._id) ? 'bg-emerald-50/30' : ''
-                  }`}
+                  className={`transaction-item ${selectedIds.includes(tx._id) ? 'transaction-item-selected' : ''}`}
                 >
                   <input
                     type="checkbox"
                     checked={selectedIds.includes(tx._id)}
                     onChange={() => handleToggleSelect(tx._id)}
-                    className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer shrink-0"
+                    className="transaction-item-checkbox"
                   />
                   <div
                     onClick={() => setDetailModalTx(tx)}
-                    className="flex items-center gap-3.5 cursor-pointer flex-1 min-w-0"
+                    className="transaction-item-main"
                   >
                     <div
-                      className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${tx.type === 'income' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'
-                        }`}
+                      className={`transaction-item-icon ${tx.type === 'income' ? 'transaction-item-icon-income' : 'transaction-item-icon-expense'}`}
                     >
                       {tx.type === 'income' ? <ArrowDownLeft className="w-5 h-5" /> : <ArrowUpRight className="w-5 h-5" />}
                     </div>
 
-                    <div className="truncate">
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-slate-900 text-sm truncate">{tx.title}</span>
+                    <div className="transaction-item-details">
+                      <div className="transaction-item-title-row">
+                        <span className="transaction-item-title">{tx.title}</span>
                         {tx.receiptUrl && (
-                          <span className="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded flex items-center gap-1 font-medium">
+                          <span className="transaction-item-receipt-tag">
                             <Paperclip className="w-2.5 h-2.5" /> Receipt
                           </span>
                         )}
                       </div>
-                      <div className="text-xs text-slate-400 flex items-center gap-2 mt-0.5">
-                        <span className="font-medium text-slate-600">{tx.category}</span>
+                      <div className="transaction-item-meta">
+                        <span>{tx.category}</span>
                         <span>•</span>
                         <span>{tx.account}</span>
                         <span>•</span>
@@ -525,30 +513,27 @@ function TransactionsContent() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-4 shrink-0">
-                    <div className="text-right">
-                      <div
-                        className={`text-sm sm:text-base font-extrabold ${tx.type === 'income' ? 'text-emerald-600' : 'text-slate-900'
-                          }`}
-                      >
-                        {tx.type === 'income' ? '+' : '-'}
-                        {formatCurrency(tx.amount, cur, sym)}
-                      </div>
+                  <div className="transaction-item-end">
+                    <div
+                      className={`transaction-item-amount ${tx.type === 'income' ? 'transaction-item-amount-income' : 'transaction-item-amount-expense'}`}
+                    >
+                      {tx.type === 'income' ? '+' : '-'}
+                      {formatCurrency(tx.amount, cur, sym)}
                     </div>
 
-                    {/* Actions menu */}
-                    <div className="flex items-center gap-1">
+                    {/* Actions */}
+                    <div className="transaction-item-actions">
                       <button
                         onClick={() => setEditModalTx(tx)}
                         title="Edit"
-                        className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100 transition"
+                        className="transaction-item-btn"
                       >
                         <Edit2 className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => setDeleteConfirmId(tx._id)}
                         title="Delete"
-                        className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition"
+                        className="transaction-item-btn transaction-item-btn-delete"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -587,71 +572,59 @@ function TransactionsContent() {
 
       {/* DETAIL MODAL */}
       {detailModalTx && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
-          <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl p-6 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                Transaction Details
-              </span>
+        <div className="transaction-modal-backdrop" onClick={() => setDetailModalTx(null)}>
+          <div className="transaction-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="transaction-modal-header">
+              <span className="transaction-modal-title">Transaction Details</span>
               <button
                 onClick={() => setDetailModalTx(null)}
-                className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100"
+                className="transaction-modal-close-btn"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="text-center py-2">
+            <div className="transaction-detail-header">
               <div
-                className={`text-2xl font-extrabold ${detailModalTx.type === 'income' ? 'text-emerald-600' : 'text-slate-900'
-                  }`}
+                className={`transaction-detail-value ${detailModalTx.type === 'income' ? 'transaction-item-amount-income' : ''}`}
               >
                 {detailModalTx.type === 'income' ? '+' : '-'}
                 {formatCurrency(detailModalTx.amount, cur, sym)}
               </div>
-              <h3 className="font-bold text-slate-900 text-base mt-1">{detailModalTx.title}</h3>
-              <span className="text-xs text-slate-400">{formatDate(detailModalTx.date)}</span>
+              <h3 className="transaction-detail-title">{detailModalTx.title}</h3>
+              <div className="transaction-detail-date">{formatDate(detailModalTx.date)}</div>
             </div>
 
-            <div className="space-y-2 text-xs bg-slate-50 p-4 rounded-2xl border border-slate-100">
-              <div className="flex justify-between py-1 border-b border-slate-200/60">
-                <span className="text-slate-500">Category:</span>
-                <span className="font-semibold text-slate-800">{detailModalTx.category}</span>
+            <div className="transaction-detail-grid">
+              <div className="transaction-detail-row">
+                <span className="transaction-detail-label">Category:</span>
+                <span className="transaction-detail-text">{detailModalTx.category}</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-slate-200/60">
-                <span className="text-slate-500">Account:</span>
-                <span className="font-semibold text-slate-800">{detailModalTx.account}</span>
+              <div className="transaction-detail-row">
+                <span className="transaction-detail-label">Account:</span>
+                <span className="transaction-detail-text">{detailModalTx.account}</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-slate-200/60">
-                <span className="text-slate-500">Payment Method:</span>
-                <span className="font-semibold text-slate-800">{detailModalTx.paymentMethod}</span>
+              <div className="transaction-detail-row">
+                <span className="transaction-detail-label">Payment Method:</span>
+                <span className="transaction-detail-text">{detailModalTx.paymentMethod}</span>
               </div>
               {detailModalTx.notes && (
-                <div className="py-1">
-                  <span className="text-slate-500 block mb-0.5">Notes:</span>
-                  <span className="text-slate-700 italic">{detailModalTx.notes}</span>
-                </div>
-              )}
-              {detailModalTx.tags && detailModalTx.tags.length > 0 && (
-                <div className="py-1 flex flex-wrap gap-1">
-                  {detailModalTx.tags.map((t, idx) => (
-                    <span key={idx} className="px-2 py-0.5 bg-slate-200 text-slate-700 rounded text-[10px]">
-                      #{t}
-                    </span>
-                  ))}
+                <div style={{ paddingTop: '6px' }}>
+                  <span className="transaction-detail-label" style={{ display: 'block', marginBottom: '2px' }}>Notes:</span>
+                  <span style={{ fontStyle: 'italic', color: '#475569' }}>{detailModalTx.notes}</span>
                 </div>
               )}
             </div>
 
             {/* Receipt Preview */}
             {detailModalTx.receiptUrl && (
-              <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
-                <span className="text-xs font-semibold text-slate-700 block mb-2">Attached Receipt:</span>
+              <div style={{ padding: '12px', backgroundColor: '#f8fafc', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
+                <span style={{ fontSize: '12px', fontWeight: 600, display: 'block', marginBottom: '8px' }}>Attached Receipt:</span>
                 {detailModalTx.receiptUrl.includes('application/pdf') ? (
                   <a
                     href={detailModalTx.receiptUrl}
                     download={detailModalTx.receiptName || 'receipt.pdf'}
-                    className="inline-flex items-center gap-2 px-3 py-2 bg-emerald-600 text-white rounded-xl text-xs font-semibold"
+                    className="transaction-btn transaction-btn-primary"
                   >
                     <Download className="w-3.5 h-3.5" /> Download PDF Receipt
                   </a>
@@ -660,19 +633,20 @@ function TransactionsContent() {
                   <img
                     src={detailModalTx.receiptUrl}
                     alt="Receipt"
-                    className="max-h-48 w-full object-contain rounded-xl border border-slate-200"
+                    style={{ maxHeight: '180px', width: '100%', objectFit: 'contain', borderRadius: '12px', border: '1px solid #e2e8f0' }}
                   />
                 )}
               </div>
             )}
 
-            <div className="flex gap-2 pt-2">
+            <div style={{ display: 'flex', gap: '8px', paddingTop: '8px' }}>
               <button
                 onClick={() => {
                   setEditModalTx(detailModalTx);
                   setDetailModalTx(null);
                 }}
-                className="flex-1 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold"
+                className="transaction-btn"
+                style={{ flex: 1, justifyContent: 'center' }}
               >
                 Edit
               </button>
@@ -681,7 +655,8 @@ function TransactionsContent() {
                   setDeleteConfirmId(detailModalTx._id);
                   setDetailModalTx(null);
                 }}
-                className="py-2.5 px-4 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-semibold"
+                className="transaction-btn"
+                style={{ color: '#e11d48', borderColor: '#fecdd3', backgroundColor: '#fff1f2' }}
               >
                 Delete
               </button>
@@ -692,45 +667,45 @@ function TransactionsContent() {
 
       {/* EDIT MODAL */}
       {editModalTx && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
-          <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl p-6 space-y-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h3 className="font-bold text-slate-900 text-base">Edit Transaction</h3>
-              <button onClick={() => setEditModalTx(null)} className="p-1.5 text-slate-400 hover:text-slate-600">
-                <X className="w-4 h-4" />
+        <div className="transaction-modal-backdrop">
+          <div className="transaction-modal transaction-modal-lg">
+            <div className="transaction-modal-header">
+              <h3 className="transaction-modal-title">Edit Transaction</h3>
+              <button onClick={() => setEditModalTx(null)} className="transaction-modal-close-btn">
+                <X style={{ width: 16, height: 16 }} />
               </button>
             </div>
 
-            <form onSubmit={handleEditSubmit} className="space-y-3">
-              <div>
-                <label className="block text-xs font-medium text-slate-500 mb-1">Title</label>
+            <form onSubmit={handleEditSubmit} className="transaction-form">
+              <div className="transaction-form-group">
+                <label className="transaction-form-label">Title</label>
                 <input
                   type="text"
                   required
                   value={editModalTx.title}
                   onChange={(e) => setEditModalTx({ ...editModalTx, title: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:bg-white"
+                  className="transaction-form-input"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-slate-500 mb-1">Amount</label>
+              <div className="transaction-form-grid">
+                <div className="transaction-form-group">
+                  <label className="transaction-form-label">Amount</label>
                   <input
                     type="number"
                     step="0.01"
                     required
                     value={editModalTx.amount}
                     onChange={(e) => setEditModalTx({ ...editModalTx, amount: parseFloat(e.target.value) || 0 })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:bg-white"
+                    className="transaction-form-input"
                   />
                 </div>
-                <div>
-                  <label className="block text-xs font-medium text-slate-500 mb-1">Type</label>
+                <div className="transaction-form-group">
+                  <label className="transaction-form-label">Type</label>
                   <select
                     value={editModalTx.type}
                     onChange={(e) => setEditModalTx({ ...editModalTx, type: e.target.value as any })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800"
+                    className="transaction-form-select"
                   >
                     <option value="expense">Expense</option>
                     <option value="income">Income</option>
@@ -738,13 +713,13 @@ function TransactionsContent() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-slate-500 mb-1">Category</label>
+              <div className="transaction-form-grid">
+                <div className="transaction-form-group">
+                  <label className="transaction-form-label">Category</label>
                   <select
                     value={editModalTx.category}
                     onChange={(e) => setEditModalTx({ ...editModalTx, category: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800"
+                    className="transaction-form-select"
                   >
                     {categories.map((c) => (
                       <option key={c._id} value={c.name}>
@@ -753,39 +728,39 @@ function TransactionsContent() {
                     ))}
                   </select>
                 </div>
-                <div>
-                  <label className="block text-xs font-medium text-slate-500 mb-1">Date</label>
+                <div className="transaction-form-group">
+                  <label className="transaction-form-label">Date</label>
                   <input
                     type="date"
                     required
                     value={toInputDateFormat(editModalTx.date)}
                     onChange={(e) => setEditModalTx({ ...editModalTx, date: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800"
+                    className="transaction-form-input"
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-medium text-slate-500 mb-1">Notes</label>
+              <div className="transaction-form-group">
+                <label className="transaction-form-label">Notes</label>
                 <textarea
                   rows={2}
                   value={editModalTx.notes || ''}
                   onChange={(e) => setEditModalTx({ ...editModalTx, notes: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800"
+                  className="transaction-form-textarea"
                 />
               </div>
 
-              <div className="pt-2 flex gap-3">
+              <div className="transaction-form-actions">
                 <button
                   type="button"
                   onClick={() => setEditModalTx(null)}
-                  className="flex-1 py-2.5 rounded-xl bg-slate-100 text-slate-700 text-xs font-semibold"
+                  className="transaction-btn-cancel"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-md"
+                  className="transaction-btn-submit"
                 >
                   Save Changes
                 </button>
@@ -797,27 +772,27 @@ function TransactionsContent() {
 
       {/* DELETE CONFIRMATION DIALOG */}
       {deleteConfirmId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
-          <div className="relative w-full max-w-sm bg-white rounded-3xl shadow-2xl p-6 text-center space-y-4">
-            <div className="w-12 h-12 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mx-auto">
-              <Trash2 className="w-6 h-6" />
+        <div className="transaction-modal-backdrop">
+          <div className="transaction-modal transaction-modal-sm">
+            <div className="transaction-confirm-icon">
+              <Trash2 style={{ width: 24, height: 24 }} />
             </div>
-            <h3 className="font-bold text-slate-900 text-base">Delete Transaction?</h3>
-            <p className="text-xs text-slate-500">
+            <h3 className="transaction-confirm-title">Delete Transaction?</h3>
+            <p className="transaction-confirm-text">
               Deleting this record will immediately reverse its balance impact on your account. This action cannot be undone.
             </p>
-            <div className="flex gap-3 pt-2">
+            <div className="transaction-confirm-actions">
               <button
                 disabled={isDeleting}
                 onClick={() => setDeleteConfirmId(null)}
-                className="flex-1 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold"
+                className="transaction-btn-cancel"
               >
                 Cancel
               </button>
               <button
                 disabled={isDeleting}
                 onClick={() => handleDelete(deleteConfirmId)}
-                className="flex-1 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold shadow-md"
+                className="transaction-btn-danger"
               >
                 {isDeleting ? 'Deleting...' : 'Confirm Delete'}
               </button>
@@ -837,7 +812,7 @@ function TransactionsContent() {
 
 export default function TransactionsPage() {
   return (
-    <Suspense fallback={<div className="p-8 text-center text-xs text-slate-400">Loading ledger...</div>}>
+    <Suspense fallback={<div className="transaction-empty">Loading ledger...</div>}>
       <TransactionsContent />
     </Suspense>
   );

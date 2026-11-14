@@ -2,32 +2,352 @@
 @use '../abstracts/mixins' as *;
 
 // ==============================================================================
-// CATEGORIES PAGE STYLES
+// CATEGORIES MANAGEMENT - SEMANTIC SCSS
 // ==============================================================================
 
-.categories-page {
-  padding: $space-6 0 $space-16;
+.categories {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 8px 0 48px;
+}
 
-  &__grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: $space-3;
+// 1. HEADER
+.categories-header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 
-    @include respond-to('sm') {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    @include respond-to('lg') {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-
-  &__item {
-    @include card-surface;
-    padding: $space-3 $space-4;
-    display: flex;
+  @media (min-width: 640px) {
+    flex-direction: row;
     align-items: center;
-    gap: $space-3;
+    justify-content: space-between;
   }
 }
 
+.categories-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: $color-text-primary;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+.categories-description {
+  font-size: 13px;
+  color: $color-text-muted;
+  margin: 4px 0 0;
+}
+
+.categories-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  background-color: var(--color-primary, #10b981);
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);
+  transition: opacity 0.15s ease;
+  align-self: flex-start;
+
+  @media (min-width: 640px) {
+    align-self: auto;
+  }
+
+  &:hover {
+    opacity: 0.92;
+  }
+}
+
+// 2. TABS
+.categories-tabs {
+  display: flex;
+  background-color: #f1f5f9;
+  padding: 4px;
+  border-radius: 14px;
+  width: 100%;
+
+  @media (min-width: 640px) {
+    width: 320px;
+  }
+}
+
+.categories-tab-btn {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  border: none;
+  background: transparent;
+  color: $color-text-secondary;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    color: $color-text-primary;
+  }
+}
+
+.categories-tab-btn-active {
+  background-color: #ffffff;
+  color: $color-text-primary;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+}
+
+// 3. CATEGORIES GRID
+.categories-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.category-card {
+  padding: 16px;
+  border-radius: 18px;
+  background-color: #ffffff;
+  border: 1px solid $color-border-default;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.15s ease;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+  }
+}
+
+.category-card-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.category-card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.category-card-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.category-card-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: $color-text-primary;
+  margin: 0;
+}
+
+.category-card-badge {
+  font-size: 10px;
+  color: $color-text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.category-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.category-card-btn {
+  padding: 6px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: $color-text-muted;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background-color: $color-bg-surface-subtle;
+    color: $color-text-primary;
+  }
+}
+
+.category-card-btn-delete:hover {
+  background-color: #ffe4e6;
+  color: #e11d48;
+}
+
+// 4. MODALS
+.categories-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+.categories-modal {
+  width: 100%;
+  max-width: 440px;
+  background-color: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+  padding: 24px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.categories-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid $color-border-light;
+}
+
+.categories-modal-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: $color-text-primary;
+  margin: 0;
+}
+
+.categories-modal-close-btn {
+  padding: 6px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: $color-text-muted;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $color-bg-surface-subtle;
+    color: $color-text-primary;
+  }
+}
+
+.categories-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.categories-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.categories-form-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: $color-text-secondary;
+}
+
+.categories-form-input {
+  width: 100%;
+  padding: 10px 14px;
+  background-color: $color-bg-surface-subtle;
+  border: 1px solid $color-border-default;
+  border-radius: 5px;
+  font-size: 13px;
+  color: $color-text-primary;
+  outline: none;
+  box-sizing: border-box;
+
+  &:focus {
+    background-color: #ffffff;
+    border-color: var(--color-primary, #10b981);
+    box-shadow: 0 0 0 3px var(--color-primary-ring, rgba(16, 185, 129, 0.18));
+  }
+}
+
+.categories-form-colors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.categories-form-color-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.categories-form-color-btn-active {
+  border-color: #0f172a;
+  transform: scale(1.1);
+}
+
+.categories-form-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-height: 130px;
+  overflow-y: auto;
+  padding: 6px;
+  background-color: $color-bg-surface-subtle;
+  border-radius: 5px;
+  border: 1px solid $color-border-light;
+}
+
+.categories-form-icon-btn {
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid $color-border-default;
+  background-color: #ffffff;
+  color: $color-text-secondary;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background-color: $color-bg-surface-subtle;
+  }
+}
+
+.categories-form-icon-btn-active {
+  background-color: var(--color-primary, #10b981);
+  border-color: var(--color-primary, #10b981);
+  color: #ffffff;
+}
+
+.categories-form-actions {
+  display: flex;
+  gap: 12px;
+  padding-top: 8px;
+}

@@ -169,14 +169,12 @@ export default function LoansPage() {
 
   return (
     <DashboardLayout>
-      <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
+      <div className="loans">
         {/* HEADER */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-              Lending & Borrowed Money
-            </h1>
-            <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+        <div className="loans-header">
+          <div className="loans-header-info">
+            <h1 className="loans-title">Lending & Borrowed Money</h1>
+            <p className="loans-description">
               Keep precise track of personal credit, receivables, payables, and repayments.
             </p>
           </div>
@@ -189,68 +187,65 @@ export default function LoansPage() {
               setError('');
               setCreateModalOpen(true);
             }}
-            className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl shadow-md shadow-emerald-600/20 transition flex items-center gap-1.5 self-start sm:self-auto"
+            className="loans-btn-add"
           >
-            <Plus className="w-4 h-4" />
+            <Plus style={{ width: 16, height: 16 }} />
             <span>Record Loan / Lending</span>
           </button>
         </div>
 
         {/* SUMMARY KPI CARDS */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-subtle">
-            <span className="text-[11px] font-medium text-slate-400">Total Money Lent</span>
-            <div className="text-lg sm:text-xl font-bold text-emerald-600 mt-1">
+        <div className="loans-stats">
+          <div className="loans-stat-card">
+            <span className="loans-stat-label">Total Money Lent</span>
+            <div className="loans-stat-value loans-stat-value-lent">
               {formatCurrency(summary.totalMoneyLent, cur, sym)}
             </div>
-            <span className="text-[10px] text-slate-400">Principal disbursed</span>
+            <span className="loans-stat-sub">Principal disbursed</span>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-subtle">
-            <span className="text-[11px] font-medium text-slate-400">Pending Receivables</span>
-            <div className="text-lg sm:text-xl font-bold text-slate-900 mt-1">
+          <div className="loans-stat-card">
+            <span className="loans-stat-label">Pending Receivables</span>
+            <div className="loans-stat-value loans-stat-value-receivable">
               {formatCurrency(summary.pendingReceivables, cur, sym)}
             </div>
-            <span className="text-[10px] text-emerald-600 font-semibold">Others owe you</span>
+            <span className="loans-stat-sub loans-stat-sub-green">Others owe you</span>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-subtle">
-            <span className="text-[11px] font-medium text-slate-400">Total Money Borrowed</span>
-            <div className="text-lg sm:text-xl font-bold text-rose-600 mt-1">
+          <div className="loans-stat-card">
+            <span className="loans-stat-label">Total Money Borrowed</span>
+            <div className="loans-stat-value loans-stat-value-borrowed">
               {formatCurrency(summary.totalMoneyBorrowed, cur, sym)}
             </div>
-            <span className="text-[10px] text-slate-400">Principal taken</span>
+            <span className="loans-stat-sub">Principal taken</span>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-subtle">
-            <span className="text-[11px] font-medium text-slate-400">Pending Payables</span>
-            <div className="text-lg sm:text-xl font-bold text-rose-700 mt-1">
+          <div className="loans-stat-card">
+            <span className="loans-stat-label">Pending Payables</span>
+            <div className="loans-stat-value loans-stat-value-payable">
               {formatCurrency(summary.pendingPayables, cur, sym)}
             </div>
-            <span className="text-[10px] text-rose-600 font-semibold">You owe others</span>
+            <span className="loans-stat-sub loans-stat-sub-red">You owe others</span>
           </div>
         </div>
 
         {/* TAB FILTER */}
-        <div className="flex bg-slate-100 p-1.5 rounded-2xl w-full sm:w-80">
+        <div className="loans-tabs">
           <button
             onClick={() => setActiveTab('all')}
-            className={`flex-1 py-1.5 text-xs font-bold rounded-xl transition ${activeTab === 'all' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'
-              }`}
+            className={`loans-tab-btn ${activeTab === 'all' ? 'loans-tab-btn-active' : ''}`}
           >
             All ({loans.length})
           </button>
           <button
             onClick={() => setActiveTab('lent')}
-            className={`flex-1 py-1.5 text-xs font-bold rounded-xl transition ${activeTab === 'lent' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'
-              }`}
+            className={`loans-tab-btn ${activeTab === 'lent' ? 'loans-tab-btn-active' : ''}`}
           >
             Money I Lent
           </button>
           <button
             onClick={() => setActiveTab('borrowed')}
-            className={`flex-1 py-1.5 text-xs font-bold rounded-xl transition ${activeTab === 'borrowed' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'
-              }`}
+            className={`loans-tab-btn ${activeTab === 'borrowed' ? 'loans-tab-btn-active' : ''}`}
           >
             Money I Borrowed
           </button>
@@ -258,40 +253,43 @@ export default function LoansPage() {
 
         {/* LOANS LIST */}
         {loading ? (
-          <div className="py-12 text-center text-xs text-slate-400">Loading loan records...</div>
+          <div className="loans-loading">Loading loan records...</div>
         ) : filteredLoans.length === 0 ? (
-          <div className="p-16 text-center bg-white rounded-3xl border border-slate-200/80">
-            <div className="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
-              <HandCoins className="w-6 h-6" />
+          <div className="loans-empty">
+            <div className="loans-empty-icon">
+              <HandCoins style={{ width: 24, height: 24 }} />
             </div>
-            <h3 className="font-bold text-slate-800 text-base">No Loan Records</h3>
-            <p className="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
+            <h3 className="loans-empty-title">No Loan Records</h3>
+            <p className="loans-empty-desc">
               Track money you lend to friends or family, or debts you need to repay.
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="loans-grid">
             {filteredLoans.map((l) => {
               const isOverdue = l.dueDate && new Date(l.dueDate) < new Date() && l.remainingAmount > 0;
               return (
-                <div
-                  key={l._id}
-                  className="p-5 rounded-3xl bg-white border border-slate-200/80 shadow-subtle hover:shadow-card transition flex flex-col justify-between"
-                >
+                <div key={l._id} className="loans-card">
                   <div>
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-2.5">
+                    <div className="loans-card-top">
+                      <div className="loans-card-info">
                         <div
-                          className={`w-10 h-10 rounded-2xl flex items-center justify-center font-bold ${l.type === 'lent' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'
-                            }`}
+                          className={`loans-card-icon ${
+                            l.type === 'lent' ? 'loans-card-icon-lent' : 'loans-card-icon-borrowed'
+                          }`}
                         >
-                          {l.type === 'lent' ? <ArrowUpRight className="w-5 h-5" /> : <ArrowDownLeft className="w-5 h-5" />}
+                          {l.type === 'lent' ? (
+                            <ArrowUpRight style={{ width: 20, height: 20 }} />
+                          ) : (
+                            <ArrowDownLeft style={{ width: 20, height: 20 }} />
+                          )}
                         </div>
                         <div>
-                          <h3 className="font-bold text-slate-900 text-sm">{l.personName}</h3>
+                          <h3 className="loans-card-name">{l.personName}</h3>
                           <span
-                            className={`text-[10px] font-bold uppercase tracking-wider ${l.type === 'lent' ? 'text-emerald-700' : 'text-rose-700'
-                              }`}
+                            className={`loans-card-badge ${
+                              l.type === 'lent' ? 'loans-card-badge-lent' : 'loans-card-badge-borrowed'
+                            }`}
                           >
                             {l.type === 'lent' ? 'Money I Lent' : 'Money I Borrowed'}
                           </span>
@@ -300,52 +298,54 @@ export default function LoansPage() {
 
                       <button
                         onClick={() => handleDelete(l._id)}
-                        className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition"
+                        className="loans-card-delete-btn"
+                        aria-label="Delete loan record"
                       >
-                        <Trash2 className="w-3.5 h-3.5" />
+                        <Trash2 style={{ width: 14, height: 14 }} />
                       </button>
                     </div>
 
-                    <div className="space-y-1.5 my-3 bg-slate-50 p-3 rounded-2xl border border-slate-100 text-xs">
-                      <div className="flex justify-between">
-                        <span className="text-slate-500">Initial Amount:</span>
-                        <span className="font-semibold text-slate-900">{formatCurrency(l.initialAmount, cur, sym)}</span>
+                    <div className="loans-card-details">
+                      <div className="loans-card-row">
+                        <span className="loans-card-label">Initial Amount:</span>
+                        <span className="loans-card-val">{formatCurrency(l.initialAmount, cur, sym)}</span>
                       </div>
-                      <div className="flex justify-between">
-                        <span className="text-slate-500">Remaining Balance:</span>
-                        <span className="font-bold text-slate-900">{formatCurrency(l.remainingAmount, cur, sym)}</span>
+                      <div className="loans-card-row">
+                        <span className="loans-card-label">Remaining Balance:</span>
+                        <span className="loans-card-val-bold">{formatCurrency(l.remainingAmount, cur, sym)}</span>
                       </div>
-                      <div className="flex justify-between text-[11px] text-slate-400 pt-1 border-t border-slate-200/60">
+                      <div className="loans-card-meta">
                         <span>Disbursed: {formatDate(l.date)}</span>
                         {l.dueDate && <span>Due: {formatDate(l.dueDate)}</span>}
                       </div>
                     </div>
 
                     {isOverdue && (
-                      <div className="p-2 bg-rose-50 border border-rose-200 text-rose-700 rounded-xl text-[11px] flex items-center gap-1.5 mb-2">
-                        <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
+                      <div className="loans-alert-overdue">
+                        <AlertTriangle style={{ width: 14, height: 14, flexShrink: 0 }} />
                         <span>Past due date! Payment is overdue.</span>
                       </div>
                     )}
                   </div>
 
-                  <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                  <div className="loans-card-bottom">
                     <span
-                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${l.status === 'settled'
-                        ? 'bg-emerald-100 text-emerald-800'
-                        : l.status === 'partially_paid'
-                          ? 'bg-blue-50 text-blue-700'
-                          : 'bg-amber-50 text-amber-800'
-                        }`}
+                      className={`loans-status-badge ${
+                        l.status === 'settled'
+                          ? 'loans-status-settled'
+                          : l.status === 'partially_paid'
+                          ? 'loans-status-partial'
+                          : 'loans-status-pending'
+                      }`}
                     >
                       {l.status.replace('_', ' ').toUpperCase()}
                     </span>
 
-                    <div className="flex items-center gap-2">
+                    <div className="loans-card-actions">
                       {l.repayments && l.repayments.length > 0 && (
                         <button
                           onClick={() => setHistoryLoan(l)}
-                          className="text-xs text-slate-500 hover:text-slate-800 font-medium"
+                          className="loans-btn-history"
                         >
                           History ({l.repayments.length})
                         </button>
@@ -356,7 +356,7 @@ export default function LoansPage() {
                             setRepayLoan(l);
                             setRepayAmount(String(l.remainingAmount));
                           }}
-                          className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold shadow-sm transition"
+                          className="loans-btn-repay"
                         >
                           Record Repayment
                         </button>
@@ -372,62 +372,60 @@ export default function LoansPage() {
 
       {/* CREATE LOAN MODAL */}
       {createModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
-          <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl p-6 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h3 className="font-bold text-slate-900 text-base">Record Lending / Borrowing</h3>
-              <button onClick={() => setCreateModalOpen(false)} className="p-1.5 text-slate-400 hover:text-slate-600">
-                <X className="w-4 h-4" />
+        <div className="loans-modal-backdrop">
+          <div className="loans-modal">
+            <div className="loans-modal-header">
+              <h3 className="loans-modal-title">Record Lending / Borrowing</h3>
+              <button onClick={() => setCreateModalOpen(false)} className="loans-modal-close-btn" aria-label="Close modal">
+                <X style={{ width: 16, height: 16 }} />
               </button>
             </div>
 
             {error && (
-              <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 rounded-xl text-xs">
+              <div className="loans-form-error">
                 {error}
               </div>
             )}
 
-            <form onSubmit={handleCreateLoan} className="space-y-3">
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Direction</label>
-                <div className="grid grid-cols-2 gap-2">
+            <form onSubmit={handleCreateLoan} className="loans-form">
+              <div className="loans-form-group">
+                <label className="loans-form-label">Direction</label>
+                <div className="loans-form-type-toggle">
                   <button
                     type="button"
                     onClick={() => setType('lent')}
-                    className={`py-2 text-xs font-semibold rounded-xl border transition ${type === 'lent'
-                      ? 'bg-emerald-50 text-emerald-700 border-emerald-500 shadow-sm'
-                      : 'bg-white text-slate-600 border-slate-200'
-                      }`}
+                    className={`loans-form-type-btn ${
+                      type === 'lent' ? 'loans-form-type-btn-lent' : ''
+                    }`}
                   >
                     Money I Lent (Asset)
                   </button>
                   <button
                     type="button"
                     onClick={() => setType('borrowed')}
-                    className={`py-2 text-xs font-semibold rounded-xl border transition ${type === 'borrowed'
-                      ? 'bg-rose-50 text-rose-700 border-rose-500 shadow-sm'
-                      : 'bg-white text-slate-600 border-slate-200'
-                      }`}
+                    className={`loans-form-type-btn ${
+                      type === 'borrowed' ? 'loans-form-type-btn-borrowed' : ''
+                    }`}
                   >
                     Money I Borrowed (Debt)
                   </button>
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Person / Entity Name</label>
+              <div className="loans-form-group">
+                <label className="loans-form-label">Person / Entity Name</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Ramesh, Priya, Landlord"
                   value={personName}
                   onChange={(e) => setPersonName(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:bg-white"
+                  className="loans-form-input"
                 />
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Principal Amount ({sym})</label>
+              <div className="loans-form-group">
+                <label className="loans-form-label">Principal Amount ({sym})</label>
                 <input
                   type="number"
                   step="0.01"
@@ -435,54 +433,55 @@ export default function LoansPage() {
                   placeholder="0.00"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-base font-bold text-slate-900 focus:bg-white"
+                  className="loans-form-input"
+                  style={{ fontSize: 16, fontWeight: 700 }}
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Transaction Date</label>
+              <div className="loans-form-row">
+                <div className="loans-form-group">
+                  <label className="loans-form-label">Transaction Date</label>
                   <input
                     type="date"
                     required
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800"
+                    className="loans-form-input"
                   />
                 </div>
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Due Date (Optional)</label>
+                <div className="loans-form-group">
+                  <label className="loans-form-label">Due Date (Optional)</label>
                   <input
                     type="date"
                     value={dueDate}
                     onChange={(e) => setDueDate(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800"
+                    className="loans-form-input"
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Notes (Optional)</label>
+              <div className="loans-form-group">
+                <label className="loans-form-label">Notes (Optional)</label>
                 <input
                   type="text"
                   placeholder="Additional context..."
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800"
+                  className="loans-form-input"
                 />
               </div>
 
-              <div className="pt-2 flex gap-3">
+              <div className="loans-form-actions">
                 <button
                   type="button"
                   onClick={() => setCreateModalOpen(false)}
-                  className="flex-1 py-2.5 rounded-xl bg-slate-100 text-slate-700 text-xs font-semibold"
+                  className="loans-btn-cancel"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-md"
+                  className="loans-btn-submit"
                 >
                   Save Record
                 </button>
@@ -494,23 +493,23 @@ export default function LoansPage() {
 
       {/* REPAYMENT MODAL */}
       {repayLoan && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
-          <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl p-6 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div className="loans-modal-backdrop">
+          <div className="loans-modal">
+            <div className="loans-modal-header">
               <div>
-                <h3 className="font-bold text-slate-900 text-base">Record Repayment</h3>
-                <span className="text-xs text-slate-400">
+                <h3 className="loans-modal-title">Record Repayment</h3>
+                <span className="loans-modal-subtitle">
                   {repayLoan.personName} • Remaining: {formatCurrency(repayLoan.remainingAmount, cur, sym)}
                 </span>
               </div>
-              <button onClick={() => setRepayLoan(null)} className="p-1.5 text-slate-400 hover:text-slate-600">
-                <X className="w-4 h-4" />
+              <button onClick={() => setRepayLoan(null)} className="loans-modal-close-btn" aria-label="Close modal">
+                <X style={{ width: 16, height: 16 }} />
               </button>
             </div>
 
-            <form onSubmit={handleRepayment} className="space-y-3">
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Repayment Amount ({sym})</label>
+            <form onSubmit={handleRepayment} className="loans-form">
+              <div className="loans-form-group">
+                <label className="loans-form-label">Repayment Amount ({sym})</label>
                 <input
                   type="number"
                   step="0.01"
@@ -518,18 +517,19 @@ export default function LoansPage() {
                   required
                   value={repayAmount}
                   onChange={(e) => setRepayAmount(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-base font-bold text-slate-900 focus:bg-white"
+                  className="loans-form-input"
+                  style={{ fontSize: 16, fontWeight: 700 }}
                 />
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <div className="loans-form-group">
+                <label className="loans-form-label">
                   {repayLoan.type === 'lent' ? 'Deposit Into Account (Optional)' : 'Pay From Account (Optional)'}
                 </label>
                 <select
                   value={repayAccount}
                   onChange={(e) => setRepayAccount(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800"
+                  className="loans-form-select"
                 >
                   <option value="">Do not alter account balance (External)</option>
                   {accounts.map((acc) => (
@@ -540,28 +540,28 @@ export default function LoansPage() {
                 </select>
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Notes</label>
+              <div className="loans-form-group">
+                <label className="loans-form-label">Notes</label>
                 <input
                   type="text"
                   placeholder="e.g. Part payment via UPI"
                   value={repayNotes}
                   onChange={(e) => setRepayNotes(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800"
+                  className="loans-form-input"
                 />
               </div>
 
-              <div className="pt-2 flex gap-3">
+              <div className="loans-form-actions">
                 <button
                   type="button"
                   onClick={() => setRepayLoan(null)}
-                  className="flex-1 py-2.5 rounded-xl bg-slate-100 text-slate-700 text-xs font-semibold"
+                  className="loans-btn-cancel"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-md"
+                  className="loans-btn-submit"
                 >
                   Confirm Repayment
                 </button>
@@ -573,23 +573,23 @@ export default function LoansPage() {
 
       {/* REPAYMENT HISTORY MODAL */}
       {historyLoan && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
-          <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl p-6 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h3 className="font-bold text-slate-900 text-base">Repayment History ({historyLoan.personName})</h3>
-              <button onClick={() => setHistoryLoan(null)} className="p-1.5 text-slate-400 hover:text-slate-600">
-                <X className="w-4 h-4" />
+        <div className="loans-modal-backdrop">
+          <div className="loans-modal">
+            <div className="loans-modal-header">
+              <h3 className="loans-modal-title">Repayment History ({historyLoan.personName})</h3>
+              <button onClick={() => setHistoryLoan(null)} className="loans-modal-close-btn" aria-label="Close modal">
+                <X style={{ width: 16, height: 16 }} />
               </button>
             </div>
 
-            <div className="space-y-2 max-h-60 overflow-y-auto">
+            <div className="loans-history-list">
               {historyLoan.repayments.map((rep, idx) => (
-                <div key={idx} className="p-3 bg-slate-50 rounded-2xl flex items-center justify-between text-xs">
+                <div key={idx} className="loans-history-item">
                   <div>
-                    <span className="font-semibold text-slate-800">{formatDate(rep.date)}</span>
-                    {rep.notes && <p className="text-[11px] text-slate-500 italic mt-0.5">{rep.notes}</p>}
+                    <span className="loans-history-date">{formatDate(rep.date)}</span>
+                    {rep.notes && <p className="loans-history-notes">{rep.notes}</p>}
                   </div>
-                  <span className="font-bold text-emerald-600">{formatCurrency(rep.amount, cur, sym)}</span>
+                  <span className="loans-history-amount">{formatCurrency(rep.amount, cur, sym)}</span>
                 </div>
               ))}
             </div>

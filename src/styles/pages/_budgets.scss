@@ -2,43 +2,451 @@
 @use '../abstracts/mixins' as *;
 
 // ==============================================================================
-// BUDGETS PAGE STYLES
+// BUDGETS MANAGEMENT - SEMANTIC SCSS
 // ==============================================================================
 
-.budgets-page {
-  padding: $space-6 0 $space-16;
+.budgets {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 8px 0 48px;
+}
 
-  &__grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: $space-4;
+// 1. HEADER
+.budgets-header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 
-    @include respond-to('md') {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  &__progress-bar {
-    height: 8px;
-    background-color: $color-bg-surface-subtle;
-    border-radius: $radius-full;
-    overflow: hidden;
-    margin: $space-2 0;
-  }
-
-  &__progress-fill {
-    height: 100%;
-    background-color: var(--color-primary);
-    border-radius: $radius-full;
-    transition: width $transition-normal;
-
-    &--warning {
-      background-color: $color-warning;
-    }
-
-    &--danger {
-      background-color: $color-danger;
-    }
+  @media (min-width: 640px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
   }
 }
 
+.budgets-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: $color-text-primary;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+.budgets-description {
+  font-size: 13px;
+  color: $color-text-muted;
+  margin: 4px 0 0;
+}
+
+.budgets-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  background-color: var(--color-primary, #10b981);
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);
+  transition: opacity 0.15s ease;
+  align-self: flex-start;
+
+  @media (min-width: 640px) {
+    align-self: auto;
+  }
+
+  &:hover {
+    opacity: 0.92;
+  }
+}
+
+// 2. EMPTY STATE
+.budgets-empty {
+  padding: 64px 24px;
+  text-align: center;
+  background-color: #ffffff;
+  border-radius: 24px;
+  border: 1px solid $color-border-default;
+}
+
+.budgets-empty-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  background-color: #ecfdf5;
+  color: var(--color-primary, #10b981);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+}
+
+.budgets-empty-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: $color-text-primary;
+  margin: 0;
+}
+
+.budgets-empty-desc {
+  font-size: 13px;
+  color: $color-text-muted;
+  margin: 6px auto 0;
+  max-width: 400px;
+}
+
+// 3. BUDGETS GRID & CARD
+.budgets-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.budget-card {
+  padding: 20px;
+  border-radius: 20px;
+  background-color: #ffffff;
+  border: 1px solid $color-border-default;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.15s ease;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+  }
+}
+
+.budget-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.budget-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: $color-text-primary;
+}
+
+.budget-card-badge {
+  font-size: 10px;
+  background-color: #d1fae5;
+  color: #065f46;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  margin-left: 6px;
+}
+
+.budget-card-delete-btn {
+  padding: 6px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: $color-text-muted;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #ffe4e6;
+    color: #e11d48;
+  }
+}
+
+// Progress
+.budget-progress-container {
+  margin: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.budget-progress-labels {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.budget-progress-spent {
+  color: $color-text-secondary;
+  font-weight: 500;
+}
+
+.budget-progress-pct {
+  font-weight: 700;
+  color: $color-text-primary;
+}
+
+.budget-progress-pct-warning {
+  color: #d97706;
+}
+
+.budget-progress-pct-danger {
+  color: #e11d48;
+}
+
+.budget-progress-bar {
+  width: 100%;
+  height: 10px;
+  background-color: #f1f5f9;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.budget-progress-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background-color: var(--color-primary, #10b981);
+  transition: width 0.3s ease;
+}
+
+.budget-progress-fill-notice {
+  background-color: #eab308;
+}
+
+.budget-progress-fill-warning {
+  background-color: #f59e0b;
+}
+
+.budget-progress-fill-danger {
+  background-color: #e11d48;
+}
+
+// Metrics
+.budget-card-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  font-size: 12px;
+  padding-top: 12px;
+  border-top: 1px solid $color-border-light;
+}
+
+.budget-card-metric-label {
+  font-size: 11px;
+  color: $color-text-muted;
+}
+
+.budget-card-metric-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: $color-text-primary;
+  margin-top: 2px;
+}
+
+.budget-card-metric-remaining {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-primary, #047857);
+  margin-top: 2px;
+}
+
+.budget-card-metric-remaining-over {
+  color: #e11d48;
+}
+
+// Alerts
+.budget-alert {
+  margin-top: 14px;
+  padding: 10px 14px;
+  border-radius: 5px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid transparent;
+}
+
+.budget-alert-notice {
+  background-color: #fefce8;
+  color: #854d0e;
+  border-color: #fef08a;
+}
+
+.budget-alert-warning {
+  background-color: #fffbeb;
+  color: #92400e;
+  border-color: #fde68a;
+}
+
+.budget-alert-danger {
+  background-color: #fff1f2;
+  color: #9f1239;
+  border-color: #fecdd3;
+}
+
+// 4. MODALS
+.budgets-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+.budgets-modal {
+  width: 100%;
+  max-width: 440px;
+  background-color: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+  padding: 24px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.budgets-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid $color-border-light;
+}
+
+.budgets-modal-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: $color-text-primary;
+  margin: 0;
+}
+
+.budgets-modal-close-btn {
+  padding: 6px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: $color-text-muted;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $color-bg-surface-subtle;
+    color: $color-text-primary;
+  }
+}
+
+.budgets-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.budgets-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.budgets-form-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: $color-text-secondary;
+}
+
+.budgets-form-input,
+.budgets-form-select {
+  width: 100%;
+  padding: 10px 14px;
+  background-color: $color-bg-surface-subtle;
+  border: 1px solid $color-border-default;
+  border-radius: 5px;
+  font-size: 13px;
+  color: $color-text-primary;
+  outline: none;
+  box-sizing: border-box;
+
+  &:focus {
+    background-color: #ffffff;
+    border-color: var(--color-primary, #10b981);
+    box-shadow: 0 0 0 3px var(--color-primary-ring, rgba(16, 185, 129, 0.18));
+  }
+}
+
+.budgets-form-checkbox-group {
+  padding-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid $color-border-light;
+}
+
+.budgets-form-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: $color-text-secondary;
+  cursor: pointer;
+}
+
+.budgets-form-actions {
+  display: flex;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.budgets-form-error {
+  padding: 10px 14px;
+  background-color: #fff1f2;
+  border: 1px solid #fecdd3;
+  color: #e11d48;
+  border-radius: 5px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.budgets-btn-cancel {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 5px;
+  border: none;
+  background-color: $color-bg-surface-subtle;
+  color: $color-text-secondary;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $color-border-light;
+    color: $color-text-primary;
+  }
+}
+
+.budgets-btn-submit {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 5px;
+  border: none;
+  background-color: var(--color-primary, #10b981);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.2);
+
+  &:hover {
+    background-color: var(--color-primary-hover, #059669);
+  }
+}

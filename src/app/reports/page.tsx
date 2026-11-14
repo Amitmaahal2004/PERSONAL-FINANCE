@@ -161,41 +161,41 @@ export default function ReportsPage() {
 
   return (
     <DashboardLayout>
-      <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
+      <div className="reports">
         {/* HEADER */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+        <div className="reports-header">
+          <div className="reports-header-info">
+            <h1 className="reports-title">
               Reports & Financial Intelligence
             </h1>
-            <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+            <p className="reports-description">
               Deep dive into earnings, outlays, cash flows, and category distributions.
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="reports-header-actions">
             <button
               onClick={handleExportExcel}
               disabled={loading || !reportData}
-              className="px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-xl border border-slate-200 shadow-sm transition flex items-center gap-1.5"
+              className="reports-btn-excel"
             >
-              <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600" />
+              <FileSpreadsheet style={{ width: 14, height: 14, color: '#10b981' }} />
               <span>Export Excel</span>
             </button>
             <button
               onClick={handleExportPDF}
               disabled={loading || !reportData}
-              className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl shadow-md shadow-emerald-600/20 transition flex items-center gap-1.5"
+              className="reports-btn-pdf"
             >
-              <FileText className="w-3.5 h-3.5" />
+              <FileText style={{ width: 14, height: 14 }} />
               <span>Export PDF</span>
             </button>
           </div>
         </div>
 
         {/* TIME PERIOD SELECTOR */}
-        <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-subtle flex flex-col md:flex-row md:items-center justify-between gap-3">
-          <div className="flex flex-wrap gap-1.5">
+        <div className="reports-filters">
+          <div className="reports-range-buttons">
             {[
               { id: 'today', label: 'Today' },
               { id: 'yesterday', label: 'Yesterday' },
@@ -208,10 +208,9 @@ export default function ReportsPage() {
               <button
                 key={p.id}
                 onClick={() => setFilterRange(p.id)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition ${filterRange === p.id
-                  ? 'bg-emerald-600 text-white shadow-sm'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                  }`}
+                className={`reports-range-btn ${
+                  filterRange === p.id ? 'reports-range-btn-active' : ''
+                }`}
               >
                 {p.label}
               </button>
@@ -219,23 +218,23 @@ export default function ReportsPage() {
           </div>
 
           {filterRange === 'custom' && (
-            <div className="flex items-center gap-2 text-xs">
+            <div className="reports-custom-range">
               <input
                 type="date"
                 value={customStart}
                 onChange={(e) => setCustomStart(e.target.value)}
-                className="px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-lg"
+                className="reports-custom-input"
               />
-              <span className="text-slate-400">to</span>
+              <span className="reports-custom-separator">to</span>
               <input
                 type="date"
                 value={customEnd}
                 onChange={(e) => setCustomEnd(e.target.value)}
-                className="px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-lg"
+                className="reports-custom-input"
               />
               <button
                 onClick={handleApplyCustom}
-                className="px-3 py-1.5 bg-slate-900 text-white rounded-lg font-semibold"
+                className="reports-btn-apply"
               >
                 Apply
               </button>
@@ -245,34 +244,35 @@ export default function ReportsPage() {
 
         {/* SUMMARY CARDS */}
         {reportData && (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="p-5 rounded-3xl bg-white border border-slate-200/80 shadow-subtle">
-              <span className="text-xs font-medium text-slate-400">Total Income</span>
-              <div className="text-xl sm:text-2xl font-extrabold text-emerald-600 mt-1">
+          <div className="reports-summary">
+            <div className="reports-summary-card">
+              <span className="reports-summary-label">Total Income</span>
+              <div className="reports-summary-val reports-summary-val-income">
                 {formatCurrency(reportData.summary.totalIncome, cur, sym)}
               </div>
             </div>
 
-            <div className="p-5 rounded-3xl bg-white border border-slate-200/80 shadow-subtle">
-              <span className="text-xs font-medium text-slate-400">Total Expenses</span>
-              <div className="text-xl sm:text-2xl font-extrabold text-rose-600 mt-1">
+            <div className="reports-summary-card">
+              <span className="reports-summary-label">Total Expenses</span>
+              <div className="reports-summary-val reports-summary-val-expense">
                 {formatCurrency(reportData.summary.totalExpenses, cur, sym)}
               </div>
             </div>
 
-            <div className="p-5 rounded-3xl bg-white border border-slate-200/80 shadow-subtle">
-              <span className="text-xs font-medium text-slate-400">Net Surplus / Savings</span>
+            <div className="reports-summary-card">
+              <span className="reports-summary-label">Net Surplus / Savings</span>
               <div
-                className={`text-xl sm:text-2xl font-extrabold mt-1 ${reportData.summary.netSavings >= 0 ? 'text-slate-900' : 'text-rose-600'
-                  }`}
+                className={`reports-summary-val ${
+                  reportData.summary.netSavings >= 0 ? '' : 'reports-summary-val-expense'
+                }`}
               >
                 {formatCurrency(reportData.summary.netSavings, cur, sym)}
               </div>
             </div>
 
-            <div className="p-5 rounded-3xl bg-white border border-slate-200/80 shadow-subtle">
-              <span className="text-xs font-medium text-slate-400">Savings Rate</span>
-              <div className="text-xl sm:text-2xl font-extrabold text-blue-600 mt-1">
+            <div className="reports-summary-card">
+              <span className="reports-summary-label">Savings Rate</span>
+              <div className="reports-summary-val reports-summary-val-rate">
                 {reportData.summary.savingsRate}%
               </div>
             </div>
@@ -281,11 +281,11 @@ export default function ReportsPage() {
 
         {/* CHARTS SECTION */}
         {reportData && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="reports-charts">
             {/* Category Expenses Bar Chart */}
-            <div className="p-6 rounded-3xl bg-white border border-slate-200/80 shadow-subtle">
-              <h3 className="text-sm font-bold text-slate-900 mb-4">Top Spending Categories</h3>
-              <div className="h-64 w-full">
+            <div className="reports-chart-card">
+              <h3 className="reports-chart-title">Top Spending Categories</h3>
+              <div className="reports-chart-wrapper">
                 {reportData.expenseCategories.length > 0 ? (
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart
@@ -302,7 +302,7 @@ export default function ReportsPage() {
                     </BarChart>
                   </ResponsiveContainer>
                 ) : (
-                  <div className="h-full flex items-center justify-center text-xs text-slate-400">
+                  <div className="reports-chart-empty">
                     No expense data in this period.
                   </div>
                 )}
@@ -310,9 +310,9 @@ export default function ReportsPage() {
             </div>
 
             {/* Account Breakdown Bar Chart */}
-            <div className="p-6 rounded-3xl bg-white border border-slate-200/80 shadow-subtle">
-              <h3 className="text-sm font-bold text-slate-900 mb-4">Account Cash Flow</h3>
-              <div className="h-64 w-full">
+            <div className="reports-chart-card">
+              <h3 className="reports-chart-title">Account Cash Flow</h3>
+              <div className="reports-chart-wrapper">
                 {reportData.accountBreakdown.length > 0 ? (
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart
@@ -330,7 +330,7 @@ export default function ReportsPage() {
                     </BarChart>
                   </ResponsiveContainer>
                 ) : (
-                  <div className="h-full flex items-center justify-center text-xs text-slate-400">
+                  <div className="reports-chart-empty">
                     No account movements in this period.
                   </div>
                 )}
@@ -341,32 +341,32 @@ export default function ReportsPage() {
 
         {/* DETAILED CATEGORY EXPENSE TABLE */}
         {reportData && reportData.expenseCategories.length > 0 && (
-          <div className="p-6 rounded-3xl bg-white border border-slate-200/80 shadow-subtle space-y-4">
-            <h3 className="text-sm font-bold text-slate-900">Category Breakdown Table</h3>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
+          <div className="reports-table-card">
+            <h3 className="reports-table-title">Category Breakdown Table</h3>
+            <div className="reports-table-wrapper">
+              <table className="reports-table">
                 <thead>
-                  <tr className="border-b border-slate-100 text-slate-400 uppercase tracking-wider font-semibold">
-                    <th className="pb-3">Category</th>
-                    <th className="pb-3">Transactions</th>
-                    <th className="pb-3">% of Total Expenses</th>
-                    <th className="pb-3 text-right">Total Amount</th>
+                  <tr>
+                    <th className="reports-table-head-cell">Category</th>
+                    <th className="reports-table-head-cell">Transactions</th>
+                    <th className="reports-table-head-cell">% of Total Expenses</th>
+                    <th className="reports-table-head-cell" style={{ textAlign: 'right' }}>Total Amount</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody>
                   {reportData.expenseCategories.map((c: any, i: number) => (
-                    <tr key={i} className="hover:bg-slate-50/80">
-                      <td className="py-3 font-semibold text-slate-800">{c.category}</td>
-                      <td className="py-3 text-slate-600">{c.count} records</td>
-                      <td className="py-3">
-                        <div className="flex items-center gap-2">
-                          <div className="w-16 h-2 bg-slate-100 rounded-full overflow-hidden">
-                            <div className="h-full bg-rose-500 rounded-full" style={{ width: `${c.percentage}%` }} />
+                    <tr key={i} className="reports-table-row">
+                      <td className="reports-table-cell reports-table-cell-bold">{c.category}</td>
+                      <td className="reports-table-cell">{c.count} records</td>
+                      <td className="reports-table-cell">
+                        <div className="reports-percentage-wrapper">
+                          <div className="reports-percentage-bar">
+                            <div className="reports-percentage-fill" style={{ width: `${c.percentage}%` }} />
                           </div>
-                          <span className="text-slate-600 font-medium">{c.percentage}%</span>
+                          <span>{c.percentage}%</span>
                         </div>
                       </td>
-                      <td className="py-3 font-bold text-slate-900 text-right">
+                      <td className="reports-table-cell reports-table-cell-right">
                         {formatCurrency(c.total, cur, sym)}
                       </td>
                     </tr>

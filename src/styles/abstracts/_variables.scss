@@ -19,10 +19,21 @@ $color-secondary-light: var(--color-secondary-light, rgba(15, 118, 110, 0.08));
 $color-secondary-border: var(--color-secondary-border, rgba(15, 118, 110, 0.3));
 
 // BACKGROUND & SURFACE TOKENS
-$color-bg-app: #f8fafc;
+$color-bg-app: #f5f8fc;
 $color-bg-surface: #ffffff;
 $color-bg-surface-subtle: #f1f5f9;
 $color-bg-card: #ffffff;
+
+// DEEP SIDEBAR DESIGN TOKENS (fintech dark green theme)
+$color-sidebar-bg: #073b3a;
+$color-sidebar-bg-dark: #052e2b;
+$color-sidebar-card-bg: rgba(255, 255, 255, 0.07);
+$color-sidebar-card-border: rgba(255, 255, 255, 0.12);
+$color-sidebar-text: #a7c7c5;
+$color-sidebar-text-muted: rgba(255, 255, 255, 0.5);
+$color-sidebar-text-active: #ffffff;
+$color-sidebar-active-bg: #10b981;
+$color-sidebar-hover-bg: rgba(255, 255, 255, 0.08);
 
 // TEXT TOKENS
 $color-text-primary: #0f172a;

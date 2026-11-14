@@ -356,29 +356,29 @@ export default function UdhaarPage() {
     switch (status) {
       case 'cleared':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+          <span className="udhaar-badge udhaar-badge-cleared">
+            <CheckCircle2 style={{ width: 14, height: 14 }} />
             CLEARED
           </span>
         );
       case 'partially_paid':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 border border-blue-200">
-            <Clock className="w-3.5 h-3.5 text-blue-600" />
+          <span className="udhaar-badge udhaar-badge-partially-paid">
+            <Clock style={{ width: 14, height: 14 }} />
             PARTIALLY PAID
           </span>
         );
       case 'overdue':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-100 text-rose-800 border border-rose-200 animate-pulse">
-            <AlertCircle className="w-3.5 h-3.5 text-rose-600" />
+          <span className="udhaar-badge udhaar-badge-overdue">
+            <AlertCircle style={{ width: 14, height: 14 }} />
             OVERDUE
           </span>
         );
       default:
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-200">
-            <Clock className="w-3.5 h-3.5 text-amber-600" />
+          <span className="udhaar-badge udhaar-badge-pending">
+            <Clock style={{ width: 14, height: 14 }} />
             PENDING
           </span>
         );
@@ -390,32 +390,30 @@ export default function UdhaarPage() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-6 pb-20">
+      <div className="udhaar">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2">
-              <div className="p-2 rounded-xl bg-emerald-100 text-emerald-700">
-                <HandCoins className="w-6 h-6" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Udhaar Management</h1>
-                <p className="text-xs sm:text-sm text-slate-500">
-                  Track money lent, money borrowed, partial repayments and cleared history
-                </p>
-              </div>
+        <div className="udhaar-header">
+          <div className="udhaar-header-left">
+            <div className="udhaar-header-icon">
+              <HandCoins style={{ width: 24, height: 24 }} />
+            </div>
+            <div>
+              <h1 className="udhaar-title">Udhaar Management</h1>
+              <p className="udhaar-description">
+                Track money lent, money borrowed, partial repayments and cleared history
+              </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2.5 w-full sm:w-auto">
+          <div className="udhaar-actions">
             <button
               onClick={() => {
                 setFormData((prev) => ({ ...prev, type: 'lent' }));
                 setIsAddModalOpen(true);
               }}
-              className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold rounded-xl transition shadow-sm active:scale-[0.98]"
+              className="udhaar-btn-lent"
             >
-              <ArrowUpRight className="w-4 h-4" />
+              <ArrowUpRight style={{ width: 16, height: 16 }} />
               <span>Give Udhaar (Lent)</span>
             </button>
 
@@ -424,96 +422,96 @@ export default function UdhaarPage() {
                 setFormData((prev) => ({ ...prev, type: 'borrowed' }));
                 setIsAddModalOpen(true);
               }}
-              className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-4 py-2.5 bg-amber-600 hover:bg-amber-700 text-white text-xs sm:text-sm font-semibold rounded-xl transition shadow-sm active:scale-[0.98]"
+              className="udhaar-btn-borrowed"
             >
-              <ArrowDownLeft className="w-4 h-4" />
+              <ArrowDownLeft style={{ width: 16, height: 16 }} />
               <span>Take Udhaar (Borrowed)</span>
             </button>
           </div>
         </div>
 
         {/* 9 KPI SUMMARY CARDS */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5">
+        <div className="udhaar-stats">
           {/* 1. Total Money Lent */}
-          <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
-            <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Total Lent</div>
-            <div className="mt-1 text-lg sm:text-xl font-bold text-emerald-700">
+          <div className="udhaar-stat-card">
+            <div className="udhaar-stat-label">Total Lent</div>
+            <div className="udhaar-stat-value udhaar-stat-value-emerald">
               {formatCurrency(summary.totalMoneyLent, user?.preferredCurrency, user?.currencySymbol)}
             </div>
-            <div className="text-[10px] text-slate-400 mt-0.5">Asset / Given out</div>
+            <div className="udhaar-stat-subtitle">Asset / Given out</div>
           </div>
 
           {/* 2. Total Money Borrowed */}
-          <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
-            <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Total Borrowed</div>
-            <div className="mt-1 text-lg sm:text-xl font-bold text-amber-700">
+          <div className="udhaar-stat-card">
+            <div className="udhaar-stat-label">Total Borrowed</div>
+            <div className="udhaar-stat-value udhaar-stat-value-amber">
               {formatCurrency(summary.totalMoneyBorrowed, user?.preferredCurrency, user?.currencySymbol)}
             </div>
-            <div className="text-[10px] text-slate-400 mt-0.5">Liability / Taken in</div>
+            <div className="udhaar-stat-subtitle">Liability / Taken in</div>
           </div>
 
           {/* 3. Total Amount Received */}
-          <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
-            <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Amount Received</div>
-            <div className="mt-1 text-lg sm:text-xl font-bold text-teal-700">
+          <div className="udhaar-stat-card">
+            <div className="udhaar-stat-label">Amount Received</div>
+            <div className="udhaar-stat-value udhaar-stat-value-teal">
               {formatCurrency(summary.totalAmountReceived, user?.preferredCurrency, user?.currencySymbol)}
             </div>
-            <div className="text-[10px] text-slate-400 mt-0.5">Recovered from lent</div>
+            <div className="udhaar-stat-subtitle">Recovered from lent</div>
           </div>
 
           {/* 4. Total Amount Repaid */}
-          <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
-            <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Amount Repaid</div>
-            <div className="mt-1 text-lg sm:text-xl font-bold text-indigo-700">
+          <div className="udhaar-stat-card">
+            <div className="udhaar-stat-label">Amount Repaid</div>
+            <div className="udhaar-stat-value udhaar-stat-value-indigo">
               {formatCurrency(summary.totalAmountRepaid, user?.preferredCurrency, user?.currencySymbol)}
             </div>
-            <div className="text-[10px] text-slate-400 mt-0.5">Repaid to lenders</div>
+            <div className="udhaar-stat-subtitle">Repaid to lenders</div>
           </div>
 
           {/* 5. Pending Receivables */}
-          <div className="p-4 rounded-2xl bg-emerald-50/60 border border-emerald-200/80 shadow-xs">
-            <div className="text-[11px] font-semibold text-emerald-800 uppercase tracking-wider">Pending Receivables</div>
-            <div className="mt-1 text-lg sm:text-xl font-extrabold text-emerald-700">
+          <div className="udhaar-stat-card udhaar-stat-card-highlight-green">
+            <div className="udhaar-stat-label" style={{ color: '#065f46' }}>Pending Receivables</div>
+            <div className="udhaar-stat-value udhaar-stat-value-emerald">
               {formatCurrency(summary.pendingReceivables, user?.preferredCurrency, user?.currencySymbol)}
             </div>
-            <div className="text-[10px] text-emerald-600 mt-0.5">To collect from others</div>
+            <div className="udhaar-stat-subtitle" style={{ color: '#047857' }}>To collect from others</div>
           </div>
 
           {/* 6. Pending Payables */}
-          <div className="p-4 rounded-2xl bg-amber-50/60 border border-amber-200/80 shadow-xs">
-            <div className="text-[11px] font-semibold text-amber-800 uppercase tracking-wider">Pending Payables</div>
-            <div className="mt-1 text-lg sm:text-xl font-extrabold text-amber-700">
+          <div className="udhaar-stat-card udhaar-stat-card-highlight-amber">
+            <div className="udhaar-stat-label" style={{ color: '#92400e' }}>Pending Payables</div>
+            <div className="udhaar-stat-value udhaar-stat-value-amber">
               {formatCurrency(summary.pendingPayables, user?.preferredCurrency, user?.currencySymbol)}
             </div>
-            <div className="text-[10px] text-amber-600 mt-0.5">To repay to lenders</div>
+            <div className="udhaar-stat-subtitle" style={{ color: '#b45309' }}>To repay to lenders</div>
           </div>
 
           {/* 7. Partially Repaid Count */}
-          <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
-            <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Partially Repaid</div>
-            <div className="mt-1 text-lg sm:text-xl font-bold text-blue-700">{summary.partiallyRepaidCount}</div>
-            <div className="text-[10px] text-slate-400 mt-0.5">Active installments</div>
+          <div className="udhaar-stat-card">
+            <div className="udhaar-stat-label">Partially Repaid</div>
+            <div className="udhaar-stat-value udhaar-stat-value-blue">{summary.partiallyRepaidCount}</div>
+            <div className="udhaar-stat-subtitle">Active installments</div>
           </div>
 
           {/* 8. Fully Cleared Count */}
-          <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
-            <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Fully Cleared</div>
-            <div className="mt-1 text-lg sm:text-xl font-bold text-emerald-700">{summary.fullyClearedCount}</div>
-            <div className="text-[10px] text-slate-400 mt-0.5">Settled records</div>
+          <div className="udhaar-stat-card">
+            <div className="udhaar-stat-label">Fully Cleared</div>
+            <div className="udhaar-stat-value udhaar-stat-value-emerald">{summary.fullyClearedCount}</div>
+            <div className="udhaar-stat-subtitle">Settled records</div>
           </div>
 
           {/* 9. Overdue Count */}
-          <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
-            <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Overdue Records</div>
-            <div className="mt-1 text-lg sm:text-xl font-bold text-rose-600">{summary.overdueCount}</div>
-            <div className="text-[10px] text-slate-400 mt-0.5">Past expected date</div>
+          <div className="udhaar-stat-card">
+            <div className="udhaar-stat-label">Overdue Records</div>
+            <div className="udhaar-stat-value udhaar-stat-value-rose">{summary.overdueCount}</div>
+            <div className="udhaar-stat-subtitle">Past expected date</div>
           </div>
         </div>
 
         {/* 5 TABS + FILTER CONTROLS */}
-        <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
+        <div className="udhaar-content">
           {/* Tabs navigation */}
-          <div className="flex border-b border-slate-200 overflow-x-auto scrollbar-none px-4 pt-2">
+          <div className="udhaar-tabs">
             {[
               { id: 'all', label: 'All Records', count: totalCount },
               { id: 'lent', label: 'Money I Lent', count: undefined },
@@ -526,19 +524,11 @@ export default function UdhaarPage() {
                 <button
                   key={tab.id}
                   onClick={() => handleTabChange(tab.id as any)}
-                  className={`flex items-center gap-2 px-4 py-3 text-xs sm:text-sm font-semibold border-b-2 transition whitespace-nowrap ${
-                    isActive
-                      ? 'border-emerald-600 text-emerald-700 bg-emerald-50/50'
-                      : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
-                  }`}
+                  className={`udhaar-tab-btn ${isActive ? 'udhaar-tab-btn-active' : ''}`}
                 >
                   <span>{tab.label}</span>
                   {tab.count !== undefined && (
-                    <span
-                      className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
-                        isActive ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-600'
-                      }`}
-                    >
+                    <span className={`udhaar-tab-badge ${isActive ? 'udhaar-tab-badge-active' : ''}`}>
                       {tab.count}
                     </span>
                   )}
@@ -548,26 +538,26 @@ export default function UdhaarPage() {
           </div>
 
           {/* Search and Filters toolbar */}
-          <div className="p-4 flex flex-col sm:flex-row items-center justify-between gap-3 border-b border-slate-100">
-            <form onSubmit={handleSearch} className="flex-1 w-full sm:max-w-md relative">
-              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <div className="udhaar-toolbar">
+            <form onSubmit={handleSearch} className="udhaar-search-form">
+              <Search className="udhaar-search-icon" />
               <input
                 type="text"
                 placeholder="Search person, phone, record ID, notes..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition"
+                className="udhaar-search-input"
               />
             </form>
 
-            <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end">
+            <div className="udhaar-toolbar-right">
               <select
                 value={statusFilter}
                 onChange={(e) => {
                   setStatusFilter(e.target.value);
                   setPage(1);
                 }}
-                className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="udhaar-filter-select"
               >
                 <option value="">All Statuses</option>
                 <option value="pending">Pending</option>
@@ -578,62 +568,63 @@ export default function UdhaarPage() {
 
               <button
                 onClick={handleExportCsv}
-                className="flex items-center gap-1.5 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs sm:text-sm font-medium transition"
+                className="udhaar-btn-export"
               >
-                <Download className="w-4 h-4" />
-                <span className="hidden sm:inline">Export CSV</span>
+                <Download style={{ width: 14, height: 14 }} />
+                <span>Export CSV</span>
               </button>
             </div>
           </div>
 
           {/* TABLE OF RECORDS */}
-          <div className="overflow-x-auto">
+          <div className="udhaar-table-container">
             {loading ? (
-              <div className="p-12 flex flex-col items-center justify-center text-slate-400 gap-2">
-                <Loader2 className="w-8 h-8 animate-spin text-emerald-600" />
-                <p className="text-xs">Loading Udhaar records...</p>
+              <div style={{ padding: 48, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#94a3b8', gap: 8 }}>
+                <Loader2 style={{ width: 32, height: 32, color: '#10b981' }} className="animate-spin" />
+                <p style={{ fontSize: 12 }}>Loading Udhaar records...</p>
               </div>
             ) : records.length === 0 ? (
-              <div className="p-12 text-center text-slate-500">
-                <HandCoins className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-                <h3 className="text-base font-bold text-slate-800">No Udhaar records found</h3>
-                <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-md mx-auto">
+              <div style={{ padding: 48, textAlign: 'center', color: '#64748b' }}>
+                <HandCoins style={{ width: 48, height: 48, color: '#cbd5e1', margin: '0 auto 12px' }} />
+                <h3 style={{ fontSize: 16, fontWeight: 700, color: '#0f172a' }}>No Udhaar records found</h3>
+                <p style={{ fontSize: 13, color: '#94a3b8', marginTop: 4, maxWidth: 440, marginLeft: 'auto', marginRight: 'auto' }}>
                   {activeTab === 'cleared'
                     ? 'No cleared history yet. Once an active Udhaar balance reaches ₹0, it moves here automatically.'
                     : 'Start by tracking money you have lent to others or borrowed from others.'}
                 </p>
                 <button
                   onClick={() => setIsAddModalOpen(true)}
-                  className="mt-4 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl inline-flex items-center gap-1.5 transition"
+                  className="udhaar-btn-lent"
+                  style={{ marginTop: 16, display: 'inline-flex' }}
                 >
-                  <Plus className="w-4 h-4" />
+                  <Plus style={{ width: 16, height: 16 }} />
                   <span>Add First Udhaar</span>
                 </button>
               </div>
             ) : (
-              <table className="w-full text-left text-xs sm:text-sm">
-                <thead className="bg-slate-50/80 text-slate-600 uppercase text-[10px] tracking-wider border-b border-slate-200 select-none">
+              <table className="udhaar-table">
+                <thead>
                   <tr>
-                    <th className="py-3 px-3.5 w-10">
+                    <th className="udhaar-table-th" style={{ width: 40 }}>
                       <input
                         type="checkbox"
                         checked={allSelectedOnPage}
                         onChange={handleSelectAllPage}
-                        className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
+                        style={{ cursor: 'pointer' }}
                       />
                     </th>
-                    <th className="py-3 px-3">Record ID</th>
-                    <th className="py-3 px-3">Person</th>
-                    <th className="py-3 px-3">Type</th>
-                    <th className="py-3 px-3 text-right">Original</th>
-                    <th className="py-3 px-3 text-right">Repaid</th>
-                    <th className="py-3 px-3 text-right">Remaining</th>
-                    <th className="py-3 px-3">Dates / Duration</th>
-                    <th className="py-3 px-3">Status</th>
-                    <th className="py-3 px-3 text-right">Actions</th>
+                    <th className="udhaar-table-th">Record ID</th>
+                    <th className="udhaar-table-th">Person</th>
+                    <th className="udhaar-table-th">Type</th>
+                    <th className="udhaar-table-th" style={{ textAlign: 'right' }}>Original</th>
+                    <th className="udhaar-table-th" style={{ textAlign: 'right' }}>Repaid</th>
+                    <th className="udhaar-table-th" style={{ textAlign: 'right' }}>Remaining</th>
+                    <th className="udhaar-table-th">Dates / Duration</th>
+                    <th className="udhaar-table-th">Status</th>
+                    <th className="udhaar-table-th" style={{ textAlign: 'right' }}>Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody>
                   {records.map((r) => {
                     const isSelected = selectedIds.includes(r._id);
                     const isLent = r.type === 'lent';
@@ -642,72 +633,70 @@ export default function UdhaarPage() {
                     return (
                       <tr
                         key={r._id}
-                        className={`hover:bg-slate-50/80 transition ${
-                          isSelected ? 'bg-emerald-50/30' : ''
-                        }`}
+                        className={`udhaar-table-row ${isSelected ? 'udhaar-table-row-selected' : ''}`}
                       >
-                        <td className="py-3 px-3.5">
+                        <td className="udhaar-table-td">
                           <input
                             type="checkbox"
                             checked={isSelected}
                             onChange={() => handleToggleSelect(r._id)}
-                            className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
+                            style={{ cursor: 'pointer' }}
                           />
                         </td>
 
-                        <td className="py-3 px-3 font-mono text-xs text-slate-500">
+                        <td className="udhaar-table-td" style={{ fontFamily: 'monospace', fontSize: 12, color: '#64748b' }}>
                           {r.recordId}
                         </td>
 
-                        <td className="py-3 px-3">
-                          <div className="font-semibold text-slate-900">{r.personName}</div>
+                        <td className="udhaar-table-td">
+                          <div style={{ fontWeight: 600, color: '#0f172a' }}>{r.personName}</div>
                           {r.phoneNumber && (
-                            <div className="text-[11px] text-slate-400 flex items-center gap-1">
-                              <Phone className="w-3 h-3" />
+                            <div style={{ fontSize: 11, color: '#94a3b8', display: 'flex', alignItems: 'center', gap: 4 }}>
+                              <Phone style={{ width: 12, height: 12 }} />
                               <span>{r.phoneNumber}</span>
                             </div>
                           )}
                         </td>
 
-                        <td className="py-3 px-3">
+                        <td className="udhaar-table-td">
                           {isLent ? (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100">
-                              <ArrowUpRight className="w-3 h-3" />
+                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '2px 8px', borderRadius: 6, fontSize: 11, fontWeight: 600, backgroundColor: '#ecfdf5', color: '#047857', border: '1px solid #d1fae5' }}>
+                              <ArrowUpRight style={{ width: 12, height: 12 }} />
                               Lent (Receivable)
                             </span>
                           ) : (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-amber-50 text-amber-700 border border-amber-100">
-                              <ArrowDownLeft className="w-3 h-3" />
+                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '2px 8px', borderRadius: 6, fontSize: 11, fontWeight: 600, backgroundColor: '#fffbeb', color: '#b45309', border: '1px solid #fde68a' }}>
+                              <ArrowDownLeft style={{ width: 12, height: 12 }} />
                               Borrowed (Payable)
                             </span>
                           )}
                         </td>
 
-                        <td className="py-3 px-3 text-right font-medium text-slate-900">
+                        <td className="udhaar-table-td" style={{ textAlign: 'right', fontWeight: 600, color: '#0f172a' }}>
                           {formatCurrency(r.originalAmount, user?.preferredCurrency, user?.currencySymbol)}
                         </td>
 
-                        <td className="py-3 px-3 text-right font-medium text-teal-600">
+                        <td className="udhaar-table-td" style={{ textAlign: 'right', fontWeight: 600, color: '#0f766e' }}>
                           {formatCurrency(r.totalRepaid || 0, user?.preferredCurrency, user?.currencySymbol)}
                         </td>
 
-                        <td className="py-3 px-3 text-right font-bold">
+                        <td className="udhaar-table-td" style={{ textAlign: 'right', fontWeight: 700 }}>
                           <span
-                            className={
-                              r.remainingAmount > 0
+                            style={{
+                              color: r.remainingAmount > 0
                                 ? isLent
-                                  ? 'text-emerald-700'
-                                  : 'text-amber-700'
-                                : 'text-slate-400'
-                            }
+                                  ? '#047857'
+                                  : '#b45309'
+                                : '#94a3b8'
+                            }}
                           >
                             {formatCurrency(r.remainingAmount || 0, user?.preferredCurrency, user?.currencySymbol)}
                           </span>
                         </td>
 
-                        <td className="py-3 px-3 text-xs text-slate-600">
+                        <td className="udhaar-table-td" style={{ fontSize: 12, color: '#475569' }}>
                           <div>
-                            <span className="text-slate-400">Date: </span>
+                            <span style={{ color: '#94a3b8' }}>Date: </span>
                             {new Date(r.udhaarDate).toLocaleDateString('en-IN', {
                               day: 'numeric',
                               month: 'short',
@@ -715,16 +704,17 @@ export default function UdhaarPage() {
                             })}
                           </div>
                           {isCleared ? (
-                            <div className="text-[11px] text-emerald-700 font-semibold mt-0.5">
+                            <div style={{ fontSize: 11, color: '#047857', fontWeight: 600, marginTop: 2 }}>
                               Settled in {r.settlementDurationDays ?? 0} Days
                             </div>
                           ) : r.expectedRepaymentDate ? (
                             <div
-                              className={`text-[11px] mt-0.5 ${
-                                new Date(r.expectedRepaymentDate) < new Date()
-                                  ? 'text-rose-600 font-semibold'
-                                  : 'text-slate-400'
-                              }`}
+                              style={{
+                                fontSize: 11,
+                                marginTop: 2,
+                                color: new Date(r.expectedRepaymentDate) < new Date() ? '#e11d48' : '#94a3b8',
+                                fontWeight: new Date(r.expectedRepaymentDate) < new Date() ? 600 : 'normal'
+                              }}
                             >
                               Due: {new Date(r.expectedRepaymentDate).toLocaleDateString('en-IN', {
                                 day: 'numeric',
@@ -735,10 +725,10 @@ export default function UdhaarPage() {
                           ) : null}
                         </td>
 
-                        <td className="py-3 px-3">{getStatusBadge(r.status)}</td>
+                        <td className="udhaar-table-td">{getStatusBadge(r.status)}</td>
 
-                        <td className="py-3 px-3 text-right">
-                          <div className="flex items-center justify-end gap-1.5">
+                        <td className="udhaar-table-td" style={{ textAlign: 'right' }}>
+                          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
                             {!isCleared && (
                               <button
                                 onClick={() => {
@@ -752,7 +742,7 @@ export default function UdhaarPage() {
                                   });
                                 }}
                                 title="Record Repayment"
-                                className="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-semibold rounded-lg text-xs transition border border-emerald-200"
+                                className="udhaar-btn-repay"
                               >
                                 Repay
                               </button>
@@ -761,17 +751,17 @@ export default function UdhaarPage() {
                             <button
                               onClick={() => setHistoryModalData(r)}
                               title="View Ledger History"
-                              className="p-1.5 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition"
+                              className="udhaar-btn-history"
                             >
-                              <History className="w-4 h-4" />
+                              <History style={{ width: 16, height: 16 }} />
                             </button>
 
                             <button
                               onClick={() => handleSingleDelete(r._id)}
                               title="Move to Recycle Bin"
-                              className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition"
+                              className="udhaar-btn-delete"
                             >
-                              <Trash2 className="w-4 h-4" />
+                              <Trash2 style={{ width: 16, height: 16 }} />
                             </button>
                           </div>
                         </td>
@@ -810,68 +800,86 @@ export default function UdhaarPage() {
 
         {/* ADD UDHAAR MODAL */}
         {isAddModalOpen && (
-          <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in-95 duration-150">
-              <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                <div className="flex items-center gap-2">
-                  <HandCoins className="w-5 h-5 text-emerald-600" />
-                  <h3 className="text-lg font-bold text-slate-900">Add Udhaar Record</h3>
+          <div className="udhaar-modal-backdrop">
+            <div className="udhaar-modal udhaar-modal-lg">
+              <div className="udhaar-modal-header">
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <HandCoins style={{ width: 20, height: 20, color: '#047857' }} />
+                  <h3 className="udhaar-modal-title">Add Udhaar Record</h3>
                 </div>
                 <button
                   onClick={() => setIsAddModalOpen(false)}
-                  className="p-1 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100"
+                  className="udhaar-modal-close-btn"
                 >
-                  <X className="w-5 h-5" />
+                  <X style={{ width: 16, height: 16 }} />
                 </button>
               </div>
 
               {formError && (
-                <div className="mt-4 p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl flex items-center gap-2">
-                  <AlertCircle className="w-4 h-4 shrink-0" />
+                <div style={{ marginTop: 14, padding: 12, backgroundColor: '#fff1f2', border: '1px solid #fecdd3', color: '#be123c', fontSize: 12, borderRadius: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <AlertCircle style={{ width: 16, height: 16, flexShrink: 0 }} />
                   <span>{formError}</span>
                 </div>
               )}
 
-              <form onSubmit={handleAddSubmit} className="mt-4 space-y-4">
+              <form onSubmit={handleAddSubmit} className="udhaar-form">
                 {/* Type toggle */}
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                    Transaction Type <span className="text-rose-500">*</span>
+                <div className="udhaar-form-group">
+                  <label className="udhaar-form-label">
+                    Transaction Type <span style={{ color: '#e11d48' }}>*</span>
                   </label>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="udhaar-form-grid">
                     <button
                       type="button"
                       onClick={() => setFormData({ ...formData, type: 'lent' })}
-                      className={`py-2 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 border transition ${
-                        formData.type === 'lent'
-                          ? 'bg-emerald-50 border-emerald-600 text-emerald-800'
-                          : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
-                      }`}
+                      style={{
+                        padding: '10px 14px',
+                        borderRadius: 12,
+                        fontSize: 12,
+                        fontWeight: 600,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: 8,
+                        border: formData.type === 'lent' ? '1px solid #059669' : '1px solid #e2e8f0',
+                        backgroundColor: formData.type === 'lent' ? '#ecfdf5' : '#ffffff',
+                        color: formData.type === 'lent' ? '#065f46' : '#475569',
+                        cursor: 'pointer',
+                      }}
                     >
-                      <ArrowUpRight className="w-4 h-4 text-emerald-600" />
+                      <ArrowUpRight style={{ width: 16, height: 16, color: '#059669' }} />
                       <span>Money I Lent (Given)</span>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => setFormData({ ...formData, type: 'borrowed' })}
-                      className={`py-2 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 border transition ${
-                        formData.type === 'borrowed'
-                          ? 'bg-amber-50 border-amber-600 text-amber-800'
-                          : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
-                      }`}
+                      style={{
+                        padding: '10px 14px',
+                        borderRadius: 12,
+                        fontSize: 12,
+                        fontWeight: 600,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: 8,
+                        border: formData.type === 'borrowed' ? '1px solid #d97706' : '1px solid #e2e8f0',
+                        backgroundColor: formData.type === 'borrowed' ? '#fffbeb' : '#ffffff',
+                        color: formData.type === 'borrowed' ? '#92400e' : '#475569',
+                        cursor: 'pointer',
+                      }}
                     >
-                      <ArrowDownLeft className="w-4 h-4 text-amber-600" />
+                      <ArrowDownLeft style={{ width: 16, height: 16, color: '#d97706' }} />
                       <span>Money I Borrowed (Taken)</span>
                     </button>
                   </div>
                 </div>
 
                 {/* Person Name & Phone */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      Person Name <span className="text-rose-500">*</span>
+                <div className="udhaar-form-grid">
+                  <div className="udhaar-form-group">
+                    <label className="udhaar-form-label">
+                      Person Name <span style={{ color: '#e11d48' }}>*</span>
                     </label>
                     <input
                       type="text"
@@ -879,12 +887,12 @@ export default function UdhaarPage() {
                       placeholder="e.g. Rahul Sharma"
                       value={formData.personName}
                       onChange={(e) => setFormData({ ...formData, personName: e.target.value })}
-                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                      className="udhaar-form-input"
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  <div className="udhaar-form-group">
+                    <label className="udhaar-form-label">
                       Phone Number (Optional)
                     </label>
                     <input
@@ -892,16 +900,16 @@ export default function UdhaarPage() {
                       placeholder="e.g. 9876543210"
                       value={formData.phoneNumber}
                       onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
-                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                      className="udhaar-form-input"
                     />
                   </div>
                 </div>
 
                 {/* Amount & Date */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      Original Amount (₹) <span className="text-rose-500">*</span>
+                <div className="udhaar-form-grid">
+                  <div className="udhaar-form-group">
+                    <label className="udhaar-form-label">
+                      Original Amount (₹) <span style={{ color: '#e11d48' }}>*</span>
                     </label>
                     <input
                       type="number"
@@ -911,46 +919,47 @@ export default function UdhaarPage() {
                       placeholder="10000"
                       value={formData.originalAmount}
                       onChange={(e) => setFormData({ ...formData, originalAmount: e.target.value })}
-                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-semibold"
+                      className="udhaar-form-input"
+                      style={{ fontWeight: 700 }}
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      Udhaar Date <span className="text-rose-500">*</span>
+                  <div className="udhaar-form-group">
+                    <label className="udhaar-form-label">
+                      Udhaar Date <span style={{ color: '#e11d48' }}>*</span>
                     </label>
                     <input
                       type="date"
                       required
                       value={formData.udhaarDate}
                       onChange={(e) => setFormData({ ...formData, udhaarDate: e.target.value })}
-                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                      className="udhaar-form-input"
                     />
                   </div>
                 </div>
 
                 {/* Expected Repayment Date & Payment Method */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <div className="udhaar-form-grid">
+                  <div className="udhaar-form-group">
+                    <label className="udhaar-form-label">
                       Expected Repayment Date
                     </label>
                     <input
                       type="date"
                       value={formData.expectedRepaymentDate}
                       onChange={(e) => setFormData({ ...formData, expectedRepaymentDate: e.target.value })}
-                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                      className="udhaar-form-input"
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  <div className="udhaar-form-group">
+                    <label className="udhaar-form-label">
                       Payment Method
                     </label>
                     <select
                       value={formData.paymentMethod}
                       onChange={(e) => setFormData({ ...formData, paymentMethod: e.target.value })}
-                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                      className="udhaar-form-select"
                     >
                       <option value="Cash">Cash</option>
                       <option value="UPI">UPI / GPay / PhonePe</option>
@@ -962,14 +971,14 @@ export default function UdhaarPage() {
                 </div>
 
                 {/* Linked Financial Account */}
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <div className="udhaar-form-group">
+                  <label className="udhaar-form-label">
                     Linked Financial Account (Optional)
                   </label>
                   <select
                     value={formData.accountId}
                     onChange={(e) => setFormData({ ...formData, accountId: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    className="udhaar-form-select"
                   >
                     <option value="">Do not adjust any account balance</option>
                     {accounts.map((acc) => (
@@ -978,7 +987,7 @@ export default function UdhaarPage() {
                       </option>
                     ))}
                   </select>
-                  <p className="text-[11px] text-slate-400 mt-1">
+                  <p style={{ fontSize: 11, color: '#94a3b8', margin: '4px 0 0' }}>
                     {formData.type === 'lent'
                       ? 'Selecting an account will deduct this amount from the account without marking it as an expense.'
                       : 'Selecting an account will add this amount to the account without marking it as ordinary income.'}
@@ -986,8 +995,8 @@ export default function UdhaarPage() {
                 </div>
 
                 {/* Description & Notes */}
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <div className="udhaar-form-group">
+                  <label className="udhaar-form-label">
                     Description / Purpose
                   </label>
                   <input
@@ -995,12 +1004,12 @@ export default function UdhaarPage() {
                     placeholder="e.g. Medical emergency assistance, festival advance"
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    className="udhaar-form-input"
                   />
                 </div>
 
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <div className="udhaar-form-group">
+                  <label className="udhaar-form-label">
                     Additional Notes
                   </label>
                   <textarea
@@ -1008,25 +1017,25 @@ export default function UdhaarPage() {
                     placeholder="Any conditions or extra notes..."
                     value={formData.notes}
                     onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none"
+                    className="udhaar-form-textarea"
                   />
                 </div>
 
                 {/* Footer Buttons */}
-                <div className="pt-2 flex items-center justify-end gap-2.5">
+                <div className="udhaar-form-actions">
                   <button
                     type="button"
                     onClick={() => setIsAddModalOpen(false)}
-                    className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition"
+                    className="transaction-btn-cancel"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={actionLoading}
-                    className="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl transition shadow-sm disabled:opacity-50 flex items-center gap-1.5"
+                    className="transaction-btn-submit"
                   >
-                    {actionLoading && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+                    {actionLoading && <Loader2 style={{ width: 14, height: 14 }} className="animate-spin" />}
                     <span>Save Udhaar Record</span>
                   </button>
                 </div>
@@ -1037,57 +1046,57 @@ export default function UdhaarPage() {
 
         {/* RECORD REPAYMENT MODAL */}
         {repayModalData && (
-          <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 animate-in fade-in zoom-in-95 duration-150">
-              <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+          <div className="udhaar-modal-backdrop">
+            <div className="udhaar-modal">
+              <div className="udhaar-modal-header">
                 <div>
-                  <h3 className="text-base font-bold text-slate-900">Record Repayment</h3>
-                  <p className="text-xs text-slate-500">
+                  <h3 className="udhaar-modal-title">Record Repayment</h3>
+                  <p style={{ fontSize: 12, color: '#64748b', margin: '2px 0 0' }}>
                     {repayModalData.type === 'lent' ? 'Received from' : 'Paid to'}:{' '}
-                    <span className="font-semibold text-slate-800">{repayModalData.personName}</span>
+                    <span style={{ fontWeight: 600, color: '#0f172a' }}>{repayModalData.personName}</span>
                   </p>
                 </div>
                 <button
                   onClick={() => setRepayModalData(null)}
-                  className="p-1 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100"
+                  className="udhaar-modal-close-btn"
                 >
-                  <X className="w-5 h-5" />
+                  <X style={{ width: 16, height: 16 }} />
                 </button>
               </div>
 
               {/* Status summary */}
-              <div className="mt-4 p-3 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between text-xs">
+              <div style={{ marginTop: 14, padding: 12, borderRadius: 12, backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: 12 }}>
                 <div>
-                  <span className="text-slate-500 block">Original:</span>
-                  <span className="font-bold text-slate-800">
+                  <span style={{ color: '#64748b', display: 'block' }}>Original:</span>
+                  <span style={{ fontWeight: 700, color: '#0f172a' }}>
                     {formatCurrency(repayModalData.originalAmount, user?.preferredCurrency, user?.currencySymbol)}
                   </span>
                 </div>
                 <div>
-                  <span className="text-slate-500 block">Already Repaid:</span>
-                  <span className="font-bold text-teal-600">
+                  <span style={{ color: '#64748b', display: 'block' }}>Already Repaid:</span>
+                  <span style={{ fontWeight: 700, color: '#0f766e' }}>
                     {formatCurrency(repayModalData.totalRepaid || 0, user?.preferredCurrency, user?.currencySymbol)}
                   </span>
                 </div>
                 <div>
-                  <span className="text-slate-500 block">Remaining:</span>
-                  <span className="font-bold text-emerald-700">
+                  <span style={{ color: '#64748b', display: 'block' }}>Remaining:</span>
+                  <span style={{ fontWeight: 700, color: '#047857' }}>
                     {formatCurrency(repayModalData.remainingAmount, user?.preferredCurrency, user?.currencySymbol)}
                   </span>
                 </div>
               </div>
 
               {formError && (
-                <div className="mt-3 p-2.5 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl flex items-center gap-1.5">
-                  <AlertCircle className="w-4 h-4 shrink-0" />
+                <div style={{ marginTop: 12, padding: 10, backgroundColor: '#fff1f2', border: '1px solid #fecdd3', color: '#be123c', fontSize: 12, borderRadius: 12, display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <AlertCircle style={{ width: 16, height: 16, flexShrink: 0 }} />
                   <span>{formError}</span>
                 </div>
               )}
 
-              <form onSubmit={handleRepaySubmit} className="mt-4 space-y-3.5">
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Repayment Amount (₹) <span className="text-rose-500">*</span>
+              <form onSubmit={handleRepaySubmit} className="udhaar-form">
+                <div className="udhaar-form-group">
+                  <label className="udhaar-form-label">
+                    Repayment Amount (₹) <span style={{ color: '#e11d48' }}>*</span>
                   </label>
                   <input
                     type="number"
@@ -1097,41 +1106,42 @@ export default function UdhaarPage() {
                     step="any"
                     value={repayData.amount}
                     onChange={(e) => setRepayData({ ...repayData, amount: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    className="udhaar-form-input"
+                    style={{ fontWeight: 700 }}
                   />
-                  <div className="flex gap-2 mt-1.5">
+                  <div style={{ display: 'flex', gap: 8, marginTop: 4 }}>
                     <button
                       type="button"
                       onClick={() => setRepayData({ ...repayData, amount: repayModalData.remainingAmount.toString() })}
-                      className="text-[11px] text-emerald-600 hover:text-emerald-700 font-semibold underline underline-offset-2"
+                      style={{ fontSize: 11, color: '#047857', fontWeight: 600, border: 'none', background: 'transparent', cursor: 'pointer', textDecoration: 'underline' }}
                     >
                       Clear Full Remaining ({formatCurrency(repayModalData.remainingAmount, user?.preferredCurrency, user?.currencySymbol)})
                     </button>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      Repayment Date <span className="text-rose-500">*</span>
+                <div className="udhaar-form-grid">
+                  <div className="udhaar-form-group">
+                    <label className="udhaar-form-label">
+                      Repayment Date <span style={{ color: '#e11d48' }}>*</span>
                     </label>
                     <input
                       type="date"
                       required
                       value={repayData.date}
                       onChange={(e) => setRepayData({ ...repayData, date: e.target.value })}
-                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                      className="udhaar-form-input"
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  <div className="udhaar-form-group">
+                    <label className="udhaar-form-label">
                       Payment Method
                     </label>
                     <select
                       value={repayData.paymentMethod}
                       onChange={(e) => setRepayData({ ...repayData, paymentMethod: e.target.value })}
-                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                      className="udhaar-form-select"
                     >
                       <option value="Cash">Cash</option>
                       <option value="UPI">UPI</option>
@@ -1142,14 +1152,14 @@ export default function UdhaarPage() {
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <div className="udhaar-form-group">
+                  <label className="udhaar-form-label">
                     {repayModalData.type === 'lent' ? 'Received Into Account' : 'Paid From Account'} (Optional)
                   </label>
                   <select
                     value={repayData.accountId}
                     onChange={(e) => setRepayData({ ...repayData, accountId: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    className="udhaar-form-select"
                   >
                     <option value="">Do not adjust account balance</option>
                     {accounts.map((acc) => (
@@ -1160,31 +1170,31 @@ export default function UdhaarPage() {
                   </select>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Notes</label>
+                <div className="udhaar-form-group">
+                  <label className="udhaar-form-label">Notes</label>
                   <input
                     type="text"
                     placeholder="e.g. Part 1 payment via Google Pay"
                     value={repayData.notes}
                     onChange={(e) => setRepayData({ ...repayData, notes: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    className="udhaar-form-input"
                   />
                 </div>
 
-                <div className="pt-2 flex items-center justify-end gap-2.5">
+                <div className="udhaar-form-actions">
                   <button
                     type="button"
                     onClick={() => setRepayModalData(null)}
-                    className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition"
+                    className="transaction-btn-cancel"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={actionLoading}
-                    className="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl transition shadow-sm disabled:opacity-50 flex items-center gap-1.5"
+                    className="transaction-btn-submit"
                   >
-                    {actionLoading && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+                    {actionLoading && <Loader2 style={{ width: 14, height: 14 }} className="animate-spin" />}
                     <span>Record Repayment</span>
                   </button>
                 </div>
@@ -1195,57 +1205,57 @@ export default function UdhaarPage() {
 
         {/* DETAILED HISTORY MODAL */}
         {historyModalData && (
-          <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in-95 duration-150">
-              <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                <div className="flex items-center gap-2">
-                  <History className="w-5 h-5 text-emerald-600" />
+          <div className="udhaar-modal-backdrop">
+            <div className="udhaar-modal udhaar-modal-lg">
+              <div className="udhaar-modal-header">
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <History style={{ width: 20, height: 20, color: '#047857' }} />
                   <div>
-                    <h3 className="text-base font-bold text-slate-900">
+                    <h3 className="udhaar-modal-title">
                       Udhaar History: {historyModalData.personName}
                     </h3>
-                    <p className="text-xs font-mono text-slate-500">{historyModalData.recordId}</p>
+                    <p style={{ fontSize: 12, fontFamily: 'monospace', color: '#64748b', margin: '2px 0 0' }}>{historyModalData.recordId}</p>
                   </div>
                 </div>
                 <button
                   onClick={() => setHistoryModalData(null)}
-                  className="p-1 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100"
+                  className="udhaar-modal-close-btn"
                 >
-                  <X className="w-5 h-5" />
+                  <X style={{ width: 16, height: 16 }} />
                 </button>
               </div>
 
               {/* Record Summary Details */}
-              <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 rounded-xl bg-slate-50 border border-slate-200/80 text-xs">
+              <div style={{ marginTop: 14, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: 12, padding: 14, borderRadius: 12, backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', fontSize: 12 }}>
                 <div>
-                  <span className="text-slate-400 block uppercase text-[10px] font-semibold">Original Amount</span>
-                  <span className="font-bold text-sm text-slate-900">
+                  <span style={{ color: '#64748b', display: 'block', textTransform: 'uppercase', fontSize: 10, fontWeight: 700 }}>Original Amount</span>
+                  <span style={{ fontWeight: 800, fontSize: 15, color: '#0f172a' }}>
                     {formatCurrency(historyModalData.originalAmount, user?.preferredCurrency, user?.currencySymbol)}
                   </span>
                 </div>
                 <div>
-                  <span className="text-slate-400 block uppercase text-[10px] font-semibold">Total Repaid</span>
-                  <span className="font-bold text-sm text-teal-600">
+                  <span style={{ color: '#64748b', display: 'block', textTransform: 'uppercase', fontSize: 10, fontWeight: 700 }}>Total Repaid</span>
+                  <span style={{ fontWeight: 800, fontSize: 15, color: '#0f766e' }}>
                     {formatCurrency(historyModalData.totalRepaid || 0, user?.preferredCurrency, user?.currencySymbol)}
                   </span>
                 </div>
                 <div>
-                  <span className="text-slate-400 block uppercase text-[10px] font-semibold">Remaining</span>
-                  <span className="font-bold text-sm text-emerald-700">
+                  <span style={{ color: '#64748b', display: 'block', textTransform: 'uppercase', fontSize: 10, fontWeight: 700 }}>Remaining</span>
+                  <span style={{ fontWeight: 800, fontSize: 15, color: '#047857' }}>
                     {formatCurrency(historyModalData.remainingAmount, user?.preferredCurrency, user?.currencySymbol)}
                   </span>
                 </div>
                 <div>
-                  <span className="text-slate-400 block uppercase text-[10px] font-semibold">Status</span>
-                  <div className="mt-0.5">{getStatusBadge(historyModalData.status)}</div>
+                  <span style={{ color: '#64748b', display: 'block', textTransform: 'uppercase', fontSize: 10, fontWeight: 700 }}>Status</span>
+                  <div style={{ marginTop: 2 }}>{getStatusBadge(historyModalData.status)}</div>
                 </div>
               </div>
 
               {/* Dates & Settlement Duration */}
-              <div className="mt-3 p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs flex flex-wrap items-center justify-between gap-2 text-slate-600">
+              <div style={{ marginTop: 12, padding: 12, borderRadius: 12, backgroundColor: '#f8fafc', border: '1px solid #f1f5f9', fontSize: 12, display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 8, color: '#475569' }}>
                 <div>
-                  <span className="text-slate-400">Given / Borrowed Date: </span>
-                  <span className="font-semibold text-slate-800">
+                  <span style={{ color: '#94a3b8' }}>Given / Borrowed Date: </span>
+                  <span style={{ fontWeight: 600, color: '#0f172a' }}>
                     {new Date(historyModalData.udhaarDate).toLocaleDateString('en-IN', {
                       day: 'numeric',
                       month: 'long',
@@ -1256,8 +1266,8 @@ export default function UdhaarPage() {
 
                 {historyModalData.settlementDate && (
                   <div>
-                    <span className="text-slate-400">Final Cleared Date: </span>
-                    <span className="font-semibold text-emerald-700">
+                    <span style={{ color: '#94a3b8' }}>Final Cleared Date: </span>
+                    <span style={{ fontWeight: 600, color: '#047857' }}>
                       {new Date(historyModalData.settlementDate).toLocaleDateString('en-IN', {
                         day: 'numeric',
                         month: 'long',
@@ -1268,7 +1278,7 @@ export default function UdhaarPage() {
                 )}
 
                 {historyModalData.status === 'cleared' && (
-                  <div className="bg-emerald-100 text-emerald-800 font-bold px-2.5 py-0.5 rounded-full text-xs">
+                  <div style={{ backgroundColor: '#d1fae5', color: '#065f46', fontWeight: 700, padding: '3px 10px', borderRadius: 9999, fontSize: 11 }}>
                     Settlement Duration: {historyModalData.settlementDurationDays ?? 0} Days
                   </div>
                 )}
@@ -1276,65 +1286,65 @@ export default function UdhaarPage() {
 
               {/* Description & Notes */}
               {(historyModalData.description || historyModalData.notes) && (
-                <div className="mt-3 p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs space-y-1">
+                <div style={{ marginTop: 12, padding: 12, borderRadius: 12, backgroundColor: '#f8fafc', border: '1px solid #f1f5f9', fontSize: 12, display: 'flex', flexDirection: 'column', gap: 4 }}>
                   {historyModalData.description && (
-                    <p className="text-slate-700">
-                      <span className="font-semibold text-slate-900">Description:</span> {historyModalData.description}
+                    <p style={{ color: '#334155', margin: 0 }}>
+                      <span style={{ fontWeight: 600, color: '#0f172a' }}>Description:</span> {historyModalData.description}
                     </p>
                   )}
                   {historyModalData.notes && (
-                    <p className="text-slate-500">
-                      <span className="font-semibold text-slate-900">Notes:</span> {historyModalData.notes}
+                    <p style={{ color: '#64748b', margin: 0 }}>
+                      <span style={{ fontWeight: 600, color: '#0f172a' }}>Notes:</span> {historyModalData.notes}
                     </p>
                   )}
                 </div>
               )}
 
               {/* Repayments Ledger Table */}
-              <div className="mt-5">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-2 flex items-center justify-between">
+              <div style={{ marginTop: 20 }}>
+                <h4 style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#334155', margin: '0 0 8px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <span>Partial Repayment Ledger</span>
-                  <span className="text-[11px] text-slate-400 font-normal">
+                  <span style={{ fontSize: 11, color: '#94a3b8', fontWeight: 400 }}>
                     {historyModalData.repayments?.length || 0} payment(s) recorded
                   </span>
                 </h4>
 
                 {!historyModalData.repayments || historyModalData.repayments.length === 0 ? (
-                  <div className="p-6 text-center text-slate-400 text-xs border border-dashed border-slate-200 rounded-xl">
+                  <div style={{ padding: 24, textAlign: 'center', color: '#94a3b8', fontSize: 12, border: '1px dashed #cbd5e1', borderRadius: 12 }}>
                     No repayments have been recorded for this record yet.
                   </div>
                 ) : (
-                  <div className="border border-slate-200 rounded-xl overflow-hidden">
-                    <table className="w-full text-left text-xs">
-                      <thead className="bg-slate-100/70 text-slate-600 uppercase text-[10px] tracking-wider">
+                  <div style={{ border: '1px solid #e2e8f0', borderRadius: 12, overflow: 'hidden' }}>
+                    <table style={{ width: '100%', textAlign: 'left', fontSize: 12, borderCollapse: 'collapse' }}>
+                      <thead style={{ backgroundColor: '#f1f5f9', color: '#475569', textTransform: 'uppercase', fontSize: 10, letterSpacing: '0.05em' }}>
                         <tr>
-                          <th className="py-2.5 px-3">Repayment ID</th>
-                          <th className="py-2.5 px-3">Date</th>
-                          <th className="py-2.5 px-3 text-right">Amount</th>
-                          <th className="py-2.5 px-3">Method</th>
-                          <th className="py-2.5 px-3">Account</th>
-                          <th className="py-2.5 px-3">Notes</th>
+                          <th style={{ padding: '10px 12px' }}>Repayment ID</th>
+                          <th style={{ padding: '10px 12px' }}>Date</th>
+                          <th style={{ padding: '10px 12px', textAlign: 'right' }}>Amount</th>
+                          <th style={{ padding: '10px 12px' }}>Method</th>
+                          <th style={{ padding: '10px 12px' }}>Account</th>
+                          <th style={{ padding: '10px 12px' }}>Notes</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-100">
+                      <tbody style={{ borderTop: '1px solid #e2e8f0' }}>
                         {historyModalData.repayments.map((rep, idx) => (
-                          <tr key={rep.repaymentId || idx} className="hover:bg-slate-50/50">
-                            <td className="py-2.5 px-3 font-mono text-[11px] text-slate-500">
+                          <tr key={rep.repaymentId || idx} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                            <td style={{ padding: '10px 12px', fontFamily: 'monospace', fontSize: 11, color: '#64748b' }}>
                               {rep.repaymentId}
                             </td>
-                            <td className="py-2.5 px-3 text-slate-800">
+                            <td style={{ padding: '10px 12px', color: '#0f172a' }}>
                               {new Date(rep.date).toLocaleDateString('en-IN', {
                                 day: 'numeric',
                                 month: 'short',
                                 year: 'numeric',
                               })}
                             </td>
-                            <td className="py-2.5 px-3 text-right font-bold text-emerald-700">
+                            <td style={{ padding: '10px 12px', textAlign: 'right', fontWeight: 700, color: '#047857' }}>
                               {formatCurrency(rep.amount, user?.preferredCurrency, user?.currencySymbol)}
                             </td>
-                            <td className="py-2.5 px-3 text-slate-600">{rep.paymentMethod || 'Cash'}</td>
-                            <td className="py-2.5 px-3 text-slate-500">{rep.accountName || '—'}</td>
-                            <td className="py-2.5 px-3 text-slate-500 max-w-[150px] truncate">{rep.notes || '—'}</td>
+                            <td style={{ padding: '10px 12px', color: '#475569' }}>{rep.paymentMethod || 'Cash'}</td>
+                            <td style={{ padding: '10px 12px', color: '#64748b' }}>{rep.accountName || '—'}</td>
+                            <td style={{ padding: '10px 12px', color: '#64748b', maxWidth: 150, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{rep.notes || '—'}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -1344,11 +1354,11 @@ export default function UdhaarPage() {
               </div>
 
               {/* Close Button */}
-              <div className="mt-6 flex justify-end">
+              <div style={{ marginTop: 24, display: 'flex', justifyContent: 'flex-end' }}>
                 <button
                   type="button"
                   onClick={() => setHistoryModalData(null)}
-                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-xs transition"
+                  className="transaction-btn-cancel"
                 >
                   Close History
                 </button>

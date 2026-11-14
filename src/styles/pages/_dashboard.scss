@@ -2,53 +2,1305 @@
 @use '../abstracts/mixins' as *;
 
 // ==============================================================================
-// DASHBOARD PAGE STYLES
+// MYFINANCE DASHBOARD – COMPLETE PREMIUM REDESIGN (FINTECH SAAS SPECIFICATION)
 // ==============================================================================
 
-.dashboard-page {
-  padding: $space-6 0 $space-16;
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
 
-  &__header {
-    display: flex;
-    flex-direction: column;
-    gap: $space-3;
-    margin-bottom: $space-6;
+// ------------------------------------------------------------------------------
+// 1. TOP ROW: WELCOME BANNER (LEFT) & 3 QUICK ACTION CARDS (RIGHT)
+// ------------------------------------------------------------------------------
 
-    @include respond-to('sm') {
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-    }
-  }
+.dashboard-top-row {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
 
-  &__kpi-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: $space-3;
-    margin-bottom: $space-6;
-
-    @include respond-to('md') {
-      grid-template-columns: repeat(4, 1fr);
-      gap: $space-4;
-    }
-  }
-
-  &__charts-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: $space-5;
-    margin-bottom: $space-6;
-
-    @include respond-to('lg') {
-      grid-template-columns: 2fr 1fr;
-    }
-  }
-
-  &__quick-actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: $space-2;
+  @media (min-width: 1024px) {
+    flex-direction: row;
+    align-items: stretch;
   }
 }
 
+// Welcome Hero Banner
+.dashboard-hero {
+  flex: 1;
+  background: linear-gradient(135deg, #e3f2fd 0%, #e0f2fe 30%, #d1fae5 75%, #ecfdf5 100%);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 20px;
+  padding: 22px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+
+  @media (max-width: 640px) {
+    padding: 18px 20px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.dashboard-hero-content {
+  max-width: 480px;
+  z-index: 2;
+}
+
+.dashboard-hero-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #102a43;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+
+  @media (max-width: 640px) {
+    font-size: 20px;
+  }
+}
+
+.dashboard-hero-subtitle {
+  font-size: 13px;
+  color: #475569;
+  font-weight: 500;
+  margin-top: 6px;
+  line-height: 1.45;
+}
+
+.dashboard-hero-graphic {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+
+  @media (max-width: 640px) {
+    align-self: center;
+  }
+}
+
+.dashboard-hero-svg {
+  width: 190px;
+  height: 110px;
+  display: block;
+
+  @media (max-width: 640px) {
+    width: 150px;
+    height: 90px;
+  }
+}
+
+// 3 Quick Action Cards
+.dashboard-quick-actions {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+
+  @media (min-width: 1024px) {
+    width: 320px;
+  }
+
+  @media (max-width: 640px) {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.dashboard-quick-action-card {
+  flex: 1;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+.dashboard-quick-action-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.dashboard-quick-action-icon-green {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+}
+
+.dashboard-quick-action-icon-purple {
+  background: linear-gradient(135deg, #a855f7 0%, #8b5cf6 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.35);
+}
+
+.dashboard-quick-action-icon-blue {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);
+}
+
+.dashboard-quick-action-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #102a43;
+  line-height: 1.25;
+}
+
+// ------------------------------------------------------------------------------
+// 2. GETTING STARTED BANNER FOR NEW USERS
+// ------------------------------------------------------------------------------
+
+.dashboard-banner {
+  padding: 22px 26px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #ecfdf5 0%, #f0fdfa 100%);
+  border: 1px solid #a7f3d0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.dashboard-banner-content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dashboard-banner-tag {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #047857;
+}
+
+.dashboard-banner-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #102a43;
+}
+
+.dashboard-banner-description {
+  font-size: 12px;
+  color: #475569;
+  max-width: 620px;
+  line-height: 1.5;
+}
+
+.dashboard-banner-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.dashboard-banner-btn {
+  padding: 9px 15px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid #e2e8f0;
+  background-color: #ffffff;
+  color: #102a43;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background-color: #f8fafc;
+  }
+}
+
+.dashboard-banner-btn-primary {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);
+
+  &:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  }
+}
+
+// ------------------------------------------------------------------------------
+// 3. 8 FINANCIAL SUMMARY KPI CARDS (2 ROWS OF 4)
+// ------------------------------------------------------------------------------
+
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+}
+
+.dashboard-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 16px 18px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+  }
+}
+
+.dashboard-card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  z-index: 2;
+
+  @media (max-width:468px) {
+    flex-direction: column;
+  }
+}
+
+.dashboard-card-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dashboard-card-icon-wallet {
+  background-color: #ecfdf5;
+}
+
+.dashboard-card-icon-income {
+  background-color: #ecfdf5;
+}
+
+.dashboard-card-icon-expense {
+  background-color: #fff1f2;
+}
+
+.dashboard-card-icon-savings {
+  background-color: #eff6ff;
+}
+
+.dashboard-card-icon-all-income {
+  background-color: #f0fdfa;
+}
+
+.dashboard-card-icon-all-expense {
+  background-color: #fdf2f8;
+}
+
+.dashboard-card-icon-outstanding {
+  background-color: #fffbeb;
+}
+
+.dashboard-card-icon-budget {
+  background-color: #faf5ff;
+}
+
+.dashboard-card-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.dashboard-card-title {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #64748b;
+  display: block;
+}
+
+.dashboard-card-value {
+  font-size: 20px;
+  font-weight: 800;
+  color: #102a43;
+  letter-spacing: -0.02em;
+  margin-top: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.25;
+
+  @media (max-width: 640px) {
+    font-size: 17px;
+  }
+}
+
+.dashboard-card-value-income {
+  color: #10b981;
+}
+
+.dashboard-card-value-expense {
+  color: #f43f5e;
+}
+
+.dashboard-card-value-savings {
+  color: #2563eb;
+}
+
+.dashboard-card-value-budget {
+  color: #8b5cf6;
+}
+
+.dashboard-card-subtext {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 3px;
+}
+
+// Split for Outstanding Money
+.dashboard-card-split {
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dashboard-card-split-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+}
+
+.dashboard-card-split-label {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.dashboard-card-split-val {
+  font-weight: 700;
+}
+
+// Subtle corner wave decoration
+.dashboard-card-wave-decoration {
+  position: absolute;
+  right: -12px;
+  bottom: -12px;
+  width: 70px;
+  height: 50px;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0.18;
+  z-index: 1;
+}
+
+.dashboard-card-wave-green {
+  background: radial-gradient(circle, #10b981 0%, transparent 70%);
+}
+
+.dashboard-card-wave-blue {
+  background: radial-gradient(circle, #3b82f6 0%, transparent 70%);
+}
+
+.dashboard-card-wave-pink {
+  background: radial-gradient(circle, #ec4899 0%, transparent 70%);
+}
+
+.dashboard-card-wave-purple {
+  background: radial-gradient(circle, #8b5cf6 0%, transparent 70%);
+}
+
+// ------------------------------------------------------------------------------
+// 4. MAIN DASHBOARD SPLIT: LEFT AREA (70%) + RIGHT ASIDE COLUMN (30%)
+// ------------------------------------------------------------------------------
+
+.dashboard-main-split {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  width: 100%;
+
+  @media (min-width: 1180px) {
+    grid-template-columns: 1fr 310px;
+  }
+}
+
+.dashboard-primary-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+// ------------------------------------------------------------------------------
+// 5. CHARTS ROW (TREND CHART + DONUT CHART)
+// ------------------------------------------------------------------------------
+
+.dashboard-charts-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  min-width: 0;
+
+  @media (min-width: 900px) {
+    grid-template-columns: 1.55fr 1fr;
+  }
+}
+
+.dashboard-chart-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 18px 20px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  display: flex;
+  flex-direction: column;
+  min-width: 0; // Essential for Recharts ResponsiveContainer
+  overflow: hidden;
+}
+
+.dashboard-chart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.dashboard-chart-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dashboard-chart-icon-box {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background-color: #ecfdf5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dashboard-chart-icon-box-orange {
+  background-color: #fffbeb;
+}
+
+.dashboard-chart-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #102a43;
+}
+
+.dashboard-chart-description {
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 1px;
+}
+
+.dashboard-chart-expand-btn {
+  color: #94a3b8;
+  padding: 4px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+
+  &:hover {
+    color: #102a43;
+    background-color: #f1f5f9;
+  }
+}
+
+.dashboard-chart-legend {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.dashboard-chart-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.dashboard-chart-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.dashboard-chart-legend-dot-income {
+  background-color: #10b981;
+}
+
+.dashboard-chart-legend-dot-expense {
+  background-color: #f43f5e;
+}
+
+.dashboard-chart-legend-text {
+  color: #475569;
+}
+
+.dashboard-chart-body {
+  width: 100%;
+  height: 260px;
+  min-width: 0;
+  position: relative;
+}
+
+// Donut Chart Layout with Centered Amount
+.dashboard-donut-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.dashboard-donut-container {
+  position: relative;
+  width: 100%;
+  height: 170px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashboard-donut-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.dashboard-donut-center-amount {
+  font-size: 16px;
+  font-weight: 800;
+  color: #102a43;
+  line-height: 1.1;
+}
+
+.dashboard-donut-center-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+
+.dashboard-donut-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 10px;
+}
+
+.dashboard-donut-legend-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+}
+
+.dashboard-donut-legend-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dashboard-donut-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dashboard-donut-legend-name {
+  color: #475569;
+  font-weight: 500;
+}
+
+.dashboard-donut-legend-val {
+  font-weight: 700;
+  color: #102a43;
+}
+
+// ------------------------------------------------------------------------------
+// 6. SECONDARY ROW: RECENT TRANSACTIONS (60%) + UPCOMING & GOALS STACK (40%)
+// ------------------------------------------------------------------------------
+
+.dashboard-secondary-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  min-width: 0;
+
+  @media (min-width: 900px) {
+    grid-template-columns: 1.55fr 1fr;
+  }
+}
+
+.dashboard-transactions-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 18px 20px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-card-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.dashboard-card-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dashboard-section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #102a43;
+}
+
+.dashboard-section-desc {
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 1px;
+}
+
+.dashboard-section-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #10b981;
+  text-decoration: none;
+  transition: all 0.15s ease;
+
+  &:hover {
+    color: #059669;
+    text-decoration: underline;
+  }
+}
+
+.dashboard-tx-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.dashboard-tx-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 10px;
+  border-radius: 5px;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: #f8fafc;
+  }
+
+  @media (max-width: 468px) {
+    border: 1px solid #a7f3d0;
+
+  }
+}
+
+.dashboard-tx-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+
+  @media (max-width: 468px) {
+    flex-direction: column;
+    align-items: baseline;
+  }
+
+
+}
+
+.dashboard-tx-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dashboard-tx-icon-income {
+  background-color: #ecfdf5;
+  color: #10b981;
+}
+
+.dashboard-tx-icon-expense {
+  background-color: #fff1f2;
+  color: #f43f5e;
+}
+
+.dashboard-tx-info {
+  min-width: 0;
+}
+
+.dashboard-tx-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #102a43;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dashboard-tx-meta {
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @media (max-width: 468px) {
+    flex-wrap: wrap;
+  }
+
+}
+
+.dashboard-tx-meta-sep {
+  opacity: 0.6;
+
+
+}
+
+.dashboard-tx-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+
+  @media (max-width: 468px) {
+    flex-wrap: nowrap;
+    flex-direction: column;
+    align-items: end;
+  }
+
+}
+
+.dashboard-tx-amount {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.dashboard-tx-amount-income {
+  color: #10b981;
+}
+
+.dashboard-tx-amount-expense {
+  color: #102a43;
+}
+
+.dashboard-tx-method {
+  font-size: 10px;
+  font-weight: 600;
+  color: #64748b;
+  background-color: #f1f5f9;
+  border-radius: 6px;
+  padding: 2px 7px;
+}
+
+.dashboard-tx-menu-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+
+  &:hover {
+    color: #102a43;
+    background-color: #f1f5f9;
+  }
+}
+
+// Stacked Mini Cards (Upcoming Payments & Savings Goals)
+.dashboard-mini-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dashboard-mini-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 16px 18px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-mini-icon-pill {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background-color: #ecfdf5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashboard-mini-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #102a43;
+}
+
+.dashboard-mini-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 0 10px;
+  text-align: center;
+  gap: 6px;
+}
+
+.dashboard-mini-svg {
+  display: block;
+}
+
+.dashboard-mini-empty-text {
+  font-size: 11.5px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.dashboard-recurring-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.dashboard-recurring-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background-color: #f8fafc;
+}
+
+.dashboard-recurring-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #102a43;
+}
+
+.dashboard-recurring-meta {
+  font-size: 10.5px;
+  color: #64748b;
+  margin-top: 1px;
+}
+
+.dashboard-recurring-amount {
+  font-size: 12px;
+  font-weight: 700;
+  color: #102a43;
+}
+
+.dashboard-goal-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.dashboard-goal-item {
+  padding: 8px 10px;
+  border-radius: 10px;
+  background-color: #f8fafc;
+}
+
+.dashboard-goal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #102a43;
+  margin-bottom: 6px;
+}
+
+.dashboard-goal-percent {
+  color: #10b981;
+  font-weight: 700;
+}
+
+.dashboard-goal-bar {
+  height: 6px;
+  background-color: #e2e8f0;
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.dashboard-goal-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+  border-radius: 9999px;
+  transition: width 0.3s ease;
+}
+
+.dashboard-goal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 10.5px;
+  color: #64748b;
+}
+
+// ------------------------------------------------------------------------------
+// 7. RIGHT ASIDE COLUMN: THIS MONTH AT A GLANCE, INSIGHTS & GOALS PROGRESS
+// ------------------------------------------------------------------------------
+
+.dashboard-sidebar-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.dashboard-aside-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 18px 20px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+}
+
+.dashboard-aside-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #102a43;
+}
+
+.dashboard-aside-header-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background-color: #ecfdf5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Glance List
+.dashboard-glance-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.dashboard-glance-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 12px;
+  border-radius: 5px;
+  background-color: #f8fafc;
+}
+
+.dashboard-glance-item-total {
+  background-color: #f1f5f9;
+  border: 1px solid #e2e8f0;
+}
+
+.dashboard-glance-item-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dashboard-glance-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashboard-glance-icon-income {
+  background-color: #ecfdf5;
+  color: #10b981;
+}
+
+.dashboard-glance-icon-expense {
+  background-color: #fff1f2;
+  color: #f43f5e;
+}
+
+.dashboard-glance-icon-net {
+  background-color: #e0f2fe;
+  color: #0284c7;
+}
+
+.dashboard-glance-sigma {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.dashboard-glance-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.dashboard-glance-val {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.dashboard-glance-val-income {
+  color: #10b981;
+}
+
+.dashboard-glance-val-expense {
+  color: #f43f5e;
+}
+
+.dashboard-glance-val-net {
+  color: #102a43;
+  font-size: 13.5px;
+}
+
+// Insights List
+.dashboard-insights-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.dashboard-insight-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 5px;
+  background-color: #f8fafc;
+  border: 1px solid #f1f5f9;
+}
+
+.dashboard-insight-check {
+  width: 16px;
+  height: 16px;
+  color: #10b981;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.dashboard-insight-text {
+  font-size: 11.5px;
+  color: #334155;
+  line-height: 1.45;
+  font-weight: 500;
+}
+
+// Goals Progress Aside Card
+.dashboard-goals-card {
+  text-align: center;
+}
+
+.dashboard-goals-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 0 2px;
+}
+
+.dashboard-goals-illustration-wrap {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6px;
+}
+
+.dashboard-target-svg {
+  display: block;
+}
+
+.dashboard-goals-subtext {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+
+.dashboard-goals-cta-btn {
+  width: 100%;
+  padding: 10px 16px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  font-size: 12.5px;
+  font-weight: 700;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+    transform: translateY(-1px);
+  }
+}
+
+// ------------------------------------------------------------------------------
+// 8. SKELETON & EMPTY STATES
+// ------------------------------------------------------------------------------
+
+.dashboard-loading {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.dashboard-skeleton {
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 5px;
+}
+
+.dashboard-skeleton-title {
+  height: 36px;
+  width: 240px;
+}
+
+.dashboard-skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+}
+
+.dashboard-skeleton-card {
+  height: 96px;
+}
+
+.dashboard-skeleton-charts {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+
+  @media (min-width: 900px) {
+    grid-template-columns: 1.55fr 1fr;
+  }
+}
+
+.dashboard-skeleton-chart {
+  height: 280px;
+}
+
+.dashboard-empty {
+  padding: 36px 16px;
+  text-align: center;
+  font-size: 12.5px;
+  color: #94a3b8;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}

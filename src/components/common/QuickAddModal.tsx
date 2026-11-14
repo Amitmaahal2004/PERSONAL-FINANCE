@@ -197,61 +197,58 @@ export default function QuickAddModal({
   const topCategories = categories.slice(0, 6);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
-      <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden flex flex-col max-h-[92vh]">
+    <div className="quick-add-modal-backdrop">
+      <div className="quick-add-modal">
         {/* Header with Type Switcher */}
-        <div className="p-4 sm:p-5 border-b border-slate-100 flex items-center justify-between">
-          <div className="flex bg-slate-100 p-1 rounded-xl">
+        <div className="quick-add-header">
+          <div className="quick-add-type-toggle">
             <button
               type="button"
               onClick={() => setType('expense')}
-              className={`flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-semibold transition ${
-                type === 'expense'
-                  ? 'bg-rose-500 text-white shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900'
+              className={`quick-add-type-btn ${
+                type === 'expense' ? 'quick-add-type-btn-active-expense' : ''
               }`}
             >
-              <ArrowUpRight className="w-3.5 h-3.5" />
+              <ArrowUpRight style={{ width: 14, height: 14 }} />
               Expense
             </button>
             <button
               type="button"
               onClick={() => setType('income')}
-              className={`flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-semibold transition ${
-                type === 'income'
-                  ? 'bg-emerald-600 text-white shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900'
+              className={`quick-add-type-btn ${
+                type === 'income' ? 'quick-add-type-btn-active-income' : ''
               }`}
             >
-              <ArrowDownLeft className="w-3.5 h-3.5" />
+              <ArrowDownLeft style={{ width: 14, height: 14 }} />
               Income
             </button>
           </div>
 
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100"
+            className="quick-add-close-btn"
+            aria-label="Close modal"
           >
-            <X className="w-5 h-5" />
+            <X style={{ width: 18, height: 18 }} />
           </button>
         </div>
 
         {/* Form Body */}
-        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
+        <form onSubmit={handleSubmit} className="quick-add-form">
           {error && (
-            <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 shrink-0" />
+            <div className="quick-add-alert-error">
+              <AlertCircle style={{ width: 16, height: 16, flexShrink: 0 }} />
               <span>{error}</span>
             </div>
           )}
 
           {/* Amount input */}
-          <div>
-            <label className="block text-xs font-medium text-slate-500 mb-1">
+          <div className="quick-add-form-group">
+            <label className="quick-add-form-label">
               Amount ({user?.currencySymbol || '₹'})
             </label>
-            <div className="relative">
-              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-2xl font-bold text-slate-400">
+            <div className="quick-add-amount-wrapper">
+              <span className="quick-add-amount-symbol">
                 {user?.currencySymbol || '₹'}
               </span>
               <input
@@ -262,15 +259,15 @@ export default function QuickAddModal({
                 placeholder="0.00"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-2xl font-bold text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition"
+                className="quick-add-amount-input"
                 autoFocus
               />
             </div>
           </div>
 
           {/* Title */}
-          <div>
-            <label className="block text-xs font-medium text-slate-500 mb-1">
+          <div className="quick-add-form-group">
+            <label className="quick-add-form-label">
               Description / Title
             </label>
             <input
@@ -279,17 +276,17 @@ export default function QuickAddModal({
               placeholder={type === 'expense' ? 'e.g. Grocery store, Uber ride' : 'e.g. November Salary, Client project'}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="quick-add-form-input"
             />
           </div>
 
           {/* Quick Category Selector */}
-          <div>
-            <label className="block text-xs font-medium text-slate-500 mb-1.5">
+          <div className="quick-add-form-group">
+            <label className="quick-add-form-label">
               Category
             </label>
             {topCategories.length > 0 && (
-              <div className="flex flex-wrap gap-1.5 mb-2">
+              <div className="quick-add-categories-pills">
                 {topCategories.map((c) => (
                   <button
                     key={c._id}
@@ -298,10 +295,8 @@ export default function QuickAddModal({
                       setCategory(c.name);
                       setCategoryId(c._id);
                     }}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition flex items-center gap-1 ${
-                      category === c.name
-                        ? 'bg-emerald-700 text-white shadow-sm'
-                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                    className={`quick-add-category-pill ${
+                      category === c.name ? 'quick-add-category-pill-active' : ''
                     }`}
                   >
                     <span>{c.name}</span>
@@ -316,7 +311,7 @@ export default function QuickAddModal({
                 const found = categories.find((c) => c.name === e.target.value);
                 if (found) setCategoryId(found._id);
               }}
-              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="quick-add-form-select"
             >
               {categories.map((c) => (
                 <option key={c._id} value={c.name}>
@@ -327,15 +322,15 @@ export default function QuickAddModal({
           </div>
 
           {/* Account & Date row */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label className="block text-xs font-medium text-slate-500 mb-1">
+          <div className="quick-add-form-row">
+            <div className="quick-add-form-group">
+              <label className="quick-add-form-label">
                 Account
               </label>
               <select
                 value={accountId}
                 onChange={(e) => setAccountId(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="quick-add-form-select"
               >
                 {accounts.map((acc) => (
                   <option key={acc._id} value={acc._id}>
@@ -345,8 +340,8 @@ export default function QuickAddModal({
               </select>
             </div>
 
-            <div>
-              <label className="block text-xs font-medium text-slate-500 mb-1">
+            <div className="quick-add-form-group">
+              <label className="quick-add-form-label">
                 Date
               </label>
               <input
@@ -354,26 +349,24 @@ export default function QuickAddModal({
                 required
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="quick-add-form-input"
               />
             </div>
           </div>
 
           {/* Payment Method */}
-          <div>
-            <label className="block text-xs font-medium text-slate-500 mb-1">
+          <div className="quick-add-form-group">
+            <label className="quick-add-form-label">
               Payment Method
             </label>
-            <div className="flex flex-wrap gap-2">
+            <div className="quick-add-methods-list">
               {['UPI', 'Cash', 'Credit Card', 'Debit Card', 'Net Banking'].map((m) => (
                 <button
                   type="button"
                   key={m}
                   onClick={() => setPaymentMethod(m)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition ${
-                    paymentMethod === m
-                      ? 'bg-slate-900 text-white'
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  className={`quick-add-method-btn ${
+                    paymentMethod === m ? 'quick-add-method-btn-active' : ''
                   }`}
                 >
                   {m}
@@ -383,9 +376,9 @@ export default function QuickAddModal({
           </div>
 
           {/* Notes & Tags */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label className="block text-xs font-medium text-slate-500 mb-1">
+          <div className="quick-add-form-row">
+            <div className="quick-add-form-group">
+              <label className="quick-add-form-label">
                 Notes (Optional)
               </label>
               <input
@@ -393,11 +386,11 @@ export default function QuickAddModal({
                 placeholder="Additional details..."
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="quick-add-form-input"
               />
             </div>
-            <div>
-              <label className="block text-xs font-medium text-slate-500 mb-1">
+            <div className="quick-add-form-group">
+              <label className="quick-add-form-label">
                 Tags (Comma-separated)
               </label>
               <input
@@ -405,38 +398,38 @@ export default function QuickAddModal({
                 placeholder="e.g. food, vacation, work"
                 value={tags}
                 onChange={(e) => setTags(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="quick-add-form-input"
               />
             </div>
           </div>
 
           {/* Receipt Attachment */}
-          <div>
-            <label className="block text-xs font-medium text-slate-500 mb-1">
+          <div className="quick-add-form-group">
+            <label className="quick-add-form-label">
               Receipt / Bill Attachment (Optional)
             </label>
             {receiptUrl ? (
-              <div className="flex items-center justify-between p-2.5 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-800">
-                <span className="font-medium truncate max-w-[200px]">{receiptName || 'Receipt Attached'}</span>
+              <div className="quick-add-receipt-preview">
+                <span className="quick-add-receipt-name">{receiptName || 'Receipt Attached'}</span>
                 <button
                   type="button"
                   onClick={() => {
                     setReceiptUrl('');
                     setReceiptName('');
                   }}
-                  className="text-emerald-700 hover:text-rose-600 text-xs font-semibold"
+                  className="quick-add-receipt-remove-btn"
                 >
                   Remove
                 </button>
               </div>
             ) : (
-              <label className="flex items-center justify-center gap-2 p-3 border-2 border-dashed border-slate-200 hover:border-emerald-500 rounded-xl cursor-pointer text-xs text-slate-600 hover:text-emerald-700 transition">
-                <Upload className="w-4 h-4" />
+              <label className="quick-add-receipt-upload-box">
+                <Upload style={{ width: 16, height: 16 }} />
                 <span>{uploadingReceipt ? 'Uploading...' : 'Attach Image or PDF Receipt'}</span>
                 <input
                   type="file"
                   accept="image/*,application/pdf"
-                  className="hidden"
+                  style={{ display: 'none' }}
                   onChange={handleReceiptUpload}
                   disabled={uploadingReceipt}
                 />
@@ -445,21 +438,21 @@ export default function QuickAddModal({
           </div>
 
           {/* Action buttons */}
-          <div className="pt-2">
+          <div style={{ paddingTop: 8 }}>
             <button
               type="submit"
               disabled={loading}
-              className={`w-full py-3 px-4 rounded-xl text-sm font-semibold text-white transition flex items-center justify-center gap-2 shadow-md ${
+              className={`quick-add-btn-submit ${
                 type === 'expense'
-                  ? 'bg-rose-600 hover:bg-rose-700'
-                  : 'bg-emerald-600 hover:bg-emerald-700'
+                  ? 'quick-add-btn-submit-expense'
+                  : 'quick-add-btn-submit-income'
               }`}
             >
               {loading ? (
                 <span>Recording...</span>
               ) : (
                 <>
-                  <Check className="w-4 h-4" />
+                  <Check style={{ width: 16, height: 16 }} />
                   <span>Save {type === 'expense' ? 'Expense' : 'Income'}</span>
                 </>
               )}

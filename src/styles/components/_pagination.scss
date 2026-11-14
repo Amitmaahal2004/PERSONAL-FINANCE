@@ -1,7 +1,7 @@
 @use '../abstracts/variables' as *;
 
 // ==============================================================================
-// PAGINATION COMPONENT
+// PAGINATION COMPONENT - SEMANTIC SCSS
 // ==============================================================================
 
 .pagination {
@@ -9,68 +9,114 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  gap: $space-4;
-  padding: $space-4 $space-2;
+  gap: 16px;
+  padding: 16px 8px;
   user-select: none;
 
   @media (min-width: 640px) {
     flex-direction: row;
   }
+}
 
-  &__info {
-    font-size: $font-size-xs;
-    color: $color-text-secondary;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: $space-3;
-  }
+.pagination-info {
+  font-size: 13px;
+  color: $color-text-secondary;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
 
-  &__per-page {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding-left: 12px;
-    border-left: 1px solid $color-border-default;
-  }
+.pagination-highlight {
+  font-weight: 700;
+  color: $color-text-primary;
+}
 
-  &__controls {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
+.pagination-per-page {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-left: 12px;
+  border-left: 1px solid $color-border-default;
+}
 
-  &__btn {
-    min-width: 32px;
-    height: 32px;
-    padding: 0 6px;
-    font-size: $font-size-xs;
-    font-weight: $font-weight-semibold;
-    border-radius: $radius-sm;
-    background-color: transparent;
-    border: 1px solid transparent;
-    color: $color-text-secondary;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: all $transition-fast;
+.pagination-select {
+  padding: 4px 8px;
+  background-color: #ffffff;
+  border: 1px solid $color-border-default;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: $color-text-primary;
+  cursor: pointer;
+  outline: none;
 
-    &:hover:not(:disabled) {
-      background-color: $color-bg-surface-subtle;
-      color: $color-text-primary;
-    }
-
-    &:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
-
-    &--active {
-      background-color: var(--color-primary) !important;
-      color: #ffffff !important;
-      box-shadow: 0 1px 2px rgba(var(--color-primary-rgb), 0.25);
-    }
+  &:focus {
+    border-color: var(--color-primary, #10b981);
   }
 }
 
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pagination-nav-btn {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 8px;
+  border: 1px solid $color-border-default;
+  background-color: #ffffff;
+  color: $color-text-secondary;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+
+  &:hover:not(:disabled) {
+    background-color: $color-bg-surface-subtle;
+    color: $color-text-primary;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+}
+
+.pagination-page-btn {
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 8px;
+  background-color: transparent;
+  border: 1px solid transparent;
+  color: $color-text-secondary;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+
+  &:hover:not(.pagination-page-btn-active) {
+    background-color: $color-bg-surface-subtle;
+    color: $color-text-primary;
+  }
+}
+
+.pagination-page-btn-active {
+  background-color: var(--color-primary, #10b981);
+  color: #ffffff;
+  box-shadow: 0 1px 3px rgba(16, 185, 129, 0.3);
+}
+
+.pagination-ellipsis {
+  padding: 0 8px;
+  color: $color-text-muted;
+  font-size: 12px;
+}

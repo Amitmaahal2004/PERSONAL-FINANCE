@@ -29,79 +29,81 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
-        <Link href="/" className="inline-flex items-center gap-2.5">
-          <div className="w-10 h-10 rounded-2xl bg-emerald-600 flex items-center justify-center text-white shadow-md shadow-emerald-600/20">
-            <TrendingUp className="w-5 h-5" />
-          </div>
-          <span className="font-extrabold text-2xl text-slate-900 tracking-tight">MyFinance</span>
-        </Link>
-        <h2 className="mt-4 text-2xl font-bold tracking-tight text-slate-900">
-          Sign in to your finances
-        </h2>
-        <p className="mt-1 text-xs text-slate-500">
-          Your Money. Your Records. Your Control.
-        </p>
-      </div>
+    <div className="auth">
+      <div className="auth-container">
+        <div className="auth-header">
+          <Link href="/" className="auth-logo">
+            <div className="auth-logo-icon">
+              <TrendingUp style={{ width: 20, height: 20 }} />
+            </div>
+            <span className="auth-logo-text">MyFinance</span>
+          </Link>
+          <h2 className="auth-title">
+            Sign in to your finances
+          </h2>
+          <p className="auth-description">
+            Your Money. Your Records. Your Control.
+          </p>
+        </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md px-4 sm:px-0">
-        <div className="bg-white py-8 px-6 sm:px-10 shadow-card rounded-3xl border border-slate-100">
-          <form onSubmit={handleLogin} className="space-y-4">
+        <div className="auth-card">
+          <form onSubmit={handleLogin} className="auth-form">
             {error && (
-              <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 shrink-0" />
+              <div className="auth-alert-error">
+                <AlertCircle style={{ width: 16, height: 16, flexShrink: 0 }} />
                 <span>{error}</span>
               </div>
             )}
 
             {/* Email */}
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <div className="auth-form-group">
+              <label className="auth-form-label">
                 Email Address
               </label>
-              <div className="relative">
-                <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <div className="auth-input-wrapper">
+                <Mail className="auth-input-icon" />
                 <input
                   type="email"
                   required
                   placeholder="you@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  className="auth-input"
                 />
               </div>
             </div>
 
             {/* Password */}
-            <div>
-              <div className="flex items-center justify-between mb-1">
-                <label className="block text-xs font-semibold text-slate-700">
+            <div className="auth-form-group">
+              <div className="auth-form-header">
+                <label className="auth-form-label">
                   Password
                 </label>
                 <Link
                   href="/forgot-password"
-                  className="text-xs font-medium text-emerald-600 hover:text-emerald-700"
+                  className="auth-form-link"
                 >
                   Forgot Password?
                 </Link>
               </div>
-              <div className="relative">
-                <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <div className="auth-input-wrapper">
+                <Lock className="auth-input-icon" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   required
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  className="auth-input"
+                  style={{ paddingRight: 40 }}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  className="auth-password-toggle"
+                  aria-label="Toggle password visibility"
                 >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showPassword ? <EyeOff style={{ width: 16, height: 16 }} /> : <Eye style={{ width: 16, height: 16 }} />}
                 </button>
               </div>
             </div>
@@ -109,22 +111,22 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full mt-2 py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-xl shadow-md shadow-emerald-600/20 transition active:scale-[0.98] flex items-center justify-center gap-2"
+              className="auth-btn-submit"
             >
               {loading ? (
                 <span>Verifying credentials...</span>
               ) : (
                 <>
                   <span>Sign In</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight style={{ width: 16, height: 16 }} />
                 </>
               )}
             </button>
           </form>
 
-          <div className="mt-6 text-center text-xs text-slate-500">
-            Don&apos;t have an account yet?{' '}
-            <Link href="/signup" className="font-semibold text-emerald-600 hover:text-emerald-700">
+          <div className="auth-footer">
+            <span>Don&apos;t have an account yet?</span>
+            <Link href="/signup" className="auth-footer-link">
               Sign Up Now
             </Link>
           </div>

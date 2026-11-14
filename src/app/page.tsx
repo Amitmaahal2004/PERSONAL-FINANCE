@@ -54,157 +54,129 @@ export default function LandingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 selection:bg-emerald-100 selection:text-emerald-900">
+    <div className="landing">
       {/* 1. HEADER */}
-      <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-100">
-        <div className="container app-container h-16 sm:h-20 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5">
-            <div
-              className="w-10 h-10 rounded-2xl flex items-center justify-center text-white shadow-md"
-              style={{
-                background: 'linear-gradient(135deg, var(--color-primary, #10b981), var(--color-secondary, #0f766e))',
-                boxShadow: '0 4px 12px var(--color-primary-ring, rgba(16, 185, 129, 0.2))',
-              }}
-            >
-              <TrendingUp className="w-5 h-5 stroke-[2.5]" />
+      <header className="landing-header">
+        <div className="landing-header-container">
+          <Link href="/" className="landing-logo">
+            <div className="landing-logo-icon">
+              <TrendingUp style={{ width: 20, height: 20 }} />
             </div>
             <div>
-              <span className="font-extrabold text-xl text-slate-900 tracking-tight">MyFinance</span>
-              <span
-                className="hidden sm:inline-block ml-2 text-[11px] font-semibold px-2 py-0.5 rounded-full border"
-                style={{
-                  backgroundColor: 'var(--color-primary-light, rgba(16, 185, 129, 0.08))',
-                  color: 'var(--color-primary, #10b981)',
-                  borderColor: 'var(--color-primary-border, rgba(16, 185, 129, 0.2))',
-                }}
-              >
+              <span className="landing-logo-title">MyFinance</span>
+              <span className="landing-logo-badge">
                 Personal Control
               </span>
             </div>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
-            <a href="#features" className="hover:text-slate-900 transition">Features</a>
-            <a href="#how-it-works" className="hover:text-slate-900 transition">How It Works</a>
-            <a href="#security" className="hover:text-slate-900 transition">Privacy & Security</a>
-            <a href="#faq" className="hover:text-slate-900 transition">FAQ</a>
+          <nav className="landing-nav">
+            <a href="#features" className="landing-nav-link">Features</a>
+            <a href="#how-it-works" className="landing-nav-link">How It Works</a>
+            <a href="#security" className="landing-nav-link">Privacy & Security</a>
+            <a href="#faq" className="landing-nav-link">FAQ</a>
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="landing-header-actions">
             <Link
               href="/login"
-              className="text-sm font-semibold text-slate-700 hover:text-slate-900 px-3.5 py-2 transition"
+              className="landing-btn-login"
             >
               Login
             </Link>
             <Link
               href="/signup"
-              style={{
-                backgroundColor: 'var(--color-primary, #10b981)',
-                boxShadow: '0 4px 14px var(--color-primary-ring, rgba(16, 185, 129, 0.25))',
-              }}
-              className="text-sm font-semibold text-white px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl shadow-md transition active:scale-95 flex items-center gap-1.5"
+              className="landing-btn-signup"
             >
               <span>Get Started</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight style={{ width: 16, height: 16 }} />
             </Link>
           </div>
         </div>
       </header>
 
       {/* 2. HERO SECTION */}
-      <section className="relative overflow-hidden pt-12 pb-20 sm:pt-20 sm:pb-28 bg-gradient-to-b from-slate-50/60 to-white">
-        <div className="container app-container text-center relative z-10">
-          <div
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold mb-6 animate-fadeIn border"
-            style={{
-              backgroundColor: 'var(--color-primary-light, rgba(16, 185, 129, 0.08))',
-              color: 'var(--color-primary, #10b981)',
-              borderColor: 'var(--color-primary-border, rgba(16, 185, 129, 0.2))',
-            }}
-          >
-            <Sparkles className="w-3.5 h-3.5" style={{ color: 'var(--color-primary, #10b981)' }} />
+      <section className="landing-hero">
+        <div className="landing-hero-container">
+          <div className="landing-badge">
+            <Sparkles style={{ width: 14, height: 14 }} />
             <span>Tagline: Your Money. Your Records. Your Control.</span>
           </div>
 
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-slate-900 tracking-tight max-w-4xl mx-auto leading-[1.12]">
-            Take Control of <span style={{ color: 'var(--color-primary, #10b981)' }}>Your Money.</span>
+          <h1 className="landing-headline">
+            Take Control of <span>Your Money.</span>
           </h1>
 
-          <p className="mt-6 text-base sm:text-xl text-slate-600 max-w-2xl mx-auto font-normal leading-relaxed">
+          <p className="landing-subheading">
             Track your income, manage expenses, plan savings and understand where every rupee goes.
           </p>
 
-          <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-md mx-auto">
+          <div className="landing-hero-actions">
             <Link
               href="/signup"
-              style={{
-                backgroundColor: 'var(--color-primary, #10b981)',
-                boxShadow: '0 8px 20px var(--color-primary-ring, rgba(16, 185, 129, 0.3))',
-              }}
-              className="w-full sm:w-auto px-7 py-3.5 rounded-xl text-white font-semibold text-base shadow-lg transition active:scale-95 flex items-center justify-center gap-2"
+              className="landing-btn-hero-primary"
             >
               <span>Start Free Personal Account</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight style={{ width: 16, height: 16 }} />
             </Link>
             <Link
               href="/login"
-              className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-white hover:bg-slate-50 text-slate-800 font-semibold text-base border border-slate-200 shadow-subtle transition flex items-center justify-center"
+              className="landing-btn-hero-secondary"
             >
               Login to Workspace
             </Link>
           </div>
 
           {/* 6. DASHBOARD PREVIEW SECTION */}
-          <div className="mt-14 sm:mt-20 max-w-5xl mx-auto">
-            <div className="relative rounded-3xl border border-slate-200/80 bg-white p-3 sm:p-5 shadow-2xl shadow-slate-200/50">
-              <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-slate-100 text-xs text-slate-400">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-rose-400"></div>
-                  <div className="w-3 h-3 rounded-full bg-amber-400"></div>
-                  <div className="w-3 h-3 rounded-full bg-emerald-400"></div>
-                  <span className="ml-2 font-mono text-[11px] text-slate-500 hidden sm:inline">myfinance.app/dashboard</span>
+          <div className="landing-preview-wrapper">
+            <div className="landing-preview-card">
+              <div className="landing-preview-topbar">
+                <div className="landing-window-dots">
+                  <div className="landing-window-dot landing-window-dot-red" />
+                  <div className="landing-window-dot landing-window-dot-amber" />
+                  <div className="landing-window-dot landing-window-dot-green" />
+                  <span className="landing-window-url">myfinance.app/dashboard</span>
                 </div>
-                <span className="font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100 text-[11px]">
+                <span className="landing-preview-tag">
                   Sample Financial Preview
                 </span>
               </div>
 
               {/* Sample Dashboard UI Mock */}
-              <div className="pt-4 text-left space-y-4">
+              <div className="landing-preview-content">
                 {/* KPI row */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  <div className="p-3.5 rounded-2xl bg-slate-50/80 border border-slate-100">
-                    <span className="text-[11px] font-medium text-slate-500">Available Balance</span>
-                    <div className="text-xl sm:text-2xl font-bold text-slate-900 mt-1">₹1,84,500.00</div>
-                    <span className="text-[10px] text-emerald-600 font-semibold">Across 3 accounts</span>
+                <div className="landing-preview-kpis">
+                  <div className="landing-preview-kpi">
+                    <span className="landing-preview-kpi-label">Available Balance</span>
+                    <div className="landing-preview-kpi-value">₹1,84,500.00</div>
+                    <span className="landing-preview-kpi-sub" style={{ color: '#059669' }}>Across 3 accounts</span>
                   </div>
-                  <div className="p-3.5 rounded-2xl bg-emerald-50/50 border border-emerald-100">
-                    <span className="text-[11px] font-medium text-emerald-700">Monthly Income</span>
-                    <div className="text-xl sm:text-2xl font-bold text-emerald-700 mt-1">₹95,000.00</div>
-                    <span className="text-[10px] text-emerald-600 font-semibold">+8.4% from last mo.</span>
+                  <div className="landing-preview-kpi landing-preview-kpi-green">
+                    <span className="landing-preview-kpi-label" style={{ color: '#047857' }}>Monthly Income</span>
+                    <div className="landing-preview-kpi-value" style={{ color: '#047857' }}>₹95,000.00</div>
+                    <span className="landing-preview-kpi-sub" style={{ color: '#059669' }}>+8.4% from last mo.</span>
                   </div>
-                  <div className="p-3.5 rounded-2xl bg-rose-50/50 border border-rose-100">
-                    <span className="text-[11px] font-medium text-rose-700">Monthly Expenses</span>
-                    <div className="text-xl sm:text-2xl font-bold text-rose-700 mt-1">₹34,220.00</div>
-                    <span className="text-[10px] text-slate-500">36% of monthly budget</span>
+                  <div className="landing-preview-kpi landing-preview-kpi-rose">
+                    <span className="landing-preview-kpi-label" style={{ color: '#be123c' }}>Monthly Expenses</span>
+                    <div className="landing-preview-kpi-value" style={{ color: '#be123c' }}>₹34,220.00</div>
+                    <span className="landing-preview-kpi-sub">36% of monthly budget</span>
                   </div>
-                  <div className="p-3.5 rounded-2xl bg-blue-50/50 border border-blue-100">
-                    <span className="text-[11px] font-medium text-blue-700">Total Savings</span>
-                    <div className="text-xl sm:text-2xl font-bold text-blue-700 mt-1">₹4,20,000.00</div>
-                    <span className="text-[10px] text-blue-600 font-semibold">3 active goals</span>
+                  <div className="landing-preview-kpi landing-preview-kpi-blue">
+                    <span className="landing-preview-kpi-label" style={{ color: '#1d4ed8' }}>Total Savings</span>
+                    <div className="landing-preview-kpi-value" style={{ color: '#1d4ed8' }}>₹4,20,000.00</div>
+                    <span className="landing-preview-kpi-sub" style={{ color: '#2563eb' }}>3 active goals</span>
                   </div>
                 </div>
 
                 {/* Sample Chart and Transactions preview */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  <div className="md:col-span-2 p-4 rounded-2xl bg-slate-50/80 border border-slate-100">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-xs font-bold text-slate-800">Income vs Expense (6-Month Trend)</span>
-                      <span className="text-[11px] text-emerald-600 font-medium">Net positive: +₹60,780</span>
+                <div className="landing-preview-middle">
+                  <div className="landing-preview-chart-card">
+                    <div className="landing-preview-chart-header">
+                      <span>Income vs Expense (6-Month Trend)</span>
+                      <span style={{ color: '#059669', fontSize: 11, fontWeight: 500 }}>Net positive: +₹60,780</span>
                     </div>
                     {/* Simulated chart bars */}
-                    <div className="h-32 flex items-end justify-between gap-3 pt-4 px-2">
+                    <div className="landing-preview-chart-bars">
                       {[
                         { mo: 'Jun', inc: 70, exp: 40 },
                         { mo: 'Jul', inc: 75, exp: 45 },
@@ -213,61 +185,61 @@ export default function LandingPage() {
                         { mo: 'Oct', inc: 90, exp: 38 },
                         { mo: 'Nov', inc: 95, exp: 34 },
                       ].map((item, idx) => (
-                        <div key={idx} className="flex-1 flex flex-col items-center gap-1.5 h-full justify-end">
-                          <div className="w-full flex items-end justify-center gap-1 h-24">
-                            <div className="w-3 bg-emerald-500 rounded-t" style={{ height: `${item.inc}%` }}></div>
-                            <div className="w-3 bg-rose-400 rounded-t" style={{ height: `${item.exp}%` }}></div>
+                        <div key={idx} className="landing-preview-bar-col">
+                          <div className="landing-preview-bar-track">
+                            <div className="landing-preview-bar-income" style={{ height: `${item.inc}%` }} />
+                            <div className="landing-preview-bar-expense" style={{ height: `${item.exp}%` }} />
                           </div>
-                          <span className="text-[10px] font-semibold text-slate-400">{item.mo}</span>
+                          <span className="landing-preview-bar-label">{item.mo}</span>
                         </div>
                       ))}
                     </div>
                   </div>
 
                   {/* Recent Transactions List */}
-                  <div className="p-4 rounded-2xl bg-slate-50/80 border border-slate-100 flex flex-col justify-between">
-                    <span className="text-xs font-bold text-slate-800 mb-2">Recent Records</span>
-                    <div className="space-y-2 text-xs">
-                      <div className="flex items-center justify-between p-1.5 bg-white rounded-lg border border-slate-100">
-                        <div className="flex items-center gap-2">
-                          <div className="w-6 h-6 rounded-md bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-[10px]">
+                  <div className="landing-preview-recent-card">
+                    <span style={{ fontSize: 12, fontWeight: 700, color: '#0f172a', marginBottom: 8, display: 'block' }}>Recent Records</span>
+                    <div className="landing-preview-recent-list">
+                      <div className="landing-preview-recent-item">
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                          <div className="landing-preview-recent-icon landing-preview-recent-icon-income">
                             ₹
                           </div>
                           <div>
-                            <div className="font-semibold text-slate-800">Salary Deposit</div>
-                            <div className="text-[10px] text-slate-400">Main Bank • UPI</div>
+                            <div className="landing-preview-recent-title">Salary Deposit</div>
+                            <div className="landing-preview-recent-sub">Main Bank • UPI</div>
                           </div>
                         </div>
-                        <span className="font-bold text-emerald-600">+₹85,000</span>
+                        <span style={{ fontWeight: 700, color: '#059669' }}>+₹85,000</span>
                       </div>
 
-                      <div className="flex items-center justify-between p-1.5 bg-white rounded-lg border border-slate-100">
-                        <div className="flex items-center gap-2">
-                          <div className="w-6 h-6 rounded-md bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-[10px]">
+                      <div className="landing-preview-recent-item">
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                          <div className="landing-preview-recent-icon landing-preview-recent-icon-expense">
                             ₹
                           </div>
                           <div>
-                            <div className="font-semibold text-slate-800">Fresh Grocery</div>
-                            <div className="text-[10px] text-slate-400">Cash Wallet • Dining</div>
+                            <div className="landing-preview-recent-title">Fresh Grocery</div>
+                            <div className="landing-preview-recent-sub">Cash Wallet • Dining</div>
                           </div>
                         </div>
-                        <span className="font-bold text-slate-800">-₹2,450</span>
+                        <span style={{ fontWeight: 700, color: '#0f172a' }}>-₹2,450</span>
                       </div>
 
-                      <div className="flex items-center justify-between p-1.5 bg-white rounded-lg border border-slate-100">
-                        <div className="flex items-center gap-2">
-                          <div className="w-6 h-6 rounded-md bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-[10px]">
+                      <div className="landing-preview-recent-item">
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                          <div className="landing-preview-recent-icon landing-preview-recent-icon-expense">
                             ₹
                           </div>
                           <div>
-                            <div className="font-semibold text-slate-800">Electric Bill</div>
-                            <div className="text-[10px] text-slate-400">Utilities • NetBanking</div>
+                            <div className="landing-preview-recent-title">Electric Bill</div>
+                            <div className="landing-preview-recent-sub">Utilities • NetBanking</div>
                           </div>
                         </div>
-                        <span className="font-bold text-slate-800">-₹1,820</span>
+                        <span style={{ fontWeight: 700, color: '#0f172a' }}>-₹1,820</span>
                       </div>
                     </div>
-                    <span className="text-[10px] text-slate-400 mt-2 block text-center">100% private to your account</span>
+                    <span className="landing-preview-recent-footer">100% private to your account</span>
                   </div>
                 </div>
               </div>
@@ -277,220 +249,157 @@ export default function LandingPage() {
       </section>
 
       {/* 7. FEATURES SECTION */}
-      <section id="features" className="py-20 sm:py-28 bg-white border-t border-slate-100">
-        <div className="container app-container">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2
-              className="text-xs font-bold uppercase tracking-wider mb-2"
-              style={{ color: 'var(--color-primary, #10b981)' }}
-            >
-              Comprehensive Financial Engine
-            </h2>
-            <h3 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-              Everything you need to master your personal economy.
-            </h3>
-            <p className="mt-4 text-base text-slate-600">
-              Built intentionally for independent individuals who demand complete clarity, security, and mobile speed.
+      <section id="features" className="landing-features-section">
+        <div className="landing-section-header">
+          <span className="landing-section-tag">
+            Comprehensive Financial Engine
+          </span>
+          <h2 className="landing-section-title">
+            Everything you need to master your personal economy.
+          </h2>
+          <p className="landing-section-desc">
+            Built intentionally for independent individuals who demand complete clarity, security, and mobile speed.
+          </p>
+        </div>
+
+        <div className="landing-features-grid">
+          {/* Feature 1 */}
+          <div className="landing-feature-card">
+            <div className="landing-feature-icon">
+              <Wallet style={{ width: 24, height: 24 }} />
+            </div>
+            <h3 className="landing-feature-title">Multiple Financial Accounts</h3>
+            <p className="landing-feature-desc">
+              Manage Cash, Bank accounts, UPI IDs, digital wallets, and cards. Track accurate real-time balances calculated straight from your verified ledger.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {/* Feature 1 */}
-            <div className="p-6 sm:p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:border-slate-300 transition shadow-subtle">
-              <div
-                className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5"
-                style={{
-                  backgroundColor: 'var(--color-primary-light, rgba(16, 185, 129, 0.1))',
-                  color: 'var(--color-primary, #10b981)',
-                }}
-              >
-                <Wallet className="w-6 h-6" />
-              </div>
-              <h4 className="text-lg font-bold text-slate-900 mb-2">Multiple Financial Accounts</h4>
-              <p className="text-sm text-slate-600 leading-relaxed">
-                Manage Cash, Bank accounts, UPI IDs, digital wallets, and cards. Track accurate real-time balances calculated straight from your verified ledger.
-              </p>
+          {/* Feature 2 */}
+          <div className="landing-feature-card">
+            <div className="landing-feature-icon">
+              <ArrowRight style={{ width: 24, height: 24 }} />
             </div>
+            <h3 className="landing-feature-title">Zero-Impact Internal Transfers</h3>
+            <p className="landing-feature-desc">
+              Transfer money from Cash to SBI or UPI to Bank without false income or expense inflation. Balances update atomically and accurately.
+            </p>
+          </div>
 
-            {/* Feature 2 */}
-            <div className="p-6 sm:p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:border-slate-300 transition shadow-subtle">
-              <div
-                className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5"
-                style={{
-                  backgroundColor: 'var(--color-primary-light, rgba(16, 185, 129, 0.1))',
-                  color: 'var(--color-primary, #10b981)',
-                }}
-              >
-                <ArrowRight className="w-6 h-6" />
-              </div>
-              <h4 className="text-lg font-bold text-slate-900 mb-2">Zero-Impact Internal Transfers</h4>
-              <p className="text-sm text-slate-600 leading-relaxed">
-                Transfer money from Cash to SBI or UPI to Bank without false income or expense inflation. Balances update atomically and accurately.
-              </p>
+          {/* Feature 3 */}
+          <div className="landing-feature-card">
+            <div className="landing-feature-icon">
+              <PieChart style={{ width: 24, height: 24 }} />
             </div>
+            <h3 className="landing-feature-title">Category-Wise Budgets</h3>
+            <p className="landing-feature-desc">
+              Set monthly limits for Food, Travel, Shopping, and Rent. Receive early visual threshold alerts at 70%, 90%, and 100% before you overspend.
+            </p>
+          </div>
 
-            {/* Feature 3 */}
-            <div className="p-6 sm:p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:border-slate-300 transition shadow-subtle">
-              <div
-                className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5"
-                style={{
-                  backgroundColor: 'var(--color-primary-light, rgba(16, 185, 129, 0.1))',
-                  color: 'var(--color-primary, #10b981)',
-                }}
-              >
-                <PieChart className="w-6 h-6" />
-              </div>
-              <h4 className="text-lg font-bold text-slate-900 mb-2">Category-Wise Budgets</h4>
-              <p className="text-sm text-slate-600 leading-relaxed">
-                Set monthly limits for Food, Travel, Shopping, and Rent. Receive early visual threshold alerts at 70%, 90%, and 100% before you overspend.
-              </p>
+          {/* Feature 4 */}
+          <div className="landing-feature-card">
+            <div className="landing-feature-icon">
+              <Target style={{ width: 24, height: 24 }} />
             </div>
+            <h3 className="landing-feature-title">Savings Goals with Contributions</h3>
+            <p className="landing-feature-desc">
+              Plan funds for an Emergency Fund, New Laptop, or Vacation. Track deposits from your accounts without double-counting your expense records.
+            </p>
+          </div>
 
-            {/* Feature 4 */}
-            <div className="p-6 sm:p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:border-slate-300 transition shadow-subtle">
-              <div
-                className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5"
-                style={{
-                  backgroundColor: 'var(--color-primary-light, rgba(16, 185, 129, 0.1))',
-                  color: 'var(--color-primary, #10b981)',
-                }}
-              >
-                <Target className="w-6 h-6" />
-              </div>
-              <h4 className="text-lg font-bold text-slate-900 mb-2">Savings Goals with Contributions</h4>
-              <p className="text-sm text-slate-600 leading-relaxed">
-                Plan funds for an Emergency Fund, New Laptop, or Vacation. Track deposits from your accounts without double-counting your expense records.
-              </p>
+          {/* Feature 5 */}
+          <div className="landing-feature-card">
+            <div className="landing-feature-icon">
+              <BarChart3 style={{ width: 24, height: 24 }} />
             </div>
+            <h3 className="landing-feature-title">Lending & Borrowed Money</h3>
+            <p className="landing-feature-desc">
+              Track personal loans lent to friends or money borrowed. Record partial repayments, track due dates, and monitor overdue receivables.
+            </p>
+          </div>
 
-            {/* Feature 5 */}
-            <div className="p-6 sm:p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:border-slate-300 transition shadow-subtle">
-              <div
-                className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5"
-                style={{
-                  backgroundColor: 'var(--color-primary-light, rgba(16, 185, 129, 0.1))',
-                  color: 'var(--color-primary, #10b981)',
-                }}
-              >
-                <BarChart3 className="w-6 h-6" />
-              </div>
-              <h4 className="text-lg font-bold text-slate-900 mb-2">Lending & Borrowed Money</h4>
-              <p className="text-sm text-slate-600 leading-relaxed">
-                Track personal loans lent to friends or money borrowed. Record partial repayments, track due dates, and monitor overdue receivables.
-              </p>
+          {/* Feature 6 */}
+          <div className="landing-feature-card">
+            <div className="landing-feature-icon">
+              <Smartphone style={{ width: 24, height: 24 }} />
             </div>
-
-            {/* Feature 6 */}
-            <div className="p-6 sm:p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:border-slate-300 transition shadow-subtle">
-              <div
-                className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5"
-                style={{
-                  backgroundColor: 'var(--color-primary-light, rgba(16, 185, 129, 0.1))',
-                  color: 'var(--color-primary, #10b981)',
-                }}
-              >
-                <Smartphone className="w-6 h-6" />
-              </div>
-              <h4 className="text-lg font-bold text-slate-900 mb-2">Mobile-First PWA</h4>
-              <p className="text-sm text-slate-600 leading-relaxed">
-                Engineered with a native bottom bar, 1-tap quick expense logger, responsive charts, and Add to Home Screen installability.
-              </p>
-            </div>
+            <h3 className="landing-feature-title">Mobile-First PWA</h3>
+            <p className="landing-feature-desc">
+              Engineered with a native bottom bar, 1-tap quick expense logger, responsive charts, and Add to Home Screen installability.
+            </p>
           </div>
         </div>
       </section>
 
       {/* 8. HOW IT WORKS SECTION */}
-      <section id="how-it-works" className="py-20 bg-slate-50/70 border-t border-slate-100">
-        <div className="container app-container">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2
-              className="text-xs font-bold uppercase tracking-wider mb-2"
-              style={{ color: 'var(--color-primary, #10b981)' }}
-            >
-              Simple 3-Step Flow
-            </h2>
-            <h3 className="text-3xl font-extrabold text-slate-900 tracking-tight">
-              Start tracking in under 60 seconds
-            </h3>
+      <section id="how-it-works" className="landing-how-section">
+        <div className="landing-section-header">
+          <span className="landing-section-tag">
+            Simple 3-Step Flow
+          </span>
+          <h2 className="landing-section-title">
+            Start tracking in under 60 seconds
+          </h2>
+        </div>
+
+        <div className="landing-how-grid">
+          <div className="landing-how-card">
+            <div className="landing-how-step">1</div>
+            <h3 className="landing-how-title">Create Your Account</h3>
+            <p className="landing-how-desc">
+              Sign up with your email. Your personal financial workspace is immediately provisioned with default Indian categories and cash/bank accounts.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div className="p-6 rounded-2xl bg-white border border-slate-100 shadow-subtle">
-              <div
-                className="w-12 h-12 rounded-full text-white font-extrabold flex items-center justify-center mx-auto mb-4 text-lg"
-                style={{ backgroundColor: 'var(--color-primary, #10b981)' }}
-              >
-                1
-              </div>
-              <h4 className="font-bold text-slate-900 text-base mb-2">Create Your Account</h4>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Sign up with your email. Your personal financial workspace is immediately provisioned with default Indian categories and cash/bank accounts.
-              </p>
-            </div>
+          <div className="landing-how-card">
+            <div className="landing-how-step">2</div>
+            <h3 className="landing-how-title">Record Income & Expenses</h3>
+            <p className="landing-how-desc">
+              Tap the (+) button on your mobile or desktop to quickly log transactions, attach bill screenshots, and assign payment methods.
+            </p>
+          </div>
 
-            <div className="p-6 rounded-2xl bg-white border border-slate-100 shadow-subtle">
-              <div
-                className="w-12 h-12 rounded-full text-white font-extrabold flex items-center justify-center mx-auto mb-4 text-lg"
-                style={{ backgroundColor: 'var(--color-primary, #10b981)' }}
-              >
-                2
-              </div>
-              <h4 className="font-bold text-slate-900 text-base mb-2">Record Income & Expenses</h4>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Tap the (+) button on your mobile or desktop to quickly log transactions, attach bill screenshots, and assign payment methods.
-              </p>
-            </div>
-
-            <div className="p-6 rounded-2xl bg-white border border-slate-100 shadow-subtle">
-              <div
-                className="w-12 h-12 rounded-full text-white font-extrabold flex items-center justify-center mx-auto mb-4 text-lg"
-                style={{ backgroundColor: 'var(--color-primary, #10b981)' }}
-              >
-                3
-              </div>
-              <h4 className="font-bold text-slate-900 text-base mb-2">Gain True Financial Clarity</h4>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Watch your net savings grow, inspect category trends, export PDF/Excel reports, and stay completely in control of your financial future.
-              </p>
-            </div>
+          <div className="landing-how-card">
+            <div className="landing-how-step">3</div>
+            <h3 className="landing-how-title">Gain True Financial Clarity</h3>
+            <p className="landing-how-desc">
+              Watch your net savings grow, inspect category trends, export PDF/Excel reports, and stay completely in control of your financial future.
+            </p>
           </div>
         </div>
       </section>
 
       {/* 10. PRIVACY AND SECURITY SECTION */}
-      <section id="security" className="py-20 sm:py-28 bg-white border-t border-slate-100">
-        <div className="container app-container">
-          <div className="p-8 sm:p-12 rounded-3xl bg-slate-900 text-white relative overflow-hidden shadow-2xl">
-            <div className="relative z-10 max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-semibold mb-4">
-                <Lock className="w-3.5 h-3.5" />
-                <span>Zero Cross-User Data Exposure</span>
-              </div>
-              <h3 className="text-2xl sm:text-4xl font-extrabold tracking-tight mb-4">
-                Your Finances Are Yours Alone.
-              </h3>
-              <p className="text-sm sm:text-base text-slate-300 leading-relaxed mb-8">
-                Unlike corporate ERPs and ad-driven trackers, MyFinance does not sell your transactional data or share records. Every database query enforces verified server-side session identity, ensuring no other user or administrator can access your private balances.
-              </p>
+      <section id="security" className="landing-security-section">
+        <div className="landing-security-card">
+          <div>
+            <div className="landing-security-tag">
+              <Lock style={{ width: 14, height: 14 }} />
+              <span>Zero Cross-User Data Exposure</span>
+            </div>
+            <h2 className="landing-security-title">
+              Your Finances Are Yours Alone.
+            </h2>
+            <p className="landing-security-desc">
+              Unlike corporate ERPs and ad-driven trackers, MyFinance does not sell your transactional data or share records. Every database query enforces verified server-side session identity, ensuring no other user or administrator can access your private balances.
+            </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                <div className="flex items-center gap-2.5 text-slate-200">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span>Bcrypt salted password encryption</span>
-                </div>
-                <div className="flex items-center gap-2.5 text-slate-200">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span>Secure HTTP-Only session cookies</span>
-                </div>
-                <div className="flex items-center gap-2.5 text-slate-200">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span>Strict multi-user document isolation</span>
-                </div>
-                <div className="flex items-center gap-2.5 text-slate-200">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span>Decimal-accurate financial calculations</span>
-                </div>
+            <div className="landing-security-grid">
+              <div className="landing-security-item">
+                <CheckCircle2 style={{ width: 16, height: 16, color: '#34d399', flexShrink: 0 }} />
+                <span>Bcrypt salted password encryption</span>
+              </div>
+              <div className="landing-security-item">
+                <CheckCircle2 style={{ width: 16, height: 16, color: '#34d399', flexShrink: 0 }} />
+                <span>Secure HTTP-Only session cookies</span>
+              </div>
+              <div className="landing-security-item">
+                <CheckCircle2 style={{ width: 16, height: 16, color: '#34d399', flexShrink: 0 }} />
+                <span>Strict multi-user document isolation</span>
+              </div>
+              <div className="landing-security-item">
+                <CheckCircle2 style={{ width: 16, height: 16, color: '#34d399', flexShrink: 0 }} />
+                <span>Decimal-accurate financial calculations</span>
               </div>
             </div>
           </div>
@@ -498,67 +407,59 @@ export default function LandingPage() {
       </section>
 
       {/* 11. FAQ SECTION */}
-      <section id="faq" className="py-20 bg-slate-50/50 border-t border-slate-100">
-        <div className="container app-container max-w-4xl">
-          <div className="text-center mb-12">
-            <h2
-              className="text-xs font-bold uppercase tracking-wider mb-2"
-              style={{ color: 'var(--color-primary, #10b981)' }}
-            >
-              Got Questions?
-            </h2>
-            <h3 className="text-3xl font-extrabold text-slate-900 tracking-tight">
-              Frequently Asked Questions
-            </h3>
-          </div>
+      <section id="faq" className="landing-faq-section">
+        <div className="landing-section-header">
+          <span className="landing-section-tag">
+            Got Questions?
+          </span>
+          <h2 className="landing-section-title">
+            Frequently Asked Questions
+          </h2>
+        </div>
 
-          <div className="space-y-3">
-            {faqs.map((faq, idx) => (
-              <div
-                key={idx}
-                className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden transition shadow-subtle"
+        <div className="landing-faq-list">
+          {faqs.map((faq, idx) => (
+            <div key={idx} className="landing-faq-item">
+              <button
+                onClick={() => toggleFaq(idx)}
+                className="landing-faq-question"
               >
-                <button
-                  onClick={() => toggleFaq(idx)}
-                  className="w-full px-5 py-4 text-left flex items-center justify-between text-sm font-bold text-slate-900 hover:text-slate-700 transition"
-                >
-                  <span>{faq.q}</span>
-                  <ChevronDown
-                    className={`w-4 h-4 text-slate-400 transition-transform ${
-                      openFaq === idx ? 'rotate-180' : ''
-                    }`}
-                    style={openFaq === idx ? { color: 'var(--color-primary, #10b981)' } : undefined}
-                  />
-                </button>
-                {openFaq === idx && (
-                  <div className="px-5 pb-4 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-50 pt-2">
-                    {faq.a}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+                <span>{faq.q}</span>
+                <ChevronDown
+                  style={{
+                    width: 16,
+                    height: 16,
+                    color: openFaq === idx ? 'var(--color-primary, #10b981)' : '#94a3b8',
+                    transform: openFaq === idx ? 'rotate(180deg)' : 'none',
+                    transition: 'transform 0.2s ease',
+                  }}
+                />
+              </button>
+              {openFaq === idx && (
+                <div className="landing-faq-answer">
+                  {faq.a}
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </section>
 
       {/* 12. FOOTER */}
-      <footer className="bg-white border-t border-slate-200/80 py-12">
-        <div className="container app-container flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2.5">
-            <div
-              className="w-8 h-8 rounded-xl flex items-center justify-center text-white"
-              style={{ backgroundColor: 'var(--color-primary, #10b981)' }}
-            >
-              <TrendingUp className="w-4 h-4" />
+      <footer className="landing-footer">
+        <div className="landing-footer-container">
+          <div className="landing-footer-brand">
+            <div className="landing-footer-icon">
+              <TrendingUp style={{ width: 16, height: 16 }} />
             </div>
-            <span className="font-bold text-slate-900 text-base">MyFinance</span>
-            <span className="text-xs text-slate-400">© {new Date().getFullYear()} All rights reserved.</span>
+            <span style={{ fontWeight: 700, fontSize: 16, color: '#0f172a' }}>MyFinance</span>
+            <span className="landing-footer-copy">© {new Date().getFullYear()} All rights reserved.</span>
           </div>
 
-          <div className="text-xs text-slate-500 flex items-center gap-6">
-            <Link href="/login" className="hover:text-slate-900 transition">Login</Link>
-            <Link href="/signup" className="hover:text-slate-900 transition">Sign Up</Link>
-            <Link href="/dashboard" className="hover:text-slate-900 transition">Dashboard</Link>
+          <div className="landing-footer-links">
+            <Link href="/login" className="landing-footer-link">Login</Link>
+            <Link href="/signup" className="landing-footer-link">Sign Up</Link>
+            <Link href="/dashboard" className="landing-footer-link">Dashboard</Link>
           </div>
         </div>
       </footer>

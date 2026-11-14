@@ -110,14 +110,14 @@ export default function BudgetsPage() {
 
   return (
     <DashboardLayout>
-      <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
+      <div className="budgets">
         {/* HEADER */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="budgets-header">
           <div>
-            <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+            <h1 className="budgets-title">
               Budget Management
             </h1>
-            <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+            <p className="budgets-description">
               Set spending limits and receive alerts before exceeding budget thresholds.
             </p>
           </div>
@@ -129,28 +129,30 @@ export default function BudgetsPage() {
               setError('');
               setCreateModalOpen(true);
             }}
-            className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl shadow-md shadow-emerald-600/20 transition flex items-center gap-1.5 self-start sm:self-auto"
+            className="budgets-btn-primary"
           >
-            <Plus className="w-4 h-4" />
+            <Plus style={{ width: 16, height: 16 }} />
             <span>Set New Budget</span>
           </button>
         </div>
 
         {/* BUDGET CARDS GRID */}
         {loading ? (
-          <div className="py-12 text-center text-xs text-slate-400">Loading budgets...</div>
+          <div style={{ padding: '48px 0', textAlign: 'center', fontSize: 12, color: '#94a3b8' }}>
+            Loading budgets...
+          </div>
         ) : budgets.length === 0 ? (
-          <div className="p-16 text-center bg-white rounded-3xl border border-slate-200/80">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-3">
-              <PieChart className="w-6 h-6" />
+          <div className="budgets-empty">
+            <div className="budgets-empty-icon">
+              <PieChart style={{ width: 24, height: 24 }} />
             </div>
-            <h3 className="font-bold text-slate-800 text-base">No Budgets Configured</h3>
-            <p className="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
+            <h3 className="budgets-empty-title">No Budgets Configured</h3>
+            <p className="budgets-empty-desc">
               Set an overall monthly budget or category-specific targets to monitor your spending habits.
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="budgets-grid">
             {budgets.map((b) => {
               const pct = b.percentageUsed || 0;
               const isOver = pct > 100;
@@ -158,70 +160,69 @@ export default function BudgetsPage() {
               const isNotice = pct >= 70 && pct < 90;
 
               return (
-                <div
-                  key={b._id}
-                  className="p-5 rounded-3xl bg-white border border-slate-200/80 shadow-subtle hover:shadow-card transition flex flex-col justify-between"
-                >
+                <div key={b._id} className="budget-card">
                   <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-slate-900 text-base">{b.categoryName}</span>
+                    <div className="budget-card-header">
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <span className="budget-card-title">{b.categoryName}</span>
                         {b.categoryName.toLowerCase() === 'overall' && (
-                          <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">
+                          <span className="budget-card-badge">
                             PRIMARY
                           </span>
                         )}
                       </div>
 
-                      <div className="flex items-center gap-1">
-                        <button
-                          onClick={() => handleDeleteBudget(b._id)}
-                          className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
+                      <button
+                        onClick={() => handleDeleteBudget(b._id)}
+                        className="budget-card-delete-btn"
+                        title="Delete Budget"
+                      >
+                        <Trash2 style={{ width: 14, height: 14 }} />
+                      </button>
                     </div>
 
                     {/* Progress Bar */}
-                    <div className="space-y-1.5 my-4">
-                      <div className="flex justify-between text-xs">
-                        <span className="text-slate-500 font-medium">Spent: {formatCurrency(b.spent, cur, sym)}</span>
+                    <div className="budget-progress-container">
+                      <div className="budget-progress-labels">
+                        <span className="budget-progress-spent">Spent: {formatCurrency(b.spent, cur, sym)}</span>
                         <span
-                          className={`font-bold ${isOver ? 'text-rose-600' : isWarning ? 'text-amber-600' : 'text-slate-700'
-                            }`}
+                          className={`budget-progress-pct ${
+                            isOver ? 'budget-progress-pct-danger' : isWarning ? 'budget-progress-pct-warning' : ''
+                          }`}
                         >
                           {pct}% used
                         </span>
                       </div>
-                      <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
+                      <div className="budget-progress-bar">
                         <div
-                          className={`h-full rounded-full transition-all ${isOver
-                            ? 'bg-rose-500'
-                            : isWarning
-                              ? 'bg-amber-500'
+                          className={`budget-progress-fill ${
+                            isOver
+                              ? 'budget-progress-fill-danger'
+                              : isWarning
+                              ? 'budget-progress-fill-warning'
                               : isNotice
-                                ? 'bg-yellow-400'
-                                : 'bg-emerald-500'
-                            }`}
+                              ? 'budget-progress-fill-notice'
+                              : ''
+                          }`}
                           style={{ width: `${Math.min(pct, 100)}%` }}
                         />
                       </div>
                     </div>
 
                     {/* Budget & Remaining */}
-                    <div className="grid grid-cols-2 gap-2 text-xs pt-3 border-t border-slate-100">
+                    <div className="budget-card-metrics">
                       <div>
-                        <span className="text-slate-400 text-[11px]">Monthly Limit</span>
-                        <div className="font-bold text-slate-900 mt-0.5">
+                        <span className="budget-card-metric-label">Monthly Limit</span>
+                        <div className="budget-card-metric-value">
                           {formatCurrency(b.monthlyBudget, cur, sym)}
                         </div>
                       </div>
-                      <div className="text-right">
-                        <span className="text-slate-400 text-[11px]">Remaining</span>
+                      <div style={{ textAlign: 'right' }}>
+                        <span className="budget-card-metric-label">Remaining</span>
                         <div
-                          className={`font-bold mt-0.5 ${b.remaining < 0 ? 'text-rose-600' : 'text-emerald-700'
-                            }`}
+                          className={`budget-card-metric-remaining ${
+                            b.remaining < 0 ? 'budget-card-metric-remaining-over' : ''
+                          }`}
                         >
                           {formatCurrency(b.remaining, cur, sym)}
                         </div>
@@ -232,20 +233,21 @@ export default function BudgetsPage() {
                   {/* Alert Badges */}
                   {(isOver || isWarning || isNotice) && (
                     <div
-                      className={`mt-4 p-2.5 rounded-xl text-xs flex items-center gap-2 ${isOver
-                        ? 'bg-rose-50 text-rose-700 border border-rose-200'
-                        : isWarning
-                          ? 'bg-amber-50 text-amber-800 border border-amber-200'
-                          : 'bg-yellow-50 text-yellow-800 border border-yellow-200'
-                        }`}
+                      className={`budget-alert ${
+                        isOver
+                          ? 'budget-alert-danger'
+                          : isWarning
+                          ? 'budget-alert-warning'
+                          : 'budget-alert-notice'
+                      }`}
                     >
-                      <AlertTriangle className="w-4 h-4 shrink-0" />
+                      <AlertTriangle style={{ width: 16, height: 16, flexShrink: 0 }} />
                       <span>
                         {isOver
                           ? 'Budget exceeded! You have spent more than allocated.'
                           : isWarning
-                            ? 'Warning: 90% threshold reached. Limit further spending.'
-                            : 'Notice: 70% threshold reached.'}
+                          ? 'Warning: 90% threshold reached. Limit further spending.'
+                          : 'Notice: 70% threshold reached.'}
                       </span>
                     </div>
                   )}
@@ -258,29 +260,29 @@ export default function BudgetsPage() {
 
       {/* CREATE BUDGET MODAL */}
       {createModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
-          <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl p-6 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h3 className="font-bold text-slate-900 text-base">Configure Budget Target</h3>
-              <button onClick={() => setCreateModalOpen(false)} className="p-1.5 text-slate-400 hover:text-slate-600">
-                <X className="w-4 h-4" />
+        <div className="budgets-modal-backdrop">
+          <div className="budgets-modal">
+            <div className="budgets-modal-header">
+              <h3 className="budgets-modal-title">Configure Budget Target</h3>
+              <button onClick={() => setCreateModalOpen(false)} className="budgets-modal-close-btn" aria-label="Close modal">
+                <X style={{ width: 16, height: 16 }} />
               </button>
             </div>
 
             {error && (
-              <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 rounded-xl text-xs flex items-center gap-2">
-                <AlertTriangle className="w-4 h-4 shrink-0" />
+              <div className="budgets-form-error">
+                <AlertTriangle style={{ width: 16, height: 16, flexShrink: 0 }} />
                 <span>{error}</span>
               </div>
             )}
 
-            <form onSubmit={handleCreateBudget} className="space-y-3">
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Target Category</label>
+            <form onSubmit={handleCreateBudget} className="budgets-form">
+              <div className="budgets-form-group">
+                <label className="budgets-form-label">Target Category</label>
                 <select
                   value={categoryName}
                   onChange={(e) => setCategoryName(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:bg-white"
+                  className="budgets-form-select"
                 >
                   <option value="Overall">Overall Monthly Budget (All Expenses)</option>
                   {categories.map((c) => (
@@ -291,8 +293,8 @@ export default function BudgetsPage() {
                 </select>
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <div className="budgets-form-group">
+                <label className="budgets-form-label">
                   Monthly Budget Limit ({sym})
                 </label>
                 <input
@@ -302,52 +304,50 @@ export default function BudgetsPage() {
                   placeholder="e.g. 25000"
                   value={monthlyBudget}
                   onChange={(e) => setMonthlyBudget(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-base font-bold text-slate-900 focus:bg-white"
+                  className="budgets-form-input"
+                  style={{ fontSize: 16, fontWeight: 700 }}
                 />
               </div>
 
-              <div className="pt-2 space-y-2 border-t border-slate-100">
-                <span className="text-xs font-semibold text-slate-700 block">Notification Threshold Alerts</span>
-                <label className="flex items-center gap-2 text-xs text-slate-600 cursor-pointer">
+              <div className="budgets-form-checkbox-group">
+                <span className="budgets-form-label">Notification Threshold Alerts</span>
+                <label className="budgets-form-checkbox-label">
                   <input
                     type="checkbox"
                     checked={alert70}
                     onChange={(e) => setAlert70(e.target.checked)}
-                    className="rounded text-emerald-600 focus:ring-emerald-500"
                   />
                   <span>Alert me when 70% is reached</span>
                 </label>
-                <label className="flex items-center gap-2 text-xs text-slate-600 cursor-pointer">
+                <label className="budgets-form-checkbox-label">
                   <input
                     type="checkbox"
                     checked={alert90}
                     onChange={(e) => setAlert90(e.target.checked)}
-                    className="rounded text-emerald-600 focus:ring-emerald-500"
                   />
                   <span>Alert me when 90% is reached</span>
                 </label>
-                <label className="flex items-center gap-2 text-xs text-slate-600 cursor-pointer">
+                <label className="budgets-form-checkbox-label">
                   <input
                     type="checkbox"
                     checked={alert100}
                     onChange={(e) => setAlert100(e.target.checked)}
-                    className="rounded text-emerald-600 focus:ring-emerald-500"
                   />
                   <span>Alert me when budget is exceeded (100%+)</span>
                 </label>
               </div>
 
-              <div className="pt-2 flex gap-3">
+              <div className="budgets-form-actions">
                 <button
                   type="button"
                   onClick={() => setCreateModalOpen(false)}
-                  className="flex-1 py-2.5 rounded-xl bg-slate-100 text-slate-700 text-xs font-semibold"
+                  className="budgets-btn-cancel"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-md"
+                  className="budgets-btn-submit"
                 >
                   Save Budget
                 </button>

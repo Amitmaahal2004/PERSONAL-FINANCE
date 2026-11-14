@@ -158,14 +158,14 @@ export default function RecurringPage() {
 
   return (
     <DashboardLayout>
-      <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
+      <div className="recurring">
         {/* HEADER */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+        <div className="recurring-header">
+          <div className="recurring-header-info">
+            <h1 className="recurring-title">
               Recurring Payments & Inflows
             </h1>
-            <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+            <p className="recurring-description">
               Automate tracking for monthly rent, subscriptions, utility bills, and salary deposits.
             </p>
           </div>
@@ -178,46 +178,52 @@ export default function RecurringPage() {
               setError('');
               setCreateModalOpen(true);
             }}
-            className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl shadow-md shadow-emerald-600/20 transition flex items-center gap-1.5 self-start sm:self-auto"
+            className="recurring-btn-add"
           >
-            <Plus className="w-4 h-4" />
+            <Plus style={{ width: 16, height: 16 }} />
             <span>Schedule Recurring Payment</span>
           </button>
         </div>
 
         {/* LIST */}
         {loading ? (
-          <div className="py-12 text-center text-xs text-slate-400">Loading recurring schedules...</div>
+          <div className="recurring-loading">Loading recurring schedules...</div>
         ) : recurringList.length === 0 ? (
-          <div className="p-16 text-center bg-white rounded-3xl border border-slate-200/80">
-            <div className="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
-              <Repeat className="w-6 h-6" />
+          <div className="recurring-empty">
+            <div className="recurring-empty-icon">
+              <Repeat style={{ width: 24, height: 24 }} />
             </div>
-            <h3 className="font-bold text-slate-800 text-base">No Recurring Schedules</h3>
-            <p className="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
+            <h3 className="recurring-empty-title">No Recurring Schedules</h3>
+            <p className="recurring-empty-desc">
               Schedule recurring bills, rent, or salary to track future dues and record payments with a single click.
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="recurring-grid">
             {recurringList.map((rec) => (
               <div
                 key={rec._id}
-                className={`p-5 rounded-3xl bg-white border transition shadow-subtle hover:shadow-card flex flex-col justify-between ${rec.status === 'paused' ? 'opacity-65 border-dashed border-slate-300' : 'border-slate-200/80'
-                  }`}
+                className={`recurring-card ${
+                  rec.status === 'paused' ? 'recurring-card-paused' : ''
+                }`}
               >
                 <div>
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-2.5">
+                  <div className="recurring-card-top">
+                    <div className="recurring-card-info">
                       <div
-                        className={`w-10 h-10 rounded-2xl flex items-center justify-center font-bold ${rec.type === 'income' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'
-                          }`}
+                        className={`recurring-card-icon ${
+                          rec.type === 'income' ? 'recurring-card-icon-income' : 'recurring-card-icon-expense'
+                        }`}
                       >
-                        {rec.type === 'income' ? <ArrowDownLeft className="w-5 h-5" /> : <ArrowUpRight className="w-5 h-5" />}
+                        {rec.type === 'income' ? (
+                          <ArrowDownLeft style={{ width: 20, height: 20 }} />
+                        ) : (
+                          <ArrowUpRight style={{ width: 20, height: 20 }} />
+                        )}
                       </div>
                       <div>
-                        <h3 className="font-bold text-slate-900 text-sm">{rec.title}</h3>
-                        <span className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">
+                        <h3 className="recurring-card-title">{rec.title}</h3>
+                        <span className="recurring-card-meta">
                           {rec.frequency} • {rec.category}
                         </span>
                       </div>
@@ -225,49 +231,50 @@ export default function RecurringPage() {
 
                     <button
                       onClick={() => handleDelete(rec._id)}
-                      className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition"
+                      className="recurring-card-delete-btn"
+                      aria-label="Delete schedule"
                     >
-                      <Trash2 className="w-3.5 h-3.5" />
+                      <Trash2 style={{ width: 14, height: 14 }} />
                     </button>
                   </div>
 
-                  <div className="space-y-1 my-3 bg-slate-50 p-3 rounded-2xl border border-slate-100 text-xs">
-                    <div className="flex justify-between">
-                      <span className="text-slate-500">Amount:</span>
-                      <span className="font-bold text-slate-900">{formatCurrency(rec.amount, cur, sym)}</span>
+                  <div className="recurring-card-details">
+                    <div className="recurring-card-row">
+                      <span className="recurring-card-label">Amount:</span>
+                      <span className="recurring-card-val-bold">{formatCurrency(rec.amount, cur, sym)}</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-500">Account:</span>
-                      <span className="font-medium text-slate-700">{rec.account}</span>
+                    <div className="recurring-card-row">
+                      <span className="recurring-card-label">Account:</span>
+                      <span className="recurring-card-val">{rec.account}</span>
                     </div>
-                    <div className="flex justify-between text-[11px] text-slate-400 pt-1 border-t border-slate-200/60">
+                    <div className="recurring-card-footer-info">
                       <span>Next Due: {formatDate(rec.nextDueDate)}</span>
-                      <span className="font-semibold capitalize text-emerald-700">{rec.status}</span>
+                      <span className="recurring-status-text">{rec.status}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                <div className="recurring-card-bottom">
                   <button
                     onClick={() => toggleStatus(rec)}
-                    className="font-medium text-slate-500 hover:text-slate-800 flex items-center gap-1"
+                    className="recurring-btn-toggle"
                   >
                     {rec.status === 'active' ? (
                       <>
-                        <Pause className="w-3.5 h-3.5" /> Pause
+                        <Pause style={{ width: 14, height: 14 }} /> Pause
                       </>
                     ) : (
                       <>
-                        <Play className="w-3.5 h-3.5" /> Resume
+                        <Play style={{ width: 14, height: 14 }} /> Resume
                       </>
                     )}
                   </button>
 
                   <button
                     onClick={() => handleProcessPayment(rec._id)}
-                    className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold shadow-sm transition flex items-center gap-1"
+                    className="recurring-btn-process"
                   >
-                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    <CheckCircle2 style={{ width: 14, height: 14 }} />
                     <span>Pay / Record Now</span>
                   </button>
                 </div>
@@ -279,37 +286,37 @@ export default function RecurringPage() {
 
       {/* CREATE MODAL */}
       {createModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
-          <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl p-6 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h3 className="font-bold text-slate-900 text-base">Schedule Recurring Payment</h3>
-              <button onClick={() => setCreateModalOpen(false)} className="p-1.5 text-slate-400 hover:text-slate-600">
-                <X className="w-4 h-4" />
+        <div className="recurring-modal-backdrop">
+          <div className="recurring-modal">
+            <div className="recurring-modal-header">
+              <h3 className="recurring-modal-title">Schedule Recurring Payment</h3>
+              <button onClick={() => setCreateModalOpen(false)} className="recurring-modal-close-btn" aria-label="Close modal">
+                <X style={{ width: 16, height: 16 }} />
               </button>
             </div>
 
             {error && (
-              <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 rounded-xl text-xs">
+              <div className="recurring-form-error">
                 {error}
               </div>
             )}
 
-            <form onSubmit={handleCreateRecurring} className="space-y-3">
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Title</label>
+            <form onSubmit={handleCreateRecurring} className="recurring-form">
+              <div className="recurring-form-group">
+                <label className="recurring-form-label">Title</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Apartment Rent, Netflix Subscription"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:bg-white"
+                  className="recurring-form-input"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Amount ({sym})</label>
+              <div className="recurring-form-row">
+                <div className="recurring-form-group">
+                  <label className="recurring-form-label">Amount ({sym})</label>
                   <input
                     type="number"
                     step="0.01"
@@ -317,15 +324,16 @@ export default function RecurringPage() {
                     placeholder="0.00"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:bg-white font-bold"
+                    className="recurring-form-input"
+                    style={{ fontSize: 16, fontWeight: 700 }}
                   />
                 </div>
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Type</label>
+                <div className="recurring-form-group">
+                  <label className="recurring-form-label">Type</label>
                   <select
                     value={type}
                     onChange={(e) => setType(e.target.value as any)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800"
+                    className="recurring-form-select"
                   >
                     <option value="expense">Expense (Outflow)</option>
                     <option value="income">Income (Inflow)</option>
@@ -333,13 +341,13 @@ export default function RecurringPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Category</label>
+              <div className="recurring-form-row">
+                <div className="recurring-form-group">
+                  <label className="recurring-form-label">Category</label>
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800"
+                    className="recurring-form-select"
                   >
                     {categories.map((c) => (
                       <option key={c._id} value={c.name}>
@@ -348,12 +356,12 @@ export default function RecurringPage() {
                     ))}
                   </select>
                 </div>
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Frequency</label>
+                <div className="recurring-form-group">
+                  <label className="recurring-form-label">Frequency</label>
                   <select
                     value={frequency}
                     onChange={(e) => setFrequency(e.target.value as any)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800"
+                    className="recurring-form-select"
                   >
                     <option value="daily">Daily</option>
                     <option value="weekly">Weekly</option>
@@ -363,13 +371,13 @@ export default function RecurringPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Account</label>
+              <div className="recurring-form-row">
+                <div className="recurring-form-group">
+                  <label className="recurring-form-label">Account</label>
                   <select
                     value={accountId}
                     onChange={(e) => setAccountId(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800"
+                    className="recurring-form-select"
                   >
                     {accounts.map((acc) => (
                       <option key={acc._id} value={acc._id}>
@@ -378,40 +386,40 @@ export default function RecurringPage() {
                     ))}
                   </select>
                 </div>
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Start / Next Due Date</label>
+                <div className="recurring-form-group">
+                  <label className="recurring-form-label">Start / Next Due Date</label>
                   <input
                     type="date"
                     required
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800"
+                    className="recurring-form-input"
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Notes (Optional)</label>
+              <div className="recurring-form-group">
+                <label className="recurring-form-label">Notes (Optional)</label>
                 <input
                   type="text"
                   placeholder="Additional details..."
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800"
+                  className="recurring-form-input"
                 />
               </div>
 
-              <div className="pt-2 flex gap-3">
+              <div className="recurring-form-actions">
                 <button
                   type="button"
                   onClick={() => setCreateModalOpen(false)}
-                  className="flex-1 py-2.5 rounded-xl bg-slate-100 text-slate-700 text-xs font-semibold"
+                  className="recurring-btn-cancel"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-md"
+                  className="recurring-btn-submit"
                 >
                   Schedule Payment
                 </button>

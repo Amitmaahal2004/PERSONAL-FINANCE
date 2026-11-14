@@ -2,15 +2,453 @@
 @use '../abstracts/mixins' as *;
 
 // ==============================================================================
-// RECURRING PAYMENTS PAGE STYLES
+// RECURRING PAYMENTS PAGE STYLES (Strict Semantic Architecture)
 // ==============================================================================
 
-.recurring-page {
-  padding: $space-6 0 $space-16;
+.recurring {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
 
-  &__list {
-    @include card-surface;
-    overflow: hidden;
+// 1. HEADER
+.recurring-header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @media (min-width: 640px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
   }
 }
 
+.recurring-header-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.recurring-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: $color-text-primary;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.recurring-description {
+  font-size: 13px;
+  color: $color-text-muted;
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+
+.recurring-btn-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  background-color: var(--color-primary, #10b981);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.25);
+  transition: all 0.15s ease;
+  align-self: flex-start;
+
+  @media (min-width: 640px) {
+    align-self: auto;
+  }
+
+  &:hover {
+    background-color: var(--color-primary-hover, #059669);
+  }
+}
+
+// 2. EMPTY STATE & LOADING
+.recurring-loading {
+  padding: 48px;
+  text-align: center;
+  font-size: 13px;
+  color: $color-text-muted;
+}
+
+.recurring-empty {
+  padding: 64px 20px;
+  text-align: center;
+  background-color: #ffffff;
+  border-radius: 24px;
+  border: 1px solid $color-border-default;
+}
+
+.recurring-empty-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  background-color: $color-bg-surface-subtle;
+  color: $color-text-muted;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+}
+
+.recurring-empty-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: $color-text-primary;
+  margin: 0;
+}
+
+.recurring-empty-desc {
+  font-size: 13px;
+  color: $color-text-muted;
+  margin: 6px auto 0;
+  max-width: 400px;
+}
+
+// 3. GRID & CARD
+.recurring-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.recurring-card {
+  padding: 20px;
+  border-radius: 20px;
+  background-color: #ffffff;
+  border: 1px solid $color-border-default;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.15s ease;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+  }
+}
+
+.recurring-card-paused {
+  opacity: 0.65;
+  border-style: dashed;
+  border-color: $color-border-default;
+}
+
+.recurring-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.recurring-card-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.recurring-card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.recurring-card-icon-income {
+  background-color: #ecfdf5;
+  color: var(--color-primary, #10b981);
+}
+
+.recurring-card-icon-expense {
+  background-color: #fff1f2;
+  color: #e11d48;
+}
+
+.recurring-card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: $color-text-primary;
+  margin: 0;
+}
+
+.recurring-card-meta {
+  font-size: 10px;
+  color: $color-text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-weight: 600;
+  margin-top: 2px;
+  display: block;
+}
+
+.recurring-card-delete-btn {
+  padding: 6px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: $color-text-muted;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background-color: #fff1f2;
+    color: #e11d48;
+  }
+}
+
+.recurring-card-details {
+  background-color: $color-bg-surface-subtle;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid $color-border-light;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 10px 0;
+}
+
+.recurring-card-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.recurring-card-label {
+  color: $color-text-muted;
+}
+
+.recurring-card-val {
+  font-weight: 500;
+  color: $color-text-secondary;
+}
+
+.recurring-card-val-bold {
+  font-weight: 800;
+  color: $color-text-primary;
+}
+
+.recurring-card-footer-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: $color-text-muted;
+  padding-top: 6px;
+  border-top: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.recurring-status-text {
+  font-weight: 700;
+  text-transform: capitalize;
+  color: var(--color-primary, #047857);
+}
+
+.recurring-card-bottom {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid $color-border-light;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.recurring-btn-toggle {
+  font-size: 12px;
+  font-weight: 600;
+  color: $color-text-muted;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.15s ease;
+
+  &:hover {
+    color: $color-text-primary;
+  }
+}
+
+.recurring-btn-process {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  background-color: var(--color-primary, #10b981);
+  color: #ffffff;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(16, 185, 129, 0.2);
+  transition: all 0.15s ease;
+
+  &:hover {
+    background-color: var(--color-primary-hover, #059669);
+  }
+}
+
+// 4. MODALS
+.recurring-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+.recurring-modal {
+  width: 100%;
+  max-width: 440px;
+  background-color: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+  padding: 24px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.recurring-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid $color-border-light;
+}
+
+.recurring-modal-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: $color-text-primary;
+  margin: 0;
+}
+
+.recurring-modal-close-btn {
+  padding: 6px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: $color-text-muted;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $color-bg-surface-subtle;
+    color: $color-text-primary;
+  }
+}
+
+.recurring-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.recurring-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.recurring-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.recurring-form-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: $color-text-secondary;
+}
+
+.recurring-form-input,
+.recurring-form-select {
+  width: 100%;
+  padding: 10px 14px;
+  background-color: $color-bg-surface-subtle;
+  border: 1px solid $color-border-default;
+  border-radius: 5px;
+  font-size: 13px;
+  color: $color-text-primary;
+  outline: none;
+  box-sizing: border-box;
+
+  &:focus {
+    background-color: #ffffff;
+    border-color: var(--color-primary, #10b981);
+    box-shadow: 0 0 0 3px var(--color-primary-ring, rgba(16, 185, 129, 0.18));
+  }
+}
+
+.recurring-form-error {
+  padding: 10px 14px;
+  background-color: #fff1f2;
+  border: 1px solid #fecdd3;
+  color: #e11d48;
+  border-radius: 5px;
+  font-size: 12px;
+}
+
+.recurring-form-actions {
+  display: flex;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.recurring-btn-cancel {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 5px;
+  border: none;
+  background-color: $color-bg-surface-subtle;
+  color: $color-text-secondary;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $color-border-light;
+    color: $color-text-primary;
+  }
+}
+
+.recurring-btn-submit {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 5px;
+  border: none;
+  background-color: var(--color-primary, #10b981);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.2);
+
+  &:hover {
+    background-color: var(--color-primary-hover, #059669);
+  }
+}

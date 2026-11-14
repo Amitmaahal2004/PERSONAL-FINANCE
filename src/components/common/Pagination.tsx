@@ -62,25 +62,23 @@ export default function Pagination({
   const pages = getPageNumbers();
 
   return (
-    <div
-      className={`flex flex-col sm:flex-row items-center justify-between gap-4 py-4 px-2 select-none ${className}`}
-    >
+    <div className={`pagination ${className}`}>
       {/* Left side: Showing X to Y of Z & Page Size selector */}
-      <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm text-slate-600">
+      <div className="pagination-info">
         <span>
-          Showing <span className="font-semibold text-slate-900">{startRecord}</span> to{' '}
-          <span className="font-semibold text-slate-900">{endRecord}</span> of{' '}
-          <span className="font-semibold text-slate-900">{totalCount}</span> records
+          Showing <span className="pagination-highlight">{startRecord}</span> to{' '}
+          <span className="pagination-highlight">{endRecord}</span> of{' '}
+          <span className="pagination-highlight">{totalCount}</span> records
         </span>
 
         {onLimitChange && (
-          <div className="flex items-center gap-1.5 ml-1 pl-3 border-l border-slate-200">
-            <span className="text-slate-500">Per page:</span>
+          <div className="pagination-per-page">
+            <span style={{ color: '#64748b' }}>Per page:</span>
             <select
               value={limit}
               onChange={(e) => onLimitChange(Number(e.target.value))}
               aria-label="Records per page"
-              className="px-2 py-1 bg-white border border-slate-300 rounded-md text-xs sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 cursor-pointer shadow-sm"
+              className="pagination-select"
             >
               {pageSizeOptions.map((sz) => (
                 <option key={sz} value={sz}>
@@ -93,30 +91,30 @@ export default function Pagination({
       </div>
 
       {/* Right side: Page navigation */}
-      <div className="flex items-center gap-1">
+      <div className="pagination-controls">
         <button
           onClick={() => onPageChange(1)}
           disabled={page <= 1}
           title="First Page"
-          className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none transition-colors"
+          className="pagination-nav-btn"
         >
-          <ChevronsLeft className="w-4 h-4" />
+          <ChevronsLeft style={{ width: 16, height: 16 }} />
         </button>
 
         <button
           onClick={() => onPageChange(page - 1)}
           disabled={page <= 1}
           title="Previous Page"
-          className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none transition-colors"
+          className="pagination-nav-btn"
         >
-          <ChevronLeft className="w-4 h-4" />
+          <ChevronLeft style={{ width: 16, height: 16 }} />
         </button>
 
-        <div className="flex items-center gap-1 px-1">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '0 4px' }}>
           {pages.map((p, idx) => {
             if (p === '...') {
               return (
-                <span key={`ellipsis-${idx}`} className="px-2 text-slate-400 text-xs">
+                <span key={`ellipsis-${idx}`} className="pagination-ellipsis">
                   ...
                 </span>
               );
@@ -127,11 +125,7 @@ export default function Pagination({
               <button
                 key={`page-${p}`}
                 onClick={() => onPageChange(Number(p))}
-                className={`min-w-[32px] h-8 px-2 text-xs font-semibold rounded-lg transition-colors ${
-                  isCurrent
-                    ? 'bg-emerald-600 text-white shadow-sm'
-                    : 'text-slate-700 hover:bg-slate-100 border border-transparent'
-                }`}
+                className={`pagination-page-btn ${isCurrent ? 'pagination-page-btn-active' : ''}`}
               >
                 {p}
               </button>
@@ -143,18 +137,18 @@ export default function Pagination({
           onClick={() => onPageChange(page + 1)}
           disabled={page >= totalPages}
           title="Next Page"
-          className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none transition-colors"
+          className="pagination-nav-btn"
         >
-          <ChevronRight className="w-4 h-4" />
+          <ChevronRight style={{ width: 16, height: 16 }} />
         </button>
 
         <button
           onClick={() => onPageChange(totalPages)}
           disabled={page >= totalPages}
           title="Last Page"
-          className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none transition-colors"
+          className="pagination-nav-btn"
         >
-          <ChevronsRight className="w-4 h-4" />
+          <ChevronsRight style={{ width: 16, height: 16 }} />
         </button>
       </div>
     </div>
